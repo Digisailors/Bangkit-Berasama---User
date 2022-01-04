@@ -45,6 +45,12 @@ class Auth implements AuthBase {
     return userCredential.user;
   }
 
+  Future<String> resetPassword({required String email}) async {
+    return _firebaseAuth.sendPasswordResetEmail(email: email).then((value) => "Success").catchError((error) {
+      return error.code.toString();
+    });
+  }
+
   signInwithPhoneNumber(String phoneNumber) async {
     await _firebaseAuth.verifyPhoneNumber(
       phoneNumber: '+44 7123 123 456',

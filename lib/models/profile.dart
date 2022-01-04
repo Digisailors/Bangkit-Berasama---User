@@ -17,8 +17,6 @@ class Profile {
     required this.phone,
     required this.secondaryPhone,
     required this.email,
-    required this.state,
-    required this.pincode,
     required this.primaryAddress,
     required this.secondaryAddress,
   });
@@ -28,8 +26,7 @@ class Profile {
   String phone;
   String secondaryPhone;
   String email;
-  String state;
-  String pincode;
+
   Address primaryAddress;
   Address secondaryAddress;
 
@@ -39,8 +36,6 @@ class Profile {
         phone: json["phone"],
         secondaryPhone: json["secondaryPhone"],
         email: json["email"],
-        state: json["state"],
-        pincode: json["pincode"],
         primaryAddress: Address.fromJson(json["primaryAddress"]),
         secondaryAddress: Address.fromJson(json["secondaryAddress"]),
       );
@@ -51,8 +46,6 @@ class Profile {
         "phone": phone,
         "secondaryPhone": secondaryPhone,
         "email": email,
-        "state": state,
-        "pincode": pincode,
         "primaryAddress": primaryAddress.toJson(),
         "secondaryAddress": secondaryAddress.toJson(),
       };
@@ -67,10 +60,14 @@ class Address {
     required this.description,
     required this.roofColor,
     required this.doorColor,
+    required this.state,
+    required this.pincode,
   });
 
   String line1;
   String line2;
+  String state;
+  String pincode;
   String description;
   String roofColor;
   String doorColor;
@@ -81,6 +78,8 @@ class Address {
         description: json["description"],
         roofColor: json["roofColor"],
         doorColor: json["doorColor"],
+        state: json["state"],
+        pincode: json["pincode"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -89,5 +88,7 @@ class Address {
         "description": description,
         "roofColor": roofColor,
         "doorColor": doorColor,
+        "state": state,
+        "pincode": pincode,
       };
 }
