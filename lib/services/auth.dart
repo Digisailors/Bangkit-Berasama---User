@@ -45,6 +45,18 @@ class Auth implements AuthBase {
     return userCredential.user;
   }
 
+  signInwithPhoneNumber(String phoneNumber) async {
+    await _firebaseAuth.verifyPhoneNumber(
+      phoneNumber: '+44 7123 123 456',
+      verificationCompleted: (PhoneAuthCredential credential) async {
+        await _firebaseAuth.signInWithCredential(credential);
+      },
+      codeAutoRetrievalTimeout: (String verificationId) {},
+      codeSent: (String verificationId, int? forceResendingToken) {},
+      verificationFailed: (FirebaseAuthException error) {},
+    );
+  }
+
   @override
   @override
   Future<void> signOut() async {

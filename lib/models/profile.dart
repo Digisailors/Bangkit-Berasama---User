@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:bangkit/services/firebase.dart';
+
 Profile profileFromJson(String str) => Profile.fromJson(json.decode(str));
 
 String profileToJson(Profile data) => json.encode(data.toJson());
@@ -54,6 +56,8 @@ class Profile {
         "primaryAddress": primaryAddress.toJson(),
         "secondaryAddress": secondaryAddress.toJson(),
       };
+
+  addUser() {}
 }
 
 class Address {
