@@ -1,13 +1,12 @@
 import 'dart:ui';
 
 import 'package:bangkit/auth/forgot_password.dart';
+import 'package:bangkit/auth/signup.dart';
 import 'package:bangkit/constants/controller_constants.dart';
 import 'package:bangkit/widgets/widgets.dart';
 import 'package:get/get.dart';
 
 import 'package:flutter/material.dart';
-
-import '../landing_page.dart';
 
 class SignInWidget extends StatefulWidget {
   const SignInWidget({Key? key}) : super(key: key);
@@ -142,38 +141,69 @@ class _SignInWidgetState extends State<SignInWidget> {
                                   if (emailController.text.isEmpty || passwordController.text.isEmpty) {
                                     title = "Empty Email or Password";
                                     message = "Please fill-out both email and password";
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            title: Text(title),
+                                            content: Text(message),
+                                            actions: [
+                                              ElevatedButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  child: const Text("Okay")),
+                                            ],
+                                          );
+                                        });
                                   } else if (!emailController.text.isEmail) {
                                     title = "Invalid Email";
                                     message = "Please enter a valid email";
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            title: Text(title),
+                                            content: Text(message),
+                                            actions: [
+                                              ElevatedButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  child: const Text("Okay")),
+                                            ],
+                                          );
+                                        });
                                   } else {
                                     await authController.auth.signInWithEmailAndPassword(emailController.text, passwordController.text).then((value) {
-                                      Get.off(const SignInWidget());
+                                      Navigator.of(context).popAndPushNamed('/');
                                     }).catchError((error) {
                                       title = error.code ?? "Error";
                                       message = error.message ?? "Unknown Error";
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return AlertDialog(
+                                              title: Text(title),
+                                              content: Text(message),
+                                              actions: [
+                                                ElevatedButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context).pop();
+                                                    },
+                                                    child: const Text("Okay")),
+                                              ],
+                                            );
+                                          });
                                     });
                                   }
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return AlertDialog(
-                                          title: Text(title),
-                                          content: Text(message),
-                                          actions: [
-                                            ElevatedButton(
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                },
-                                                child: const Text("Okay")),
-                                          ],
-                                        );
-                                      });
                                 },
                                 child: const Text('Login')),
                           ),
                         ),
                         TextButton(
                           onPressed: () {
+                            // ignore: avoid_print
                             print("Pressed");
                             showModalBottomSheet(
                                 isScrollControlled: true,
@@ -194,10 +224,14 @@ class _SignInWidgetState extends State<SignInWidget> {
                             ),
                           ),
                         ),
+                        const Text("OR"),
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            // ignore: avoid_print
+                            print("Pressed");
+                          },
                           child: const Text(
-                            'Or Log in with OTP ',
+                            'Log in with OTP ',
                             style: TextStyle(
                               fontFamily: 'Lexend Deca',
                               color: Colors.blue,
@@ -222,7 +256,16 @@ class _SignInWidgetState extends State<SignInWidget> {
                                 ),
                               ),
                               TextButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  showModalBottomSheet(
+                                      isScrollControlled: true,
+                                      context: context,
+                                      builder: (context) {
+                                        return SignUpWidget(
+                                          email: emailController.text,
+                                        );
+                                      });
+                                },
                                 child: const Text(
                                   'Register Now',
                                   style: TextStyle(

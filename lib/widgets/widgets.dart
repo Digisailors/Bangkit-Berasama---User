@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:video_player/video_player.dart';
 
 class CustomTextFormField extends StatelessWidget {
   const CustomTextFormField({
@@ -177,16 +178,16 @@ class CustomDropDown extends StatelessWidget {
         onChanged: onChanged,
         onTap: onTap,
         decoration: InputDecoration(
-          constraints: BoxConstraints.expand(height: 65),
+          constraints: const BoxConstraints.expand(height: 65),
           labelText: labelText,
-          labelStyle: TextStyle(
+          labelStyle: const TextStyle(
             fontFamily: 'Lexend Deca',
             color: Color(0xFFEF4C43),
             fontSize: 14,
             fontWeight: FontWeight.normal,
           ),
           hintText: hintText,
-          hintStyle: TextStyle(
+          hintStyle: const TextStyle(
             fontFamily: 'Lexend Deca',
             color: Color(0xFF95A1AC),
             fontSize: 14,
@@ -256,5 +257,185 @@ class _RadioButtonState extends State<RadioButton> {
         ),
       ],
     );
+  }
+}
+
+class VideoApp extends StatefulWidget {
+  const VideoApp({Key? key, required this.url}) : super(key: key);
+
+  @override
+  _VideoAppState createState() => _VideoAppState();
+  final String url;
+}
+
+class _VideoAppState extends State<VideoApp> {
+  late VideoPlayerController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = VideoPlayerController.network(widget.url)
+      ..initialize().then((_) {
+        _controller.play();
+        _controller.setLooping(true);
+        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+        setState(() {});
+      });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: _controller.value.isInitialized
+            ? SizedBox(width: MediaQuery.of(context).size.width * 0.90, child: VideoPlayer(_controller))
+            : Container(),
+      ),
+      // floatingActionButtonLocation : FloatingActionButtonLocation.centerFloat,
+      // floatingActionButton: FloatingActionButton(
+      //   // backgroundColor : Colors.transperent
+      //   onPressed: () {
+      //     setState(() {
+      //       _controller.value.isPlaying
+      //           ? _controller.pause()
+      //           : _controller.play();
+      //     });
+      //   },
+      //   // child: Icon(
+      //   //   _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+      //   // ),
+      // ),
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+  }
+}
+
+class VideoApp2 extends StatefulWidget {
+  const VideoApp2({Key? key, required this.url}) : super(key: key);
+
+  @override
+  _VideoApp2State createState() => _VideoApp2State();
+  final String url;
+}
+
+class _VideoApp2State extends State<VideoApp2> {
+  late VideoPlayerController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = VideoPlayerController.network(
+        'https://media.istockphoto'
+        '.com/videos/hurricane-kiko-band-11-video-id1176913684',
+        videoPlayerOptions: VideoPlayerOptions())
+      ..initialize().then((_) {
+        _controller.play();
+        _controller.setLooping(true);
+        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+        setState(() {});
+      });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Video Demo',
+      home: Scaffold(
+        body: Center(
+          child: _controller.value.isInitialized
+              ? AspectRatio(
+                  aspectRatio: _controller.value.aspectRatio,
+                  child: VideoPlayer(_controller),
+                )
+              : Container(),
+        ),
+        // floatingActionButtonLocation : FloatingActionButtonLocation.centerFloat,
+        // floatingActionButton: FloatingActionButton(
+        //   // backgroundColor : Colors.transperent
+        //   onPressed: () {
+        //     setState(() {
+        //       _controller.value.isPlaying
+        //           ? _controller.pause()
+        //           : _controller.play();
+        //     });
+        //   },
+        //   child: Icon(
+        //     _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+        //   ),
+        // ),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+  }
+}
+
+class Videoapp3 extends StatefulWidget {
+  const Videoapp3({Key? key}) : super(key: key);
+
+  @override
+  _Videoapp3State createState() => _Videoapp3State();
+}
+
+class _Videoapp3State extends State<Videoapp3> {
+  late VideoPlayerController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = VideoPlayerController.network('https://media.istockphoto.com/videos/hurricane-matthew-2016-landfall-radar-video-id1017267864',
+        videoPlayerOptions: VideoPlayerOptions())
+      ..initialize().then((_) {
+        _controller.play();
+        _controller.setLooping(true);
+        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+        setState(() {});
+      });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Video Demo',
+      home: Scaffold(
+        body: Center(
+          child: _controller.value.isInitialized
+              ? AspectRatio(
+                  aspectRatio: _controller.value.aspectRatio,
+                  child: VideoPlayer(_controller),
+                )
+              : Container(),
+        ),
+        // floatingActionButtonLocation : FloatingActionButtonLocation.centerFloat,
+        // floatingActionButton: FloatingActionButton(
+        //   // backgroundColor : Colors.transperent
+        //   onPressed: () {
+        //     setState(() {
+        //       _controller.value.isPlaying
+        //           ? _controller.pause()
+        //           : _controller.play();
+        //     });
+        //   },
+        //   child: Icon(
+        //     _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+        //   ),
+        // ),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
   }
 }

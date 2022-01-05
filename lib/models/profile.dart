@@ -4,7 +4,9 @@
 
 import 'dart:convert';
 
+import 'package:bangkit/constants/controller_constants.dart';
 import 'package:bangkit/services/firebase.dart';
+import 'package:bangkit/services/response.dart';
 
 Profile profileFromJson(String str) => Profile.fromJson(json.decode(str));
 
@@ -50,7 +52,24 @@ class Profile {
         "secondaryAddress": secondaryAddress.toJson(),
       };
 
-  addUser() {}
+  addUser(String uid) {
+    this.uid = uid;
+    users
+        .doc(uid)
+        .set(toJson())
+        .then((value) => Response(code: "Sucess", message: "Your Profile has been registered Successfuly"))
+        .catchError((error) {
+      return Response(code: "Failed", message: error.toString());
+    });
+  }
+
+  static Stream<DocumentSnapshot<Map<String, dynamic>>> getUserProfileAsStream(String uid) {
+    return users.doc(uid).snapshots();
+  }
+
+  Stream<DocumentSnapshot<Map<String, dynamic>>> getCurrentUserasStream() {
+    return getUserProfileAsStream(authController.auth.currentUser!.uid);
+  }
 }
 
 class Address {
