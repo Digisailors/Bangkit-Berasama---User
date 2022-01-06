@@ -8,7 +8,6 @@ import 'package:get/get.dart';
 import 'controllers/auth_controller.dart';
 import 'firebase_options.dart';
 import 'fundraiser/home.dart';
-import 'ngo/ngohome.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,12 +30,12 @@ class MyApp extends StatelessWidget {
           style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red.shade700)),
         ),
       ),
-      initialRoute: '/addNgo',
+      initialRoute: '/',
       routes: {
         '/': (context) => const LandingPage(),
         '/sign-in': (context) => const SignInWidget(),
         '/home': (context) => const Homepage(),
-        '/addNgo': (context) => const AddNgo(),
+        '/addNgo': (context) => AddNgo(),
       },
       // home: LandingPage(auth: Auth()),
     );

@@ -63,26 +63,26 @@ class Ngo {
         "searchText": searchString,
       };
 
-  static addNgo(Ngo ngo) {
-    return databaseRef.child("globalData/ngos").runTransaction((Object? transaction) {
-      if (transaction == null) {
-        return rtdb.Transaction.abort();
+  static addNgo(Ngo ngo) async {
+    print("I am here");
+    return firestore.runTransaction((transaction) async {
+      print("I am inside");
+      DocumentSnapshot snapshot = await transaction.get(counters);
+      if (snapshot.exists) {
+        var data = snapshot.data() as Map<String, dynamic>;
+        ngo.id = data['ngos'] + 1;
+        return transaction.update(counters, {"ngos": ngo.id}).set(ngos.doc(ngo.id.toString()), ngo.toJson());
       }
-      int _transaction = (transaction as int) + 1;
-      ngo.id = _transaction;
-      return rtdb.Transaction.success(_transaction);
     }).then((value) {
-      return ngos.doc(ngo.id.toString()).set(ngo.toJson()).then((value) => {"code": "success", "message": "NGO has been added"}).catchError((error) {
-        return {"code": "Failed", "message": "Unknown error, Please try again"};
-      });
+      return {"code": "Success", "message": "Added"};
     }).catchError((error) {
-      return {"code": "Failed", "message": "Unknown error, Please try again"};
+      print(error.toString());
+      return {"code": "Failed", "message": error.toString()};
     });
   }
 
   delete() {
     ngos.doc(id.toString()).delete().then((value) => {"code": "success", "message": "NGO has been deleted"}).catchError((error) {
-      print(error.toString());
       return {"code": "Failed", "message": error.toString()};
     });
   }
