@@ -158,18 +158,21 @@ class _RegistrationState extends State<Registration> {
               hintText: 'Name',
               labelText: 'Enter your name',
               icon: const Icon(Icons.person),
+              keyboardType: TextInputType.name,
             ),
             CustomTextFormfieldRed(
               controller: phoneController,
-              hintText: '+9123456788',
+              hintText: '+60 12-4103212',
               labelText: 'Enter your phone Number',
               icon: const Icon(Icons.phone),
+              keyboardType: TextInputType.phone,
             ),
             CustomTextFormfieldRed(
               controller: secondaryphoneController,
-              hintText: '+9123456788',
+              hintText: '+60 23456788',
               labelText: 'Enter Secondary Phone Number',
               icon: const Icon(Icons.phone),
+              keyboardType: TextInputType.phone,
             ),
             CustomTextFormfieldRed(
               controller: icnumberController,
@@ -183,6 +186,7 @@ class _RegistrationState extends State<Registration> {
               labelText: 'Enter your Email',
               icon: const Icon(Icons.email),
               enabled: false,
+              keyboardType: TextInputType.emailAddress,
             ),
             ExpansionTile(
               leading: const Icon(Icons.home),
@@ -554,6 +558,7 @@ class CustomTextFormfieldRed extends StatelessWidget {
     this.hintText,
     this.maxLines,
     this.enabled,
+    this.keyboardType,
   }) : super(key: key);
   final TextEditingController controller;
 
@@ -563,6 +568,7 @@ class CustomTextFormfieldRed extends StatelessWidget {
   final String? hintText;
   final int? maxLines;
   final bool? enabled;
+  final TextInputType? keyboardType;
 
   @override
   Widget build(BuildContext context) {
@@ -571,6 +577,7 @@ class CustomTextFormfieldRed extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsetsDirectional.fromSTEB(16, 10, 16, 10),
         child: TextFormField(
+          keyboardType: keyboardType,
           enabled: enabled,
           maxLines: maxLines,
           controller: controller,

@@ -1,4 +1,5 @@
 import 'package:bangkit/auth/login.dart';
+import 'package:bangkit/dummy/add_ngo.dart';
 import 'package:bangkit/landing_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -30,11 +31,12 @@ class MyApp extends StatelessWidget {
           style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red.shade700)),
         ),
       ),
-      initialRoute: '/',
+      initialRoute: '/addNgo',
       routes: {
         '/': (context) => const LandingPage(),
         '/sign-in': (context) => const SignInWidget(),
         '/home': (context) => const Homepage(),
+        '/addNgo': (context) => const AddNgo(),
       },
       // home: LandingPage(auth: Auth()),
     );

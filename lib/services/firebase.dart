@@ -17,3 +17,4 @@ final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
 final FirebaseStorage storage = FirebaseStorage.instance;
 
 CollectionReference<Map<String, dynamic>> users = firestore.collection('Users');
+CollectionReference<Map<String, dynamic>> ngos = firestore.collection('Ngos');

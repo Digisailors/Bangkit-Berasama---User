@@ -59,6 +59,13 @@ class _VerifyEmailState extends State<VerifyEmail> {
               },
               child: const Text("Logout"),
             ),
+            ElevatedButton(
+              onPressed: () {
+                authController.auth.currentUser!.reload();
+                Navigator.of(context).popAndPushNamed('/');
+              },
+              child: const Text("Check again"),
+            ),
           ],
         ),
       ),

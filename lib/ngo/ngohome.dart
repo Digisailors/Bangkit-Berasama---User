@@ -963,7 +963,7 @@ class _NgoHomepageState extends State<NgoHomepage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.all(16.0),
+                          padding: const EdgeInsets.only(),
                           child: Text(
                             'Categories',
                             style: Theme.of(context).textTheme.headline6,
