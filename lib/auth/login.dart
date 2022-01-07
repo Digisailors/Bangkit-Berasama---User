@@ -32,6 +32,7 @@ class _SignInWidgetState extends State<SignInWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
+
       // backgroundColor: Colors.redAccent.withOpacity(0.9),
       body: Stack(
         children: [
@@ -52,24 +53,18 @@ class _SignInWidgetState extends State<SignInWidget> {
                     padding: const EdgeInsetsDirectional.fromSTEB(20, 0, 20, 0),
                     child: Column(
                       mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Padding(
-                          padding: const EdgeInsetsDirectional.fromSTEB(0, 90, 0, 80),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                width: 180,
-                                height: 180,
-                                child: Image.asset(
-                                  'assets/logo option square transparent (1).png',
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ],
+                        SizedBox(
+                          height: 30,
+                        ),
+                        SizedBox(
+                          width: 180,
+                          height: 180,
+                          child: Image.asset(
+                            'assets/logo option square transparent (1).png',
+                            fit: BoxFit.contain,
                           ),
                         ),
                         Padding(

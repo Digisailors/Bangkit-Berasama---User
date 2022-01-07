@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'dart:core';
 import 'package:bangkit/services/firebase.dart';
-import 'package:firebase_database/firebase_database.dart' as rtdb;
 
 Ngo ngoFromJson(String str) => Ngo.fromJson(json.decode(str));
 
@@ -17,6 +16,7 @@ class Ngo {
     required this.phoneNumber,
     required this.email,
     required this.description,
+    required this.contactPersonName,
     this.props,
     required this.type,
     this.entityType,
@@ -25,7 +25,7 @@ class Ngo {
   int? id;
   String name;
   String address;
-
+  String contactPersonName;
   String postCode;
   String phoneNumber;
   String email;
@@ -36,16 +36,17 @@ class Ngo {
   List<ServiceType>? serviceTypes;
 
   factory Ngo.fromJson(Map<String, dynamic> json) => Ngo(
-        name: json["name"],
-        address: json["address"],
-        phoneNumber: json["phoneNumber"],
-        email: json["email"],
-        description: json["description"],
+        name: json["name"] ?? '',
+        address: json["address"] ?? '',
+        phoneNumber: json["phoneNumber"] ?? '',
+        email: json["email"] ?? '',
+        description: json["description"] ?? '',
+        contactPersonName: json["contactPersonName"] ?? '',
         props: json["props"],
-        type: Type.values.elementAt(json["type"]),
-        entityType: EntityType.values.elementAt(json["entityType"]),
-        serviceTypes: List<ServiceType>.from(json["serviceTypes"].map((x) => EntityType.values.elementAt(x))),
-        postCode: json["postCode"],
+        type: Type.values.elementAt(json["type"] ?? 0),
+        entityType: EntityType.values.elementAt(json["entityType"] ?? 0),
+        serviceTypes: List<ServiceType>.from(json["serviceTypes"].map((x) => ServiceType.values.elementAt(x))),
+        postCode: json["postCode"] ?? '',
       );
 
   Map<String, dynamic> toJson() => {
@@ -54,6 +55,7 @@ class Ngo {
         "phoneNumber": phoneNumber,
         "email": email,
         "description": description,
+        "contactPersonName": contactPersonName,
         "props": props,
         "type": type.index,
         "entityType": entityType != null ? entityType!.index : null,
@@ -101,6 +103,7 @@ class Ngo {
     if (serviceTypes != null) {
       query = query.where("serviceTypes", arrayContainsAny: serviceTypes.map((e) => e.index).toList());
     }
+    return query;
   }
 
   List<String> get searchString => makeSearchString(name);
