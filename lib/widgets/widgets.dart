@@ -77,6 +77,7 @@ class CustomTextBox extends StatelessWidget {
       this.onTap,
       this.leftPad = 20,
       this.maxLines,
+      this.prefixIcon,
       this.enabled})
       : super(key: key);
 
@@ -89,6 +90,7 @@ class CustomTextBox extends StatelessWidget {
   final double? leftPad;
   final int? maxLines;
   final bool? enabled;
+  final Icon? prefixIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -134,6 +136,7 @@ class CustomTextBox extends StatelessWidget {
           filled: true,
           fillColor: Colors.white,
           contentPadding: const EdgeInsetsDirectional.fromSTEB(20, 24, 0, 24),
+          prefixIcon: prefixIcon,
         ),
         style: const TextStyle(
           fontFamily: 'Lexend Deca',

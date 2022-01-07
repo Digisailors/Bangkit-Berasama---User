@@ -1,6 +1,6 @@
 import 'package:bangkit/auth/login.dart';
 import 'package:bangkit/constants/controller_constants.dart';
-import 'package:bangkit/ngo/ngohome.dart';
+import 'package:bangkit/ngo/home.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +30,7 @@ class LandingPage extends StatelessWidget {
                   if (profileSnapshot.connectionState == ConnectionState.active) {
                     if (profileSnapshot.hasData & profileSnapshot.data.exists) {
                       var profile = Profile.fromJson(profileSnapshot.data!.data());
-                      return NgoHomepage(profile: profile);
+                      return HomePage(profile: profile);
                     } else {
                       return const Registration();
                     }

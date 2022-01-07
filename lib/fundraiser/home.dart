@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:get/get.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({Key? key}) : super(key: key);
@@ -20,7 +19,7 @@ class _HomepageState extends State<Homepage> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(8, 8, 8, 0),
+            padding: const EdgeInsetsDirectional.fromSTEB(8, 8, 8, 0),
             child: Card(
               clipBehavior: Clip.antiAliasWithSaveLayer,
               color: Colors.white,
@@ -38,7 +37,7 @@ class _HomepageState extends State<Homepage> {
                     fit: BoxFit.cover,
                   ),
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(12, 8, 12, 16),
+                    padding: const EdgeInsetsDirectional.fromSTEB(12, 8, 12, 16),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       children: const [

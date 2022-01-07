@@ -43,6 +43,7 @@ class _AddNgoState extends State<AddNgo> {
                   postCode: postCodeController.text,
                   phoneNumber: phoneNumberController.text,
                   email: emailController.text,
+                  contactPersonName: '',
                   description: descriptioncontroller.text,
                   type: type ?? Type.medical,
                   entityType: entity,
