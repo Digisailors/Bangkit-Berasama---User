@@ -2,6 +2,7 @@ import 'package:bangkit/auth/login.dart';
 import 'package:bangkit/dummy/NgoEmergency/ngoemergencylanding.dart';
 import 'package:bangkit/dummy/add_ngo.dart';
 import 'package:bangkit/landing_page.dart';
+import 'package:bangkit/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
@@ -22,33 +23,67 @@ Future<void> main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
+
+
+
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
+      theme:  ThemeData(
+        iconTheme: IconThemeData(color: Colors.black),
+
+        primaryColor: Color(0xFF00b3df),
+
         tabBarTheme: TabBarTheme(
           unselectedLabelColor: Colors.black,
           labelColor: Colors.white,
           labelStyle: TextStyle(color: Colors.pink[800]), // color for text
-          indicator: const BoxDecoration(color: Colors.red),
+          indicator: const BoxDecoration(color: Color(0xFF00b3df)),
+
+
         ),
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xFFF4F4F4),
+        scaffoldBackgroundColor: Colors.white ,
+        bottomAppBarTheme: BottomAppBarTheme(
+
         ),
-        elevatedButtonTheme: ElevatedButtonThemeData(style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red.shade700))),
-        primarySwatch: Colors.blue,
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+            elevation: 5,
+            backgroundColor: Colors.blue
+
+        ),
+
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.white
+        ),
+
+        chipTheme: ChipThemeData(
+          elevation: 4,
+          backgroundColor: Colors.grey,
+          selectedColor: Color(0xFF63e5ff),
+          disabledColor: Colors.white,
+          padding: EdgeInsets.all(0.0),
+          brightness: Brightness.light,
+          secondaryLabelStyle: TextStyle(color: Colors.black),
+          labelStyle: TextStyle(color: Colors.black),
+          secondarySelectedColor: Color(0xFF63e5ff),
+        ),
+
+        elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Color(0xFF00b3df)))),
+        // This is the theme of your application.
+        //
+        // Try running your application with "flutter run". You'll see the
+        // application has a blue toolbar. Then, without quitting the app, try
+        // changing the primarySwatch below to Colors.green and then invoke
+        // "hot reload" (press "r" in the console where you ran "flutter run",
+        // or simply save your changes to "hot reload" in a Flutter IDE).
+        // Notice that the counter didn't reset back to zero; the application
+        // is not restarted.
+
       ),
-      initialRoute: '/',
-      routes: {
-        '/': (context) => const LandingPage(),
-        '/sign-in': (context) => const SignInWidget(),
-        '/home': (context) => const Homepage(),
-        '/addNgo': (context) => AddNgo(),
-        '/ngoEmergencyLanding': (context) => NgoEmergencyLanding(),
-        '/profile': (context) => const ProfileWidget(),
-      },
-      // home: LandingPage(auth: Auth()),
+
+      home: const  LandingPage(),
     );
   }
 }

@@ -1,16 +1,19 @@
 import 'dart:ui';
 
+import 'package:bangkit/constants/controller_constants.dart';
 import 'package:bangkit/constants/themeconstants.dart';
 import 'package:bangkit/models/profile.dart';
+import 'package:bangkit/profile/editprofile.dart';
 import 'package:bangkit/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 
 class ProfileWidget extends StatefulWidget {
-  const ProfileWidget({Key? key, required this.profileModel, required this.auth}) : super(key: key);
+  const ProfileWidget({Key? key, required this.profileModel}) : super(key: key);
 
   final Profile profileModel;
-  final AuthBase auth;
+
 
 
   @override
@@ -67,7 +70,10 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                     child: SizedBox(
                       width: getWidth(context)*0.25,
                       height: getHeight(context) * 0.05,
-                      child: ElevatedButton(onPressed: (){}, child: Row(
+                      child: ElevatedButton(onPressed: (){
+                        Get.to(()=>EditProfile(profile: widget.profileModel,));
+
+                      }, child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           Text('Edit'),
@@ -262,7 +268,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                     padding: const EdgeInsets.all(20.0),
                     child: ElevatedButton(onPressed: () {
 
-                      widget.auth.signOut();
+                      authController.auth.signOut();
 
 
                     }, child: Text('Sign Out')),

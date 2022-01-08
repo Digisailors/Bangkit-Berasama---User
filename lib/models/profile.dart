@@ -21,6 +21,7 @@ class Profile {
     required this.email,
     required this.primaryAddress,
     required this.secondaryAddress,
+    required this.icNumber
   });
 
   String? uid;
@@ -28,6 +29,7 @@ class Profile {
   String phone;
   String secondaryPhone;
   String email;
+  String icNumber;
 
   Address primaryAddress;
   Address secondaryAddress;
@@ -40,6 +42,7 @@ class Profile {
         email: json["email"],
         primaryAddress: Address.fromJson(json["primaryAddress"]),
         secondaryAddress: Address.fromJson(json["secondaryAddress"]),
+    icNumber: json["icNumber"] ?? ''
       );
 
   Map<String, dynamic> toJson() => {
@@ -57,7 +60,19 @@ class Profile {
     users
         .doc(uid)
         .set(toJson())
-        .then((value) => Response(code: "Sucess", message: "Your Profile has been registered Successfuly"))
+        .then((value) =>
+            Response(code: "Sucess", message: "Your Profile has been registered Successfuly"))
+        .catchError((error) {
+      return Response(code: "Failed", message: error.toString());
+    });
+  }
+
+  updateUser() {
+    users
+        .doc(uid)
+        .update(toJson())
+        .then((value) =>
+            Response(code: "Success", message: "Your profile has been updated successfully"))
         .catchError((error) {
       return Response(code: "Failed", message: error.toString());
     });

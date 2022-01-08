@@ -1,5 +1,7 @@
 import 'package:bangkit/constants/controller_constants.dart';
 import 'package:bangkit/models/profile.dart';
+import 'package:bangkit/profile/profile.dart';
+import 'package:bangkit/services/auth.dart';
 import 'package:bangkit/weather/weatherwidgets.dart';
 import 'package:bangkit/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -10,18 +12,97 @@ import 'package:get/get.dart';
 import 'ngo_emergency.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key, required this.profile}) : super(key: key);
+  const HomePage({Key? key,  required this.profile}) : super(key: key);
   final Profile profile;
 
   @override
   _HomePageState createState() => _HomePageState();
 }
 
+
+
+
+
 class _HomePageState extends State<HomePage> {
+
+
+  int _selectedIndex = 0;
+  static const TextStyle optionStyle =
+  TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  static const List<Widget> _widgetOptions = <Widget>[
+    Text(
+      'Index 0: Home',
+      style: optionStyle,
+    ),
+    Text(
+      'Index 1: Business',
+      style: optionStyle,
+    ),
+    Text(
+      'Index 2: School',
+      style: optionStyle,
+    ),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+
+
+
+
+
+
   @override
   Widget build(BuildContext context) {
+
+
+
+
+
+
+
+
+
+
     return Scaffold(
-        floatingActionButton: FloatingActionButton(onPressed: authController.auth.signOut),
+        floatingActionButton:BottomNavigationBar(
+          items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+            tooltip: 'Home',
+
+
+            // backgroundColor: Colors.red,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+            tooltip: 'Home',
+
+
+            // backgroundColor: Colors.red,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+            tooltip: 'Home',
+
+
+            // backgroundColor: Colors.red,
+          ),
+
+
+
+        ],
+          currentIndex: _selectedIndex,
+          selectedItemColor: Colors.red,
+          onTap: _onItemTapped,
+        ),
         appBar: AppBar(
             automaticallyImplyLeading: false,
             actions: [
@@ -50,8 +131,8 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
-            elevation: 0,
-            backgroundColor: Color(0xFFF4F4F4),
+
+
             title: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,149 +148,134 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
             toolbarHeight: 100,
-            bottom: PreferredSize(
-              child: CustomTextBox(
-                hintText: '',
-                labelText: '',
-                controller: TextEditingController(),
-                prefixIcon: const Icon(Icons.search),
+
+        ),
+
+
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 20, bottom: 30),
+                child: CarouselSlider(
+                  items: [
+                    // Generated code for this Card Widget...
+                    Card(
+                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                      color: Colors.white,
+                      elevation: 6,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Stack(
+                        children: const [
+                          WeatherBoard(
+                            assetlocation: 'https://cdn-icons-png.flaticon.com/512/1146/1146869.png',
+                          ),
+                        ],
+                      ),
+                    ),
+                    Card(
+                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                      color: Colors.white,
+                      elevation: 6,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: const WeatherBoard(
+                        assetlocation: 'https://cdn-icons-png.flaticon.com/512/3445/3445722.png',
+                      ),
+                    ),
+
+                    Card(
+                      clipBehavior: Clip.antiAliasWithSaveLayer,
+                      color: Colors.white,
+                      elevation: 6,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Stack(
+                        children: const [
+                          Align(
+                              alignment: AlignmentDirectional(-0.8, -0.65),
+                              child: VideoApp(
+                                url: 'https://media.istockphoto.com/videos/hurricane-matthew-2016-landfall-radar-video-id1017267864',
+                              )),
+                        ],
+                      ),
+                    ),
+                  ],
+                  options: CarouselOptions(height: 225, enlargeCenterPage: true, autoPlay:
+                  false, aspectRatio: 4),
+                ),
               ),
-              preferredSize: Size(MediaQuery.of(context).size.width * 0.9, 60),
-            )),
-        body: SafeArea(
-          child: SingleChildScrollView(
-            child: Container(
-              color: const Color(0xFFF4F4F4),
-              child: Column(
+
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(top: 20, bottom: 30),
-                    child: CarouselSlider(
-                      items: [
-                        // Generated code for this Card Widget...
-                        Card(
-                          clipBehavior: Clip.antiAliasWithSaveLayer,
-                          color: Colors.white,
-                          elevation: 6,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Stack(
-                            children: const [
-                              WeatherBoard(
-                                assetlocation: 'https://cdn-icons-png.flaticon.com/512/1146/1146869.png',
-                              ),
-                            ],
-                          ),
-                        ),
-                        Card(
-                          clipBehavior: Clip.antiAliasWithSaveLayer,
-                          color: Colors.white,
-                          elevation: 6,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: const WeatherBoard(
-                            assetlocation: 'https://cdn-icons-png.flaticon.com/512/3445/3445722.png',
-                          ),
-                        ),
-
-                        Card(
-                          clipBehavior: Clip.antiAliasWithSaveLayer,
-                          color: Colors.white,
-                          elevation: 6,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Stack(
-                            children: const [
-                              Align(
-                                  alignment: AlignmentDirectional(-0.8, -0.65),
-                                  child: VideoApp(
-                                    url: 'https://media.istockphoto.com/videos/hurricane-matthew-2016-landfall-radar-video-id1017267864',
-                                  )),
-                            ],
-                          ),
-                        ),
-                      ],
-                      options: CarouselOptions(height: 190, enlargeCenterPage: true, autoPlay: false, aspectRatio: 3),
+                    padding: const EdgeInsets.only(),
+                    child: Text(
+                      'Categories',
+                      style: Theme.of(context).textTheme.headline6,
                     ),
                   ),
-
-                  Container(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                  Padding(
+                    padding: const EdgeInsets.all(25.0),
+                    child: Wrap(
+                      alignment: WrapAlignment.spaceEvenly,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(),
-                          child: Text(
-                            'Categories',
-                            style: Theme.of(context).textTheme.headline6,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(25.0),
-                          child: Wrap(
-                            alignment: WrapAlignment.spaceEvenly,
-                            children: [
-                              CategorySquareTile(
-                                  assetPath: 'assets/policeman.png',
-                                  label: 'Police Report',
-                                  onTap: () {
-                                    Navigator.of(context).pushNamed('/ngoEmergencyLanding');
-                                  }),
-                              CategorySquareTile(
-                                  assetPath: 'assets/ngo.png',
-                                  label: 'NGO Emergency',
-                                  onTap: () {
-                                    Get.to(() => NGOLandingPage());
-                                  }),
-                              CategorySquareTile(
-                                  assetPath: 'assets/architect.png',
-                                  label: 'Rebuild',
-                                  onTap: () {
-                                    Navigator.of(context).pushNamed('/ngoEmergencyLanding');
-                                  }),
-                              CategorySquareTile(
-                                  assetPath: 'assets/feedback.png',
-                                  label: 'Feedback',
-                                  onTap: () {
-                                    print('feedback');
-                                    Navigator.of(context).pushNamed('/ngoEmergencyLanding');
-                                  }),
-                              CategorySquareTile(
-                                  assetPath: 'assets/politician.png',
-                                  label: 'Adun',
-                                  onTap: () {
-                                    Navigator.of(context).pushNamed('/ngoEmergencyLanding');
-                                  }),
-                              CategorySquareTile(
-                                  assetPath: 'assets/man.png',
-                                  label: 'profile',
-                                  onTap: () {
-                                    Navigator.of(context).pushNamed('/profile');
-                                  }),
-                            ],
-                          ),
-                        ),
-                        Divider(),
+                        CategorySquareTile(
+                            assetPath: 'assets/police.png',
+                            label: 'Police Report',
+                            onTap: () {
+                              Navigator.of(context).pushNamed('/ngoEmergencyLanding');
+                            }),
+                        CategorySquareTile(
+                            assetPath: 'assets/ngo.png',
+                            label: 'NGO Emergency',
+                            onTap: () {
+                              Get.to(() => NGOLandingPage());
+                            }),
+                        CategorySquareTile(
+                            assetPath: 'assets/Rebuild.png',
+                            label: 'Rebuild',
+                            onTap: () {
+                              Navigator.of(context).pushNamed('/ngoEmergencyLanding');
+                            }),
+                        CategorySquareTile(
+                            assetPath: 'assets/feedback.png',
+                            label: 'Feedback',
+                            onTap: () {
+                              print('feedback');
+                              Navigator.of(context).pushNamed('/ngoEmergencyLanding');
+                            }),
+                        CategorySquareTile(
+                            assetPath: 'assets/adun.png',
+                            label: 'Adun',
+                            onTap: () {
+                              Navigator.of(context).pushNamed('/ngoEmergencyLanding');
+                            }),
+                        CategorySquareTile(
+                            assetPath: 'assets/man.png',
+                            label: 'profile',
+                            onTap: () {
+                              Get.to(ProfileWidget( profileModel:widget.profile));
+                            }),
                       ],
                     ),
-                    height: MediaQuery.of(context).size.height * 0.50,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: const BoxDecoration(
-                        color: Colors.white, borderRadius: BorderRadius.only(topLeft: Radius.circular(18), topRight: Radius.circular(18))),
                   ),
-
-                  // getImageTile('https://cimages.milaap.org/milaap/image/upload/c_fill,g_faces,h_452,w_603/v1639160721/production/images/campaign/427988/WhatsApp_Image_2021-12-10_at_11.50.38_PM_yy8krg_1639160725.jpg'),
-                  // getImageTile('https://cimages.milaap.org/milaap/image/upload/c_fill,g_faces,h_452,w_603/v1639992568/production/images/campaign/432649/WhatsApp_Image_2021-12-20_at_14.34.04_ki3c5i_1639992571.jpg'),
-                  // getImageTile('https://cimages.milaap.org/milaap/image/upload/c_fill,g_faces,h_452,'
-                  //     'w_603/v1637742107/production/images/campaign/419357/IMG_20210305_110858_fiij8t_1637742113.jpg'),
+                  Divider(),
                 ],
               ),
-            ),
+
+              // getImageTile('https://cimages.milaap.org/milaap/image/upload/c_fill,g_faces,h_452,w_603/v1639160721/production/images/campaign/427988/WhatsApp_Image_2021-12-10_at_11.50.38_PM_yy8krg_1639160725.jpg'),
+              // getImageTile('https://cimages.milaap.org/milaap/image/upload/c_fill,g_faces,h_452,w_603/v1639992568/production/images/campaign/432649/WhatsApp_Image_2021-12-20_at_14.34.04_ki3c5i_1639992571.jpg'),
+              // getImageTile('https://cimages.milaap.org/milaap/image/upload/c_fill,g_faces,h_452,'
+              //     'w_603/v1637742107/production/images/campaign/419357/IMG_20210305_110858_fiij8t_1637742113.jpg'),
+            ],
           ),
         ));
   }

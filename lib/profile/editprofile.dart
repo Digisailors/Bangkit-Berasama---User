@@ -3,14 +3,15 @@ import 'package:bangkit/models/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class Registration extends StatefulWidget {
-  const Registration({Key? key}) : super(key: key);
+class EditProfile extends StatefulWidget {
+  const EditProfile({Key? key, required this.profile}) : super(key: key);
+  final Profile profile;
 
   @override
-  _RegistrationState createState() => _RegistrationState();
+  _EditProfileState createState() => _EditProfileState();
 }
 
-class _RegistrationState extends State<Registration> {
+class _EditProfileState extends State<EditProfile> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController secondaryphoneController = TextEditingController();
@@ -56,22 +57,30 @@ class _RegistrationState extends State<Registration> {
     ];
 
     states = postalCodes.keys.toList();
-    doorColorPrimary = colors.first;
-    doorColorSecondary = colors.first;
-    roofColorPrimary = colors.first;
-    roofColorSecondary = colors.first;
-    primaryState = states.first;
-    secondaryState = states.first;
-    doorColorSecondary = colors.first;
-    roofColorPrimary = colors.first;
-    roofColorSecondary = colors.first;
-    emailController.text = authController.auth.currentUser!.email ?? '';
-
     primaryCodeList = postalCodes[primaryState]!.map((e) => e["postCode"].toString()).toList();
     secondaryCodeList = postalCodes[secondaryState]!.map((e) => e["postCode"].toString()).toList();
-    primaryPostCode = primaryCodeList.first;
-    secondaryPostCode = secondaryCodeList.first;
-    print("$primaryPostCode, $secondaryPostCode");
+
+    doorColorPrimary = widget.profile.primaryAddress.doorColor;
+    roofColorPrimary = widget.profile.primaryAddress.roofColor;
+
+    primaryState = widget.profile.primaryAddress.state;
+    primaryPostCode =widget.profile.primaryAddress.pincode;
+
+    doorColorSecondary = widget.profile.secondaryAddress.doorColor;
+    roofColorSecondary = widget.profile.secondaryAddress.roofColor;
+    secondaryState =  widget.profile.secondaryAddress.state;
+    doorColorSecondary =  widget.profile.secondaryAddress.doorColor;
+
+
+    secondaryPostCode =  widget.profile.secondaryAddress.pincode;
+
+    nameController.text = widget.profile.name;
+    phoneController.text = widget.profile.phone;
+    secondaryphoneController.text = widget.profile.secondaryPhone;
+
+
+    emailController.text = authController.auth.currentUser!.email ?? '';
+    // icnumberController.text=widget.profile.icNumber??'';
   }
 
   setPrimaryPostalCodes() {
@@ -102,7 +111,6 @@ class _RegistrationState extends State<Registration> {
         state: secondaryState,
         pincode: primaryPostCode);
     return Profile(
-
       name: nameController.text,
       phone: phoneController.text,
       secondaryPhone: secondaryaddressController.text,
@@ -452,10 +460,10 @@ class _RegistrationState extends State<Registration> {
               child: ElevatedButton(
                   onPressed: () {
                     Profile submitProfile = getsubmitData();
-                    submitProfile.addUser(authController.auth.currentUser!.uid);
+                    submitProfile.updateUser();
                   },
                   child: const Text(
-                    'Register',
+                    'Update',
                     style: TextStyle(
                       fontFamily: 'Lexend Deca',
                       color: Colors.white,
