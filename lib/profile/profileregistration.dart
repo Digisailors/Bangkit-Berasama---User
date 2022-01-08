@@ -102,15 +102,13 @@ class _RegistrationState extends State<Registration> {
         state: secondaryState,
         pincode: primaryPostCode);
     return Profile(
-
-      name: nameController.text,
-      phone: phoneController.text,
-      secondaryPhone: secondaryaddressController.text,
-      email: emailController.text,
-      primaryAddress: primaryAddress,
-      secondaryAddress: secondaryAddress,
-      icNumber: icnumberController.text
-    );
+        name: nameController.text,
+        phone: phoneController.text,
+        secondaryPhone: secondaryaddressController.text,
+        email: emailController.text,
+        primaryAddress: primaryAddress,
+        secondaryAddress: secondaryAddress,
+        icNumber: icnumberController.text);
   }
 
   late List<String> colors;
@@ -127,6 +125,8 @@ class _RegistrationState extends State<Registration> {
   late String primaryPostCode;
   late String secondaryPostCode;
   bool _customTileExpanded = false;
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -146,336 +146,385 @@ class _RegistrationState extends State<Registration> {
         elevation: 0.0,
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const Padding(
-              padding: EdgeInsets.only(left: 20, top: 16, bottom: 16),
-              child: Align(
-                child: Text('Personal details'),
-                alignment: Alignment.centerLeft,
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              const Padding(
+                padding: EdgeInsets.only(left: 20, top: 16, bottom: 16),
+                child: Align(
+                  child: Text('Personal details'),
+                  alignment: Alignment.centerLeft,
+                ),
               ),
-            ),
-            CustomTextFormfieldRed(
-              controller: nameController,
-              hintText: 'Name',
-              labelText: 'Enter your name',
-              icon: const Icon(Icons.person),
-              keyboardType: TextInputType.name,
-            ),
-            CustomTextFormfieldRed(
-              controller: phoneController,
-              hintText: '+60 12-4103212',
-              labelText: 'Enter your phone Number',
-              icon: const Icon(Icons.phone),
-              keyboardType: TextInputType.phone,
-            ),
-            CustomTextFormfieldRed(
-              controller: secondaryphoneController,
-              hintText: '+60 23456788',
-              labelText: 'Enter Secondary Phone Number',
-              icon: const Icon(Icons.phone),
-              keyboardType: TextInputType.phone,
-            ),
-            CustomTextFormfieldRed(
-              controller: icnumberController,
-              hintText: 'Ex. F12345678I',
-              labelText: 'Enter your Ic Number',
-              icon: const Icon(FontAwesomeIcons.passport),
-            ),
-            CustomTextFormfieldRed(
-              controller: emailController,
-              hintText: 'name@email.com',
-              labelText: 'Enter your Email',
-              icon: const Icon(Icons.email),
-              enabled: false,
-              keyboardType: TextInputType.emailAddress,
-            ),
-            ExpansionTile(
-              leading: const Icon(Icons.home),
-              title: const Text('House address'),
-              trailing: Icon(
-                _customTileExpanded ? Icons.arrow_drop_down_circle : Icons.arrow_drop_down,
+              CustomTextFormfieldRed(
+                controller: nameController,
+                hintText: 'Name',
+                labelText: 'Enter your name',
+                icon: const Icon(Icons.person),
+                keyboardType: TextInputType.name,
+                validator: (value) {
+                  value = value ?? '';
+                  var s = value.isEmpty ? "Name is required field" : null;
+                  return s;
+                },
               ),
-              children: <Widget>[
-                const Divider(),
-                const Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Align(
-                    child: Text('House Address'),
-                    alignment: Alignment.centerLeft,
-                  ),
-                ),
-                CustomTextFormfieldRed(
-                  controller: primaryAdresssLine1,
-                  hintText: '123 Street',
-                  labelText: 'Address line 1',
-                  icon: const Icon(Icons.home),
-                ),
-                CustomTextFormfieldRed(
-                  controller: primaryAdressline2,
-                  hintText: '123 Street',
-                  labelText: 'Address line 2',
-                  icon: const Icon(Icons.home),
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.1,
-                  child: CustomDropDownButtonformField(
-                    labelText: 'Choose State',
-                    Icon: const Icon(FontAwesomeIcons.hotel),
-                    value: primaryState,
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        primaryState = newValue!;
-                        setPrimaryPostalCodes();
-                      });
-                    },
-                    item: states.map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                  ),
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.1,
-                  child: CustomDropDownButtonformField(
-                    labelText: 'Choose PinCode',
-                    Icon: const Icon(FontAwesomeIcons.hotel),
-                    value: primaryPostCode,
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        primaryPostCode = newValue!;
-                      });
-                    },
-                    item: primaryCodeList.map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                  ),
-                ),
-                CustomTextFormfieldRed(
-                  maxLines: 4,
-                  controller: descriptionController,
-                  hintText: 'Type Your Text Here',
-                  labelText: 'Description',
-                  icon: const Icon(Icons.list),
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.1,
-                  child: CustomDropDownButtonformField(
-                    labelText: 'DoorColor',
-                    Icon: const Icon(Icons.door_back_door),
-                    value: doorColorPrimary,
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        doorColorPrimary = newValue!;
-                      });
-                    },
-                    item: colors.map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(value),
-                            const SizedBox(width: 15),
-                            Container(height: 10, width: 10, color: Colors.primaries.elementAt(colors.indexWhere((element) => element == value))),
-                          ],
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.1,
-                  child: CustomDropDownButtonformField(
-                    labelText: 'Roof Color',
-                    Icon: const Icon(Icons.roofing),
-                    value: roofColorPrimary,
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        roofColorPrimary = newValue!;
-                      });
-                    },
-                    item: colors.map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(value),
-                            const SizedBox(width: 15),
-                            Container(height: 10, width: 10, color: Colors.primaries.elementAt(colors.indexWhere((element) => element == value))),
-                          ],
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ],
-              onExpansionChanged: (bool expanded) {
-                setState(() => _customTileExpanded = expanded);
-              },
-            ),
-            ExpansionTile(
-              leading: const Icon(Icons.home),
-              title: const Text('Secondary House address'),
-              trailing: Icon(
-                _customTileExpanded ? Icons.arrow_drop_down_circle : Icons.arrow_drop_down,
+              CustomTextFormfieldRed(
+                controller: phoneController,
+                hintText: '+60 12-4103212',
+                labelText: 'Enter your phone Number',
+                icon: const Icon(Icons.phone),
+                keyboardType: TextInputType.phone,
+                validator: (value) {
+                  value = value ?? '';
+                  var s = value.isEmpty ? "Phone Number is required field" : null;
+                  return s;
+                },
               ),
-              children: [
-                const Divider(),
-                const Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Align(
-                    child: Text('Secondary House Address'),
-                    alignment: Alignment.centerLeft,
-                  ),
+              CustomTextFormfieldRed(
+                controller: secondaryphoneController,
+                hintText: '+60 23456788',
+                labelText: 'Enter Secondary Phone Number',
+                icon: const Icon(Icons.phone),
+                keyboardType: TextInputType.phone,
+                validator: (value) {
+                  value = value ?? '';
+                  var s = value.isEmpty ? "Phone Number is required field" : null;
+                  return s;
+                },
+              ),
+              CustomTextFormfieldRed(
+                controller: icnumberController,
+                hintText: 'Ex. F12345678I',
+                labelText: 'Enter your Ic Number',
+                icon: const Icon(FontAwesomeIcons.passport),
+                validator: (value) {
+                  value = value ?? '';
+                  var s = value.isEmpty ? "ICNumber is required field" : null;
+                  return s;
+                },
+              ),
+              CustomTextFormfieldRed(
+                controller: emailController,
+                hintText: 'name@email.com',
+                labelText: 'Enter your Email',
+                icon: const Icon(Icons.email),
+                enabled: false,
+                keyboardType: TextInputType.emailAddress,
+                validator: (value) {
+                  value = value ?? '';
+                  var s = value.isEmpty ? "ICNumber is required field" : null;
+                  return s;
+                },
+              ),
+              ExpansionTile(
+                leading: const Icon(Icons.home),
+                title: const Text('House address'),
+                trailing: Icon(
+                  _customTileExpanded ? Icons.arrow_drop_down_circle : Icons.arrow_drop_down,
                 ),
-                CustomTextFormfieldRed(
-                  controller: secondaryAddressLine1,
-                  hintText: '123 Street',
-                  labelText: 'Address line 1',
-                  icon: const Icon(FontAwesomeIcons.home),
-                ),
-                CustomTextFormfieldRed(
-                  controller: secondaryAdressLIne2,
-                  hintText: '123 Street',
-                  labelText: 'Address line 2',
-                  icon: const Icon(FontAwesomeIcons.home),
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.1,
-                  child: CustomDropDownButtonformField(
-                    labelText: 'Choose State',
-                    Icon: const Icon(FontAwesomeIcons.hotel),
-                    value: secondaryState,
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        secondaryState = newValue!;
-                        setSecondaryPostalCodes();
-                      });
-                    },
-                    item: states.map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                  ),
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.1,
-                  child: CustomDropDownButtonformField(
-                    labelText: 'Choose PinCode',
-                    Icon: const Icon(FontAwesomeIcons.hotel),
-                    value: secondaryPostCode,
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        secondaryPostCode = newValue!;
-                      });
-                    },
-                    item: secondaryCodeList.map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                  ),
-                ),
-                CustomTextFormfieldRed(
-                  maxLines: 4,
-                  controller: descriptionController2,
-                  hintText: 'Type Your Text Here',
-                  labelText: 'Description',
-                  icon: const Icon(Icons.list),
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.1,
-                  child: CustomDropDownButtonformField(
-                    labelText: 'DoorColor',
-                    Icon: const Icon(Icons.door_back_door),
-                    value: doorColorSecondary,
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        doorColorSecondary = newValue!;
-                      });
-                    },
-                    item: colors.map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(value),
-                            const SizedBox(width: 15),
-                            Container(height: 10, width: 10, color: Colors.primaries.elementAt(colors.indexWhere((element) => element == value))),
-                          ],
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.1,
-                  child: CustomDropDownButtonformField(
-                    labelText: 'Roof Color',
-                    Icon: const Icon(Icons.roofing),
-                    value: roofColorSecondary,
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        roofColorSecondary = newValue!;
-                      });
-                    },
-                    item: colors.map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(value),
-                            const SizedBox(width: 15),
-                            Container(height: 10, width: 10, color: Colors.primaries.elementAt(colors.indexWhere((element) => element == value))),
-                          ],
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.all(30.0),
-              child: ElevatedButton(
-                  onPressed: () {
-                    Profile submitProfile = getsubmitData();
-                    submitProfile.addUser(authController.auth.currentUser!.uid);
-                  },
-                  child: const Text(
-                    'Register',
-                    style: TextStyle(
-                      fontFamily: 'Lexend Deca',
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                children: <Widget>[
+                  const Divider(),
+                  const Padding(
+                    padding: EdgeInsets.all(16),
+                    child: Align(
+                      child: Text('House Address'),
+                      alignment: Alignment.centerLeft,
                     ),
                   ),
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.redAccent,
-                    shadowColor: const Color(0xFF757575),
-                    side: const BorderSide(
-                      width: 1,
-                      color: Colors.transparent,
+                  CustomTextFormfieldRed(
+                    controller: primaryAdresssLine1,
+                    hintText: '123 Street',
+                    labelText: 'Address line 1',
+                    icon: const Icon(Icons.home),
+                    keyboardType: TextInputType.emailAddress,
+                    validator: (value) {
+                      value = value ?? '';
+                      var s = value.isEmpty ? "ICNumber is required field" : null;
+                      return s;
+                    },
+                  ),
+                  CustomTextFormfieldRed(
+                    controller: primaryAdressline2,
+                    hintText: '123 Street',
+                    labelText: 'Address line 2',
+                    icon: const Icon(Icons.home),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.1,
+                    child: CustomDropDownButtonformField(
+                      labelText: 'Choose State',
+                      Icon: const Icon(FontAwesomeIcons.hotel),
+                      value: primaryState,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          primaryState = newValue!;
+                          setPrimaryPostalCodes();
+                        });
+                      },
+                      item: states.map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
                     ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.1,
+                    child: CustomDropDownButtonformField(
+                      labelText: 'Choose PinCode',
+                      Icon: const Icon(FontAwesomeIcons.hotel),
+                      value: primaryPostCode,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          primaryPostCode = newValue!;
+                        });
+                      },
+                      item: primaryCodeList.map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
                     ),
-                  )),
-            ),
-          ],
+                  ),
+                  CustomTextFormfieldRed(
+                    maxLines: 4,
+                    controller: descriptionController,
+                    hintText: 'Type Your Text Here',
+                    labelText: 'Description',
+                    icon: const Icon(Icons.list),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.1,
+                    child: CustomDropDownButtonformField(
+                      labelText: 'DoorColor',
+                      Icon: const Icon(Icons.door_back_door),
+                      value: doorColorPrimary,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          doorColorPrimary = newValue!;
+                        });
+                      },
+                      item: colors.map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(value),
+                              const SizedBox(width: 15),
+                              Container(height: 10, width: 10, color: Colors.primaries.elementAt(colors.indexWhere((element) => element == value))),
+                            ],
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.1,
+                    child: CustomDropDownButtonformField(
+                      labelText: 'Roof Color',
+                      Icon: const Icon(Icons.roofing),
+                      value: roofColorPrimary,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          roofColorPrimary = newValue!;
+                        });
+                      },
+                      item: colors.map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(value),
+                              const SizedBox(width: 15),
+                              Container(height: 10, width: 10, color: Colors.primaries.elementAt(colors.indexWhere((element) => element == value))),
+                            ],
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ],
+                onExpansionChanged: (bool expanded) {
+                  setState(() => _customTileExpanded = expanded);
+                },
+              ),
+              ExpansionTile(
+                leading: const Icon(Icons.home),
+                title: const Text('Secondary House address'),
+                trailing: Icon(
+                  _customTileExpanded ? Icons.arrow_drop_down_circle : Icons.arrow_drop_down,
+                ),
+                children: [
+                  const Divider(),
+                  const Padding(
+                    padding: EdgeInsets.all(16),
+                    child: Align(
+                      child: Text('Secondary House Address'),
+                      alignment: Alignment.centerLeft,
+                    ),
+                  ),
+                  CustomTextFormfieldRed(
+                    controller: secondaryAddressLine1,
+                    hintText: '123 Street',
+                    labelText: 'Address line 1',
+                    icon: const Icon(FontAwesomeIcons.home),
+                    keyboardType: TextInputType.emailAddress,
+                    validator: (value) {
+                      value = value ?? '';
+                      var s = value.isEmpty ? "ICNumber is required field" : null;
+                      return s;
+                    },
+                  ),
+                  CustomTextFormfieldRed(
+                    controller: secondaryAdressLIne2,
+                    hintText: '123 Street',
+                    labelText: 'Address line 2',
+                    icon: const Icon(FontAwesomeIcons.home),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.1,
+                    child: CustomDropDownButtonformField(
+                      labelText: 'Choose State',
+                      Icon: const Icon(FontAwesomeIcons.hotel),
+                      value: secondaryState,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          secondaryState = newValue!;
+                          setSecondaryPostalCodes();
+                        });
+                      },
+                      item: states.map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.1,
+                    child: CustomDropDownButtonformField(
+                      labelText: 'Choose PinCode',
+                      Icon: const Icon(FontAwesomeIcons.hotel),
+                      value: secondaryPostCode,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          secondaryPostCode = newValue!;
+                        });
+                      },
+                      item: secondaryCodeList.map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                  CustomTextFormfieldRed(
+                    validator: (value) {
+                      value = value ?? '';
+                      if (value.isEmpty) {
+                        return "Description is a required field";
+                      }
+                    },
+                    maxLines: 4,
+                    controller: descriptionController2,
+                    hintText: 'Type Your Text Here',
+                    labelText: 'Description',
+                    icon: const Icon(Icons.list),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.1,
+                    child: CustomDropDownButtonformField(
+                      labelText: 'DoorColor',
+                      Icon: const Icon(Icons.door_back_door),
+                      value: doorColorSecondary,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          doorColorSecondary = newValue!;
+                        });
+                      },
+                      item: colors.map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(value),
+                              const SizedBox(width: 15),
+                              Container(height: 10, width: 10, color: Colors.primaries.elementAt(colors.indexWhere((element) => element == value))),
+                            ],
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.1,
+                    child: CustomDropDownButtonformField(
+                      labelText: 'Roof Color',
+                      Icon: const Icon(Icons.roofing),
+                      value: roofColorSecondary,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          roofColorSecondary = newValue!;
+                        });
+                      },
+                      item: colors.map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(value),
+                              const SizedBox(width: 15),
+                              Container(height: 10, width: 10, color: Colors.primaries.elementAt(colors.indexWhere((element) => element == value))),
+                            ],
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.all(30.0),
+                child: ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState?.validate() ?? false) {
+                        _formKey.currentState?.save();
+                        Profile submitProfile = getsubmitData();
+                        // submitProfile.addUser(authController.auth.currentUser!.uid);
+                      }
+                    },
+                    child: const Text(
+                      'Register',
+                      style: TextStyle(
+                        fontFamily: 'Lexend Deca',
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.redAccent,
+                      shadowColor: const Color(0xFF757575),
+                      side: const BorderSide(
+                        width: 1,
+                        color: Colors.transparent,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    )),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -561,6 +610,7 @@ class CustomTextFormfieldRed extends StatelessWidget {
     this.maxLines,
     this.enabled,
     this.keyboardType,
+    this.validator,
   }) : super(key: key);
   final TextEditingController controller;
 
@@ -571,6 +621,7 @@ class CustomTextFormfieldRed extends StatelessWidget {
   final int? maxLines;
   final bool? enabled;
   final TextInputType? keyboardType;
+  final String? Function(String?)? validator;
 
   @override
   Widget build(BuildContext context) {
@@ -579,6 +630,7 @@ class CustomTextFormfieldRed extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsetsDirectional.fromSTEB(16, 10, 16, 10),
         child: TextFormField(
+          validator: validator,
           expands: false,
           keyboardType: keyboardType,
           enabled: enabled,
@@ -603,7 +655,7 @@ class CustomTextFormfieldRed extends StatelessWidget {
             ),
             enabledBorder: OutlineInputBorder(
               borderSide: const BorderSide(
-                color: Colors.red,
+                color: Colors.blue,
                 width: 1,
               ),
               borderRadius: BorderRadius.circular(20),

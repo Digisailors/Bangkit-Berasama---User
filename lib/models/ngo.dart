@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'dart:core';
 import 'package:bangkit/services/firebase.dart';
 
@@ -66,9 +64,7 @@ class Ngo {
       };
 
   static addNgo(Ngo ngo) async {
-    print("I am here");
     return firestore.runTransaction((transaction) async {
-      print("I am inside");
       DocumentSnapshot snapshot = await transaction.get(counters);
       if (snapshot.exists) {
         var data = snapshot.data() as Map<String, dynamic>;
@@ -78,7 +74,6 @@ class Ngo {
     }).then((value) {
       return {"code": "Success", "message": "Added"};
     }).catchError((error) {
-      print(error.toString());
       return {"code": "Failed", "message": error.toString()};
     });
   }
