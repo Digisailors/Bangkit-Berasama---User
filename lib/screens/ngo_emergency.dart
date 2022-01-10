@@ -15,12 +15,12 @@ class NGOLandingPage extends StatefulWidget {
 
 class _NGOLandingPageState extends State<NGOLandingPage> {
   int _selectedIndex = 0;
-  List<Widget> _widgetOptions = <Widget>[
+  final List<Widget> _widgetOptions = <Widget>[
     NgoList(
-      query: ngos,
+      query: "repos",
     ),
     NgoList(
-      query: Ngo.list(postCode: "", type: Type.floodReleif),
+      query: "",
     ),
   ];
   @override

@@ -34,6 +34,7 @@ class MyApp extends StatelessWidget {
         '/homeRoute': (context) => const HomeRoute(),
       },
       theme: ThemeData(
+        fontFamily: 'Roboto',
         iconTheme: const IconThemeData(color: Colors.black),
         primaryColor: const Color(0xFF00b3df),
         tabBarTheme: TabBarTheme(

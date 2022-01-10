@@ -16,11 +16,11 @@ class HomeRoute extends StatelessWidget {
       case 0:
         return HomePage();
       case 1:
-        return NgoList(query: ngos);
+        return NgoList(query: "repos");
       case 2:
-        return NgoList(query: Ngo.list(type: Type.floodReleif));
+        return NgoList(query: "");
       case 3:
-        return AdunList(query: aduns);
+        return AdunList();
       default:
         return Container(color: Colors.white);
     }

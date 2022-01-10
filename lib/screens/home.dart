@@ -82,9 +82,11 @@ class HomePage extends StatelessWidget {
                     ),
                   ],
                   options: CarouselOptions(
+                      enableInfiniteScroll: false,
+                      reverse: false,
                       height: getHeight(context) * 0.25,
                       // enlargeCenterPage: true,
-                      // autoPlay: false,
+                      autoPlay: false,
                       aspectRatio: 5 / 2),
                 ),
               ),
@@ -126,7 +128,7 @@ class HomePage extends StatelessWidget {
                       children: [
                         CategorySquareTile(assetPath: 'assets/police.png', label: 'Police\nReport', onTap: () {}),
                         CategorySquareTile(
-                            assetPath: 'assets/2.png',
+                            assetPath: 'assets/3.png',
                             label: 'Repository',
                             onTap: () {
                               pageController.pageNumber = 1;
@@ -238,10 +240,14 @@ class CategorySquareTile extends StatelessWidget {
           height: MediaQuery.of(context).size.width / 5,
           width: MediaQuery.of(context).size.width / 5,
           child: Padding(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.only(bottom: 8),
             child: ElevatedButton(
                 onPressed: onTap,
-                child: Image.asset(assetPath, fit: BoxFit.contain),
+                child: Image.asset(
+                  assetPath,
+                  fit: BoxFit.fitHeight,
+                  scale: 0.1,
+                ),
                 style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(Colors.white),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(

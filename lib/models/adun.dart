@@ -4,6 +4,8 @@ class Adun {
   Adun({
     this.id,
     required this.name,
+    required this.image,
+    required this.state,
     required this.contactNumber,
     required this.officeAddress,
     required this.postCode,
@@ -13,15 +15,19 @@ class Adun {
 
   int? id;
   String name;
+  String state;
   String contactNumber;
   String officeAddress;
   String postCode;
   String emailAddress;
   String description;
+  String image;
 
   factory Adun.fromJson(Map<String, dynamic> json) => Adun(
         id: json["id"],
         name: json["name"],
+        image: json["image"],
+        state: json["state"],
         contactNumber: json["contactNumber"],
         officeAddress: json["officeAddress"],
         postCode: json["postCode"],
@@ -32,6 +38,8 @@ class Adun {
   Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
+        "image": image,
+        "state": state,
         "contactNumber": contactNumber,
         "officeAddress": officeAddress,
         "postCode": postCode,
@@ -39,7 +47,7 @@ class Adun {
         "description": description,
         "searchString": searchString,
       };
-  static addAdun(Adun adun) async {
+  static Future<dynamic> addAdun(Adun adun) async {
     return firestore.runTransaction((transaction) async {
       DocumentSnapshot snapshot = await transaction.get(counters);
       if (snapshot.exists) {

@@ -1,7 +1,10 @@
+import 'package:bangkit/models/ngo.dart';
+import 'package:flutter/material.dart';
+import '../profile/profileregistration.dart';
 import 'dart:ui';
 
-import 'package:bangkit/models/ngo.dart';
-import 'package:bangkit/widgets/widgets.dart';
+import 'package:get/get.dart';
+
 import 'package:flutter/material.dart';
 
 class AddNgo extends StatefulWidget {
@@ -32,84 +35,195 @@ class _AddNgoState extends State<AddNgo> {
 
   final entityTypeController = TextEditingController();
 
-  var entity;
-  var type;
-  var serviceType;
+  final imageController = TextEditingController();
 
+  EntityType? entity = EntityType.government;
+  // var type;
+  ServiceType? serviceType = ServiceType.assistance;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    entity = EntityType.government;
+    serviceType = ServiceType.assistance;
+  }
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
           floatingActionButton: FloatingActionButton(
+            child: const Icon(Icons.add),
             onPressed: () {
               var ngo = Ngo(
                   name: nameController.text,
                   address: addressController.text,
-                  image: '',
+                  image: imageController.text,
                   postCode: postCodeController.text,
                   state: stateController.text,
                   phoneNumber: phoneNumberController.text,
                   email: emailController.text,
                   contactPersonName: contactPersonController.text,
                   description: descriptioncontroller.text,
-                  type: type ?? Type.medical,
+                  // type: type ?? Type.medical,
                   entityType: entity,
-                  serviceTypes: [ServiceType.assistance, ServiceType.cleaning, ServiceType.food]);
-              Ngo.addNgo(ngo);
+                  serviceType: serviceType);
+              if (_formKey.currentState?.validate() ?? false) {
+                _formKey.currentState?.save();
+                Ngo.addNgo(ngo).then((value) => showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: const Text("Successfully Saved"),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text("Okay"),
+                          )
+                        ],
+                      );
+                    }));
+              }
             },
           ),
           body: SingleChildScrollView(
-            child: Column(
-              children: [
-                const Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Text(
-                    "Add NGO",
-                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Text(
+                      "Add NGO",
+                      style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                    ),
                   ),
-                ),
-                CustomTextFormField(labelText: 'name', controller: nameController),
-                const SizedBox(height: 10),
-                CustomTextFormField(labelText: 'Contact Person Name', controller: contactPersonController),
-                const SizedBox(height: 10),
-                CustomTextFormField(labelText: 'address', controller: addressController),
-                const SizedBox(height: 10),
-                CustomTextFormField(labelText: 'phoneNumber', controller: phoneNumberController),
-                const SizedBox(height: 10),
-                CustomTextFormField(labelText: 'email', controller: emailController),
-                const SizedBox(height: 10),
-                CustomTextFormField(labelText: 'Post Code', controller: postCodeController),
-                const SizedBox(height: 10),
-                CustomTextFormField(labelText: 'description', controller: descriptioncontroller),
-                const SizedBox(height: 10),
-                DropdownButtonFormField<Type>(
-                  value: type,
-                  onChanged: (Type? value) {
-                    setState(() {
-                      type = value;
-                    });
-                  },
-                  items: Type.values.map((e) => DropdownMenuItem(value: e, child: Text(e.toString()))).toList(),
-                ),
-                DropdownButtonFormField<EntityType>(
-                  value: entity,
-                  onChanged: (EntityType? type) {
-                    setState(() {
-                      entity = type;
-                    });
-                  },
-                  items: EntityType.values.map((e) => DropdownMenuItem(value: e, child: Text(e.toString()))).toList(),
-                ),
-                DropdownButtonFormField<ServiceType>(
-                  value: serviceType,
-                  onChanged: (ServiceType? stype) {
-                    setState(() {
-                      serviceType = stype;
-                    });
-                  },
-                  items: ServiceType.values.map((e) => DropdownMenuItem(value: e, child: Text(e.toString()))).toList(),
-                )
-              ],
+                  CustomTextFormfieldRed(
+                    labelText: 'name',
+                    controller: nameController,
+                    validator: (value) {
+                      value = value ?? '';
+                      if (value.isEmpty) {
+                        return "This is a required field";
+                      }
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                  CustomTextFormfieldRed(
+                    labelText: 'Contact Person Name',
+                    controller: contactPersonController,
+                    validator: (value) {
+                      value = value ?? '';
+                      if (value.isEmpty) {
+                        return "This is a required field";
+                      }
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                  CustomTextFormfieldRed(
+                    labelText: 'address',
+                    controller: addressController,
+                    validator: (value) {
+                      value = value ?? '';
+                      if (value.isEmpty) {
+                        return "This is a required field";
+                      }
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                  CustomTextFormfieldRed(
+                    labelText: 'image url',
+                    controller: imageController,
+                    validator: (value) {
+                      value = value ?? '';
+                      if (value.isEmpty) {
+                        return "This is a required field";
+                      }
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                  CustomTextFormfieldRed(
+                    keyboardType: TextInputType.number,
+                    labelText: 'phoneNumber',
+                    controller: phoneNumberController,
+                    validator: (value) {
+                      value = value ?? '';
+                      if (value.isEmpty) {
+                        return "This is a required field";
+                      }
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                  CustomTextFormfieldRed(
+                    labelText: 'email',
+                    controller: emailController,
+                    validator: (value) {
+                      value = value ?? '';
+                      if (value.isEmpty) {
+                        return "This is a required field";
+                      }
+                      if (!emailController.text.isEmail) {
+                        return "Enter a valid email";
+                      }
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                  CustomTextFormfieldRed(
+                    labelText: 'Post Code',
+                    controller: postCodeController,
+                    validator: (value) {
+                      value = value ?? '';
+                      if (value.isEmpty) {
+                        return "This is a required field";
+                      }
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                  CustomTextFormfieldRed(
+                    labelText: 'description',
+                    controller: descriptioncontroller,
+                    validator: (value) {
+                      value = value ?? '';
+                      if (value.isEmpty) {
+                        return "This is a required field";
+                      }
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: DropdownButtonFormField(
+                        // validator: (value) => value != null ? "Field is Required" : null,
+                        value: entity,
+                        onChanged: (EntityType? type) {
+                          setState(() {
+                            entity = type;
+                          });
+                        },
+                        items: EntityType.values.map((e) => DropdownMenuItem(value: e, child: Text(e.toString()))).toList()),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: DropdownButtonFormField<ServiceType>(
+                      // validator: (value) => value != null ? "Field is Required" : null,
+                      value: serviceType,
+                      onChanged: (ServiceType? stype) {
+                        setState(() {
+                          serviceType = stype;
+                        });
+                      },
+                      items: ServiceType.values.map((e) => DropdownMenuItem(value: e, child: Text(e.toString()))).toList(),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 60,
+                  ),
+                ],
+              ),
             ),
           )),
     );

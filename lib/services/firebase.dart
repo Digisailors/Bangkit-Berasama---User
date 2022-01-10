@@ -10,8 +10,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 // import 'package:path/path.dart';
 
-final databaseRef = FirebaseDatabase.instance.refFromURL(
-    "https://bangkit-83a09-default-rtdb.asia-southeast1.firebasedatabase.app");
+final databaseRef = FirebaseDatabase.instance.refFromURL("https://bangkit-83a09-default-rtdb.asia-southeast1.firebasedatabase.app");
 final FirebaseFunctions functions = FirebaseFunctions.instance;
 final FirebaseFirestore firestore = FirebaseFirestore.instance;
 final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
@@ -20,5 +19,5 @@ final FirebaseStorage storage = FirebaseStorage.instance;
 CollectionReference<Map<String, dynamic>> users = firestore.collection('Users');
 CollectionReference<Map<String, dynamic>> ngos = firestore.collection('Ngos');
 CollectionReference<Map<String, dynamic>> aduns = firestore.collection('Aduns');
-DocumentReference<Map<String, dynamic>> counters =
-    firestore.collection('globalData').doc('counters');
+CollectionReference<Map<String, dynamic>> rebuilds = firestore.collection('Rebuilds');
+DocumentReference<Map<String, dynamic>> counters = firestore.collection('globalData').doc('counters');

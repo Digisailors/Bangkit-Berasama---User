@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:bangkit/constants/controller_constants.dart';
 import 'package:bangkit/constants/themeconstants.dart';
-import 'package:bangkit/models/ngo.dart';
+import 'package:bangkit/models/rebuild.dart';
 import 'package:bangkit/services/firebase.dart';
 import 'package:bangkit/widgets/dropdownSelect.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,16 +11,16 @@ import 'package:multi_select_flutter/multi_select_flutter.dart';
 
 import 'repoRouter.dart';
 
-class NgoList extends StatefulWidget {
-  NgoList({Key? key, required this.query}) : super(key: key);
+class rebuildList extends StatefulWidget {
+  rebuildList({Key? key, required this.query}) : super(key: key);
 
   final String query;
 
   @override
-  State<NgoList> createState() => _NgoListState();
+  State<rebuildList> createState() => _rebuildListState();
 }
 
-class _NgoListState extends State<NgoList> {
+class _rebuildListState extends State<rebuildList> {
   List<String> states = [];
   ServiceType serviceType = ServiceType.cleaning;
   bool isGovernment = true;
@@ -31,19 +31,19 @@ class _NgoListState extends State<NgoList> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    query = ngos;
+    query = rebuilds;
   }
 
   Set<dynamic> filters = {};
   void reload() {
     setState(() {
-      query = ngos;
+      query = rebuilds;
       filters = {};
 
       if (states.isNotEmpty) {
         query = query.where("state", whereIn: states);
       }
-      query = isGovernment ? query.where("entityType", isEqualTo: 0) : ngos.where("entityType", isEqualTo: 1);
+      query = isGovernment ? query.where("entityType", isEqualTo: 0) : rebuilds.where("entityType", isEqualTo: 1);
       if (widget.query != "repos") {
         query = query.where("serviceType", isEqualTo: serviceType.index);
       }
@@ -205,8 +205,8 @@ class _NgoListState extends State<NgoList> {
                     children: streamSnapshot.data!.docs.map((snapshot) {
                       var data = snapshot.data()! as Map<String, dynamic>;
                       // print("I am data $data");
-                      // Ngo.fromJson(data).update();
-                      return CustomExpansionTile(ngo: Ngo.fromJson(data));
+                      // rebuild.fromJson(data).update();
+                      return CustomExpansionTile(rebuild: Rebuild.fromJson(data));
                     }).toList(),
                   );
                 } else {
@@ -222,5 +222,124 @@ class _NgoListState extends State<NgoList> {
 
   getServiceChipStats(ServiceType e) {
     return e == serviceType;
+  }
+}
+
+class CustomExpansionTile extends StatefulWidget {
+  const CustomExpansionTile({Key? key, required this.rebuild}) : super(key: key);
+  final Rebuild rebuild;
+
+  @override
+  State<CustomExpansionTile> createState() => _CustomExpansionTileState();
+}
+
+class _CustomExpansionTileState extends State<CustomExpansionTile> {
+  bool showSubtitle = true;
+
+  @override
+  Widget build(BuildContext context) {
+    // rebuild.update();
+    return Card(
+      child: ExpansionTile(
+        onExpansionChanged: (bool value) {
+          setState(() {
+            showSubtitle = !showSubtitle;
+          });
+        },
+        leading: Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: ClipOval(
+            child: AspectRatio(
+                aspectRatio: 1,
+                child: Image.network(
+                  widget.rebuild.image,
+                  fit: BoxFit.cover,
+                )),
+          ),
+        ),
+        title: Padding(
+          padding: EdgeInsets.symmetric(vertical: showSubtitle ? 4 : 32),
+          child: Text(
+            widget.rebuild.name,
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+        subtitle: showSubtitle
+            ? Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4),
+                child: Text(
+                  widget.rebuild.description,
+                  maxLines: 3,
+                  softWrap: true,
+                  style: const TextStyle(overflow: TextOverflow.ellipsis),
+                ),
+              )
+            : null,
+        iconColor: Colors.red,
+        expandedCrossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const Padding(
+                padding: EdgeInsets.all(8),
+                child: Icon(Icons.location_on, color: Colors.red),
+              ),
+              Flexible(
+                child: Text(
+                  widget.rebuild.address,
+                  maxLines: 3,
+                  softWrap: true,
+                  style: const TextStyle(overflow: TextOverflow.clip),
+                ),
+              )
+            ],
+            mainAxisSize: MainAxisSize.max,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Icon(Icons.person_rounded, color: Colors.red),
+              ),
+              Text(widget.rebuild.contactPersonName)
+            ],
+            mainAxisSize: MainAxisSize.max,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Icon(Icons.phone, color: Colors.red),
+              ),
+              Text(widget.rebuild.phoneNumber)
+            ],
+            mainAxisSize: MainAxisSize.max,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Icon(Icons.mail, color: Colors.red),
+              ),
+              Text(widget.rebuild.email)
+            ],
+            mainAxisSize: MainAxisSize.max,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              widget.rebuild.description,
+              maxLines: 20,
+              softWrap: true,
+            ),
+          ),
+          const SizedBox(height: 8),
+        ],
+      ),
+    );
   }
 }

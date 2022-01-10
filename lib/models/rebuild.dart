@@ -1,12 +1,12 @@
 import 'dart:core';
 import 'package:bangkit/services/firebase.dart';
 
-Ngo ngoFromJson(String str) => Ngo.fromJson(json.decode(str));
+Rebuild rebuildFromJson(String str) => Rebuild.fromJson(json.decode(str));
 
-String ngoToJson(Ngo data) => json.encode(data.toJson());
+String rebuildToJson(Rebuild data) => json.encode(data.toJson());
 
-class Ngo {
-  Ngo({
+class Rebuild {
+  Rebuild({
     this.id,
     required this.name,
     required this.address,
@@ -37,7 +37,7 @@ class Ngo {
   EntityType? entityType;
   ServiceType? serviceType;
 
-  factory Ngo.fromJson(Map<String, dynamic> json) => Ngo(
+  factory Rebuild.fromJson(Map<String, dynamic> json) => Rebuild(
         id: json["id"],
         name: json["name"] ?? '',
         address: json["address"] ?? '',
@@ -88,13 +88,13 @@ class Ngo {
         "searchArray": searchArray,
       };
 
-  static Future<dynamic> addNgo(Ngo ngo) async {
+  static Future<dynamic> addrebuild(Rebuild rebuild) async {
     return firestore.runTransaction((transaction) async {
       DocumentSnapshot snapshot = await transaction.get(counters);
       if (snapshot.exists) {
         var data = snapshot.data() as Map<String, dynamic>;
-        ngo.id = data['ngos'] + 1;
-        return transaction.update(counters, {"ngos": ngo.id}).set(ngos.doc(ngo.id.toString()), ngo.toJson());
+        rebuild.id = data['rebuilds'] + 1;
+        return transaction.update(counters, {"rebuilds": rebuild.id}).set(rebuilds.doc(rebuild.id.toString()), rebuild.toJson());
       }
     }).then((value) {
       return {"code": "Success", "message": "Added"};
@@ -105,11 +105,11 @@ class Ngo {
   }
 
   update() {
-    return ngos.doc(id.toString()).update(toJson()).then((value) => print("sucess"));
+    return rebuilds.doc(id.toString()).update(toJson()).then((value) => print("sucess"));
   }
 
   delete() {
-    ngos.doc(id.toString()).delete().then((value) => {"code": "success", "message": "NGO has been deleted"}).catchError((error) {
+    rebuilds.doc(id.toString()).delete().then((value) => {"code": "success", "message": "rebuild has been deleted"}).catchError((error) {
       return {"code": "Failed", "message": error.toString()};
     });
   }
@@ -122,7 +122,7 @@ class Ngo {
       String? searchText,
       List<String>? states,
       Query? query}) {
-    query = query ?? ngos;
+    query = query ?? rebuilds;
     if (states != null) {
       query = query.where("state", whereIn: states);
       // print(await query.get().then((value) => value.docs.length));
