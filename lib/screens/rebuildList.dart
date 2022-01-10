@@ -88,7 +88,7 @@ class _RebuildListState extends State<RebuildList> {
                   child: Padding(
                     padding: EdgeInsets.all(4.0),
                     child: Text(
-                      'REPOSITORY',
+                      'REBUILDS',
                       style: TextStyle(
                         shadows: [Shadow(color: Colors.black, offset: Offset(0, -5))],
                         color: Colors.transparent,

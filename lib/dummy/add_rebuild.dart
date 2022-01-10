@@ -177,6 +177,17 @@ class _AddrebuildState extends State<Addrebuild> {
                   ),
                   const SizedBox(height: 10),
                   CustomTextFormfieldRed(
+                    labelText: 'State',
+                    controller: stateController,
+                    validator: (value) {
+                      value = value ?? '';
+                      if (value.isEmpty) {
+                        return "This is a required field";
+                      }
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                  CustomTextFormfieldRed(
                     labelText: 'description',
                     controller: descriptioncontroller,
                     validator: (value) {

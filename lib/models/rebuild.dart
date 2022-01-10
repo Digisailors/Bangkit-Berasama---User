@@ -81,7 +81,7 @@ class Rebuild {
         "props": props,
         // "type": type.index ??,
         "entityType": entityType != null ? entityType!.index : null,
-        "serviceType": serviceType!.index,
+        "serviceType": entityType != null ? serviceType!.index : null,
         "modifiedDate": DateTime.now(),
         "postCode": postCode,
         "searchText": searchString,

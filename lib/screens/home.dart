@@ -202,8 +202,8 @@ class HomePage extends StatelessWidget {
                           assetPath: 'assets/Rebuild.png',
                           label: 'Rebuild',
                           onTap: () {
-                            print('feedback');
-                            Navigator.of(context).pushNamed('/ngoEmergencyLanding');
+                            pageController.pageNumber = 4;
+                            Navigator.of(context).popAndPushNamed('/bottomRoute');
                           }),
                     ],
                   ),

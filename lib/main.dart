@@ -1,5 +1,6 @@
 import 'package:bangkit/dummy/add_adun.dart';
 import 'package:bangkit/dummy/add_ngo.dart';
+import 'package:bangkit/dummy/add_rebuild.dart';
 import 'package:bangkit/routers/bottomRoute.dart';
 import 'package:bangkit/routers/landing_page.dart';
 import 'package:flutter/material.dart';
@@ -78,31 +79,33 @@ class _AddAppState extends State<AddApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(backgroundColor: Colors.blue),
-      drawer: Drawer(
-        child: Column(
-          children: [
-            const SizedBox(height: 60),
-            ListTile(
-              title: const Text("ADD ADUN"),
-              onTap: () {
-                setState(() {
-                  toggle = !toggle;
-                });
-              },
-            ),
-            ListTile(
-              title: const Text("ADD NGO"),
-              onTap: () {
-                setState(() {
-                  toggle = !toggle;
-                });
-              },
-            ),
-          ],
+        appBar: AppBar(backgroundColor: Colors.blue),
+        drawer: Drawer(
+          child: Column(
+            children: [
+              const SizedBox(height: 60),
+              ListTile(
+                title: const Text("ADD ADUN"),
+                onTap: () {
+                  setState(() {
+                    toggle = !toggle;
+                  });
+                },
+              ),
+              ListTile(
+                title: const Text("ADD NGO"),
+                onTap: () {
+                  setState(() {
+                    toggle = !toggle;
+                  });
+                },
+              ),
+            ],
+          ),
         ),
-      ),
-      body: toggle ? AddNgo() : AddAdun(),
-    );
+        body: PageView(
+          controller: PageController(initialPage: 0),
+          children: [AddAdun(), AddNgo(), Addrebuild()],
+        ));
   }
 }
