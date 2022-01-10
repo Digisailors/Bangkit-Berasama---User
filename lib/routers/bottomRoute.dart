@@ -1,3 +1,4 @@
+import 'package:bangkit/aid%20&grants/aidpost.dart';
 import 'package:bangkit/constants/controller_constants.dart';
 import 'package:bangkit/profile/profile.dart';
 import 'package:bangkit/routers/homeRoute.dart';
@@ -20,7 +21,7 @@ class _BottomRouterState extends State<BottomRouter> {
       case 0:
         return const HomeRoute();
       case 1:
-        return Container(color: Colors.red);
+        return AidAndGrants();
       case 2:
         return Container(color: Colors.green);
       case 3:

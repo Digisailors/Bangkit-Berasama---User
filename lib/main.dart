@@ -34,7 +34,8 @@ class MyApp extends StatelessWidget {
         '/homeRoute': (context) => const HomeRoute(),
       },
       theme: ThemeData(
-        iconTheme: const IconThemeData(color: Colors.black),
+
+        iconTheme: const IconThemeData(color:Color(0xFF00b3df) ),
         primaryColor: const Color(0xFF00b3df),
         tabBarTheme: TabBarTheme(
           unselectedLabelColor: Colors.black,
@@ -42,7 +43,7 @@ class MyApp extends StatelessWidget {
           labelStyle: TextStyle(color: Colors.pink[800]), // color for text
           indicator: const BoxDecoration(color: Color(0xFF00b3df)),
         ),
-        scaffoldBackgroundColor: Colors.white,
+        scaffoldBackgroundColor: Color(0xFFF5F5F5),
         bottomAppBarTheme: const BottomAppBarTheme(),
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
             elevation: 5, backgroundColor: Colors.blue),
@@ -61,7 +62,8 @@ class MyApp extends StatelessWidget {
         elevatedButtonTheme: ElevatedButtonThemeData(
             style: ButtonStyle(
                 backgroundColor:
-                    MaterialStateProperty.all(const Color(0xFF00b3df)))),
+                    MaterialStateProperty.all(const Color(0xFF00b3df)))
+        ),
       ),
       home: LandingPage(),
     );
