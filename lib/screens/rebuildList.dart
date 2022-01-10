@@ -22,8 +22,8 @@ class rebuildList extends StatefulWidget {
 
 class _rebuildListState extends State<rebuildList> {
   List<String> states = [];
-  ServiceType serviceType = ServiceType.cleaning;
-  bool isGovernment = true;
+  // ServiceType serviceType = ServiceType.cleaning;
+  // bool isGovernment = true;
 
   late Query query;
 
@@ -43,10 +43,10 @@ class _rebuildListState extends State<rebuildList> {
       if (states.isNotEmpty) {
         query = query.where("state", whereIn: states);
       }
-      query = isGovernment ? query.where("entityType", isEqualTo: 0) : rebuilds.where("entityType", isEqualTo: 1);
-      if (widget.query != "repos") {
-        query = query.where("serviceType", isEqualTo: serviceType.index);
-      }
+      // query = isGovernment ? query.where("entityType", isEqualTo: 0) : rebuilds.where("entityType", isEqualTo: 1);
+      // if (widget.query != "repos") {
+      //   query = query.where("serviceType", isEqualTo: serviceType.index);
+      // }
     });
   }
 
@@ -122,62 +122,62 @@ class _rebuildListState extends State<rebuildList> {
               )
             ]),
           ),
-          showChips
-              ? Container()
-              : Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: FilterChip(
-                          selected: isGovernment,
-                          shape: const StadiumBorder(side: BorderSide(color: Color(0xFF22A8E0))),
-                          label: Text("GOVERNMENT", style: TextStyle(color: isGovernment ? Colors.white : const Color(0xFF22A8E0))),
-                          onSelected: (bool value) {
-                            isGovernment = true;
-                            reload();
-                          }),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: FilterChip(
-                          selected: !isGovernment,
-                          shape: const StadiumBorder(side: BorderSide(color: Color(0xFF22A8E0))),
-                          label: Text("PRIVATE", style: TextStyle(color: !isGovernment ? Colors.white : const Color(0xFF22A8E0))),
-                          onSelected: (bool value) {
-                            isGovernment = false;
-                            reload();
-                          }),
-                    )
-                  ],
-                ),
-          showChips
-              ? Container()
-              : SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: ServiceType.values
-                        .map((e) => Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: ChoiceChip(
-                                  selected: getServiceChipStats(e),
-                                  label: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      e.toString().split('.').last.toUpperCase(),
-                                      style: TextStyle(color: getServiceChipStats(e) ? Colors.white : Colors.black),
-                                    ),
-                                  ),
-                                  onSelected: (bool value) {
-                                    if (value == true) {
-                                      serviceType = e;
-                                    }
-                                    reload();
-                                  }),
-                            ))
-                        .toList(),
-                  ),
-                ),
+          // showChips
+          //     ? Container()
+          //     : Row(
+          //         mainAxisAlignment: MainAxisAlignment.center,
+          //         children: [
+          //           Padding(
+          //             padding: const EdgeInsets.all(4.0),
+          //             child: FilterChip(
+          //                 selected: isGovernment,
+          //                 shape: const StadiumBorder(side: BorderSide(color: Color(0xFF22A8E0))),
+          //                 label: Text("GOVERNMENT", style: TextStyle(color: isGovernment ? Colors.white : const Color(0xFF22A8E0))),
+          //                 onSelected: (bool value) {
+          //                   isGovernment = true;
+          //                   reload();
+          //                 }),
+          //           ),
+          //           Padding(
+          //             padding: const EdgeInsets.all(4.0),
+          //             child: FilterChip(
+          //                 selected: !isGovernment,
+          //                 shape: const StadiumBorder(side: BorderSide(color: Color(0xFF22A8E0))),
+          //                 label: Text("PRIVATE", style: TextStyle(color: !isGovernment ? Colors.white : const Color(0xFF22A8E0))),
+          //                 onSelected: (bool value) {
+          //                   isGovernment = false;
+          //                   reload();
+          //                 }),
+          //           )
+          //         ],
+          //       ),
+          // showChips
+          //     ? Container()
+          //     : SingleChildScrollView(
+          //         scrollDirection: Axis.horizontal,
+          //         child: Row(
+          //           children: ServiceType.values
+          //               .map((e) => Padding(
+          //                     padding: const EdgeInsets.all(4.0),
+          //                     child: ChoiceChip(
+          //                         selected: getServiceChipStats(e),
+          //                         label: Padding(
+          //                           padding: const EdgeInsets.all(8.0),
+          //                           child: Text(
+          //                             e.toString().split('.').last.toUpperCase(),
+          //                             style: TextStyle(color: getServiceChipStats(e) ? Colors.white : Colors.black),
+          //                           ),
+          //                         ),
+          //                         onSelected: (bool value) {
+          //                           if (value == true) {
+          //                             serviceType = e;
+          //                           }
+          //                           reload();
+          //                         }),
+          //                   ))
+          //               .toList(),
+          //         ),
+          //       ),
           Expanded(
             child: StreamBuilder<QuerySnapshot>(
               stream: query.snapshots(),
@@ -220,9 +220,9 @@ class _rebuildListState extends State<rebuildList> {
     );
   }
 
-  getServiceChipStats(ServiceType e) {
-    return e == serviceType;
-  }
+  // getServiceChipStats(ServiceType e) {
+  //   return e == serviceType;
+  // }
 }
 
 class CustomExpansionTile extends StatefulWidget {
