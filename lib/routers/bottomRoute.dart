@@ -1,9 +1,12 @@
-import 'package:bangkit/ngo/home.dart';
+import 'package:bangkit/constants/controller_constants.dart';
+import 'package:bangkit/profile/profile.dart';
 import 'package:bangkit/routers/homeRoute.dart';
 import 'package:flutter/material.dart';
 
 class BottomRouter extends StatefulWidget {
-  BottomRouter({Key? key}) : super(key: key);
+  BottomRouter({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<BottomRouter> createState() => _BottomRouterState();
@@ -15,13 +18,13 @@ class _BottomRouterState extends State<BottomRouter> {
   getWidgets(int index) {
     switch (index) {
       case 0:
-        return HomeRoute(selectedIndex: 0);
+        return const HomeRoute();
       case 1:
         return Container(color: Colors.red);
       case 2:
         return Container(color: Colors.green);
       case 3:
-        return Container(color: Colors.amber);
+        return ProfileWidget(profileModel: profileController.profile!);
     }
   }
 
@@ -52,22 +55,22 @@ class _BottomRouterState extends State<BottomRouter> {
                   // backgroundColor: Colors.red,
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.home),
-                  label: 'Home',
+                  icon: Icon(Icons.money_sharp),
+                  label: 'AIDS 7 Grants',
                   tooltip: 'Home',
 
                   // backgroundColor: Colors.red,
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.home),
-                  label: 'Home',
+                  icon: Icon(Icons.feedback),
+                  label: 'Feedback',
                   tooltip: 'Home',
 
                   // backgroundColor: Colors.red,
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.home),
-                  label: 'Home',
+                  icon: Icon(Icons.person),
+                  label: 'Profile',
                   tooltip: 'Home',
 
                   // backgroundColor: Colors.red,
@@ -77,6 +80,7 @@ class _BottomRouterState extends State<BottomRouter> {
               backgroundColor: Colors.white,
               onTap: (int index) {
                 setState(() {
+                  pageController.pageNumber = 0;
                   _selectedIndex = index;
                 });
               },

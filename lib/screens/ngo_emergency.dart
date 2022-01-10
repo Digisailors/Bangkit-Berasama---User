@@ -1,7 +1,10 @@
+import 'package:bangkit/models/ngo.dart';
+
+import 'package:bangkit/services/firebase.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'floodreleif.dart';
+import 'repo_list.dart';
 
 class NGOLandingPage extends StatefulWidget {
   NGOLandingPage({Key? key}) : super(key: key);
@@ -13,9 +16,12 @@ class NGOLandingPage extends StatefulWidget {
 class _NGOLandingPageState extends State<NGOLandingPage> {
   int _selectedIndex = 0;
   List<Widget> _widgetOptions = <Widget>[
-    FloodRelief(),
-    Container(color: Colors.green),
-    Container(color: Colors.grey),
+    NgoList(
+      query: ngos,
+    ),
+    NgoList(
+      query: Ngo.list(postCode: "", type: Type.floodReleif),
+    ),
   ];
   @override
   Widget build(BuildContext context) {

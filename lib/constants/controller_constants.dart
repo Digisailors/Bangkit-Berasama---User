@@ -1,6 +1,9 @@
 import 'package:bangkit/controllers/auth_controller.dart';
+import 'package:bangkit/controllers/page_controller.dart';
 
 AuthController authController = AuthController.instance;
+IndexController pageController = IndexController.instance;
+ProfileController profileController = ProfileController.instance;
 
 enum AuthProvider { phoneNUmber, email }
 
@@ -199,7 +202,11 @@ const postalCodes = {
     {"postCode": "34300", "city": "Bagan Serai", "region": "Perak"},
     {"postCode": "34310", "city": "Bagan Serai", "region": "Perak"},
     {"postCode": "34350", "city": "—", "region": "Perak"},
-    {"postCode": "34400", "city": "Simpang Empat (Semanggol), Perak", "region": "Perak"},
+    {
+      "postCode": "34400",
+      "city": "Simpang Empat (Semanggol), Perak",
+      "region": "Perak"
+    },
     {"postCode": "34500", "city": "—", "region": "Perak"},
     {"postCode": "34510", "city": "—", "region": "Perak"},
     {"postCode": "34520", "city": "—", "region": "Perak"},
@@ -456,7 +463,11 @@ const postalCodes = {
     {"postCode": "45609", "city": "Bestari Jaya", "region": "Selangor"},
     {"postCode": "45607", "city": "Bestari Jaya", "region": "Selangor"},
     {"postCode": "45600", "city": "Bestari Jaya", "region": "Selangor"},
-    {"postCode": "45500", "city": "Kampung Tanjung Karang", "region": "Selangor"},
+    {
+      "postCode": "45500",
+      "city": "Kampung Tanjung Karang",
+      "region": "Selangor"
+    },
     {"postCode": "45400", "city": "Sekinchan", "region": "Selangor"},
     {"postCode": "45300", "city": "Sungai Besar", "region": "Selangor"},
     {"postCode": "45209", "city": "Sabak Bernam", "region": "Selangor"},
@@ -883,18 +894,54 @@ const postalCodes = {
     {"postCode": "72000", "city": "Kuala Pilah", "region": "Negeri Sembilan"},
     {"postCode": "71960", "city": "Port Dickson", "region": "Negeri Sembilan"},
     {"postCode": "71950", "city": "Seremban", "region": "Negeri Sembilan"},
-    {"postCode": "71909", "city": "Labu, Negeri Sembilan", "region": "Negeri Sembilan"},
-    {"postCode": "71907", "city": "Labu, Negeri Sembilan", "region": "Negeri Sembilan"},
-    {"postCode": "71900", "city": "Labu, Negeri Sembilan", "region": "Negeri Sembilan"},
-    {"postCode": "71809", "city": "Kampung Baharu Nilai", "region": "Negeri Sembilan"},
-    {"postCode": "71807", "city": "Kampung Baharu Nilai", "region": "Negeri Sembilan"},
-    {"postCode": "71800", "city": "Kampung Baharu Nilai", "region": "Negeri Sembilan"},
+    {
+      "postCode": "71909",
+      "city": "Labu, Negeri Sembilan",
+      "region": "Negeri Sembilan"
+    },
+    {
+      "postCode": "71907",
+      "city": "Labu, Negeri Sembilan",
+      "region": "Negeri Sembilan"
+    },
+    {
+      "postCode": "71900",
+      "city": "Labu, Negeri Sembilan",
+      "region": "Negeri Sembilan"
+    },
+    {
+      "postCode": "71809",
+      "city": "Kampung Baharu Nilai",
+      "region": "Negeri Sembilan"
+    },
+    {
+      "postCode": "71807",
+      "city": "Kampung Baharu Nilai",
+      "region": "Negeri Sembilan"
+    },
+    {
+      "postCode": "71800",
+      "city": "Kampung Baharu Nilai",
+      "region": "Negeri Sembilan"
+    },
     {"postCode": "71770", "city": "Seremban", "region": "Negeri Sembilan"},
     {"postCode": "71760", "city": "Putrajaya", "region": "Putrajaya"},
-    {"postCode": "71759", "city": "Kampong Lenggeng", "region": "Negeri Sembilan"},
+    {
+      "postCode": "71759",
+      "city": "Kampong Lenggeng",
+      "region": "Negeri Sembilan"
+    },
     {"postCode": "71750", "city": "—", "region": "Negeri Sembilan"},
-    {"postCode": "71709", "city": "Kampong Lenggeng", "region": "Negeri Sembilan"},
-    {"postCode": "71707", "city": "Kampong Lenggeng", "region": "Negeri Sembilan"},
+    {
+      "postCode": "71709",
+      "city": "Kampong Lenggeng",
+      "region": "Negeri Sembilan"
+    },
+    {
+      "postCode": "71707",
+      "city": "Kampong Lenggeng",
+      "region": "Negeri Sembilan"
+    },
     {"postCode": "71700", "city": "—", "region": "Negeri Sembilan"},
     {"postCode": "71659", "city": "Kuala Klawang", "region": "Negeri Sembilan"},
     {"postCode": "71650", "city": "Kuala Klawang", "region": "Negeri Sembilan"},
@@ -908,8 +955,16 @@ const postalCodes = {
     {"postCode": "71450", "city": "Seremban", "region": "Negeri Sembilan"},
     {"postCode": "71409", "city": "Rembau", "region": "Negeri Sembilan"},
     {"postCode": "71400", "city": "Rembau", "region": "Negeri Sembilan"},
-    {"postCode": "71359", "city": "Kota, Negeri Sembilan", "region": "Negeri Sembilan"},
-    {"postCode": "71350", "city": "Kota, Negeri Sembilan", "region": "Negeri Sembilan"},
+    {
+      "postCode": "71359",
+      "city": "Kota, Negeri Sembilan",
+      "region": "Negeri Sembilan"
+    },
+    {
+      "postCode": "71350",
+      "city": "Kota, Negeri Sembilan",
+      "region": "Negeri Sembilan"
+    },
     {"postCode": "71309", "city": "Rembau", "region": "Negeri Sembilan"},
     {"postCode": "71300", "city": "Rembau", "region": "Negeri Sembilan"},
     {"postCode": "71259", "city": "Tanjung Tuan", "region": "—"},

@@ -1,3 +1,4 @@
+import 'package:bangkit/constants/themeconstants.dart';
 import 'package:bangkit/weather/warning.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -10,18 +11,19 @@ class WeatherBoard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Padding(
-          padding: EdgeInsetsDirectional.fromSTEB(30, 0, 0, 10),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            children: const [
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 30, 0, 0),
-                child: Text(
+    return SizedBox(
+      width: getWidth(context) * 0.75,
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Flexible(
+            flex: 3,
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Text(
                   '01:23',
                   style: TextStyle(
                     fontFamily: 'Poppins',
@@ -29,60 +31,51 @@ class WeatherBoard extends StatelessWidget {
                     fontWeight: FontWeight.w900,
                   ),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 3, 0, 0),
-                child: Text(
-                  'Thunderstorm',
+                Text(
+                  'Sunny',
                   style: TextStyle(fontSize: 20, color: Colors.blue),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 30, 0, 0),
-                child: Text(
+                SizedBox(height: 20),
+                Text(
                   'Thursday',
                   style: TextStyle(fontSize: 20),
                 ),
-              ),
-              Text(
-                'January 1',
-                style: TextStyle(
-                  fontFamily: 'Poppins',
-                  color: Color(0xFFFF0808),
-                ),
-              ),
-            ],
-          ),
-        ),
-        Padding(
-          padding: EdgeInsetsDirectional.fromSTEB(30, 0, 0, 0),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(10, 20, 10, 0),
-                child: Image.network(
-                  assetlocation,
-                  width: 100,
-                  height: 100,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
-                child: Text(
-                  'Kuala Lumpur',
+                Text(
+                  'January 1',
                   style: TextStyle(
                     fontFamily: 'Poppins',
-                    color: Colors.red,
-                    fontWeight: FontWeight.w800,
+                    color: Color(0xFFFF0808),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ],
+          Flexible(
+            flex: 1,
+            child: Column(
+              // mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.network(
+                  assetlocation,
+                  fit: BoxFit.contain,
+                ),
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                    'Kuala Lumpur',
+                    style: TextStyle(
+                      fontFamily: 'Poppins',
+                      color: Colors.red,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -232,14 +225,16 @@ class _WeatherListState extends State<WeatherList> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(8, 8, 0, 0),
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(8, 8, 0, 0),
                               child: Text(
                                 'Sunday',
                                 style: TextStyle(fontSize: 20),
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(8, 20, 0, 8),
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(8, 20, 0, 8),
                               child: Row(
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -250,7 +245,8 @@ class _WeatherListState extends State<WeatherList> {
                                     style: TextStyle(),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        5, 0, 0, 0),
                                     child: Text(
                                       '22kmph',
                                       style: TextStyle(
@@ -261,7 +257,8 @@ class _WeatherListState extends State<WeatherList> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        10, 0, 0, 0),
                                     child: Text(
                                       'visibility',
                                       style: TextStyle(
@@ -271,7 +268,8 @@ class _WeatherListState extends State<WeatherList> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        5, 0, 0, 0),
                                     child: Text(
                                       '5kms',
                                       style: TextStyle(
@@ -329,14 +327,16 @@ class _WeatherListState extends State<WeatherList> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(8, 8, 0, 0),
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(8, 8, 0, 0),
                               child: Text(
                                 'Monday',
                                 style: TextStyle(fontSize: 20),
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(8, 20, 0, 8),
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(8, 20, 0, 8),
                               child: Row(
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -347,7 +347,8 @@ class _WeatherListState extends State<WeatherList> {
                                     style: TextStyle(),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        5, 0, 0, 0),
                                     child: Text(
                                       '22kmph',
                                       style: TextStyle(
@@ -358,7 +359,8 @@ class _WeatherListState extends State<WeatherList> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        10, 0, 0, 0),
                                     child: Text(
                                       'visibility',
                                       style: TextStyle(
@@ -368,7 +370,8 @@ class _WeatherListState extends State<WeatherList> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        5, 0, 0, 0),
                                     child: Text(
                                       '5kms',
                                       style: TextStyle(
@@ -426,14 +429,16 @@ class _WeatherListState extends State<WeatherList> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(8, 8, 0, 0),
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(8, 8, 0, 0),
                               child: Text(
                                 'Tuesday',
                                 style: TextStyle(fontSize: 20),
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(8, 20, 0, 8),
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(8, 20, 0, 8),
                               child: Row(
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -444,7 +449,8 @@ class _WeatherListState extends State<WeatherList> {
                                     style: TextStyle(),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        5, 0, 0, 0),
                                     child: Text(
                                       '22kmph',
                                       style: TextStyle(
@@ -455,7 +461,8 @@ class _WeatherListState extends State<WeatherList> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        10, 0, 0, 0),
                                     child: Text(
                                       'visibility',
                                       style: TextStyle(
@@ -465,7 +472,8 @@ class _WeatherListState extends State<WeatherList> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        5, 0, 0, 0),
                                     child: Text(
                                       '5kms',
                                       style: TextStyle(
@@ -523,14 +531,16 @@ class _WeatherListState extends State<WeatherList> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(8, 8, 0, 0),
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(8, 8, 0, 0),
                               child: Text(
                                 'Wednesday',
                                 style: TextStyle(fontSize: 20),
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(8, 20, 0, 8),
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(8, 20, 0, 8),
                               child: Row(
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -541,7 +551,8 @@ class _WeatherListState extends State<WeatherList> {
                                     style: TextStyle(),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        5, 0, 0, 0),
                                     child: Text(
                                       '22kmph',
                                       style: TextStyle(
@@ -552,7 +563,8 @@ class _WeatherListState extends State<WeatherList> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        10, 0, 0, 0),
                                     child: Text(
                                       'visibility',
                                       style: TextStyle(
@@ -562,7 +574,8 @@ class _WeatherListState extends State<WeatherList> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        5, 0, 0, 0),
                                     child: Text(
                                       '5kms',
                                       style: TextStyle(
@@ -620,14 +633,16 @@ class _WeatherListState extends State<WeatherList> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(8, 8, 0, 0),
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(8, 8, 0, 0),
                               child: Text(
                                 'Thursday',
                                 style: TextStyle(fontSize: 20),
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(8, 20, 0, 8),
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(8, 20, 0, 8),
                               child: Row(
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -638,7 +653,8 @@ class _WeatherListState extends State<WeatherList> {
                                     style: TextStyle(),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        5, 0, 0, 0),
                                     child: Text(
                                       '22kmph',
                                       style: TextStyle(
@@ -649,7 +665,8 @@ class _WeatherListState extends State<WeatherList> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        10, 0, 0, 0),
                                     child: Text(
                                       'visibility',
                                       style: TextStyle(
@@ -659,7 +676,8 @@ class _WeatherListState extends State<WeatherList> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        5, 0, 0, 0),
                                     child: Text(
                                       '5kms',
                                       style: TextStyle(
@@ -717,14 +735,16 @@ class _WeatherListState extends State<WeatherList> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(8, 8, 0, 0),
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(8, 8, 0, 0),
                               child: Text(
                                 'Friday',
                                 style: TextStyle(fontSize: 20),
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(8, 20, 0, 8),
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(8, 20, 0, 8),
                               child: Row(
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -735,7 +755,8 @@ class _WeatherListState extends State<WeatherList> {
                                     style: TextStyle(),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        5, 0, 0, 0),
                                     child: Text(
                                       '22kmph',
                                       style: TextStyle(
@@ -746,7 +767,8 @@ class _WeatherListState extends State<WeatherList> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        10, 0, 0, 0),
                                     child: Text(
                                       'visibility',
                                       style: TextStyle(
@@ -756,7 +778,8 @@ class _WeatherListState extends State<WeatherList> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        5, 0, 0, 0),
                                     child: Text(
                                       '5kms',
                                       style: TextStyle(
@@ -814,14 +837,16 @@ class _WeatherListState extends State<WeatherList> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(8, 8, 0, 0),
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(8, 8, 0, 0),
                               child: Text(
                                 'Saturday',
                                 style: TextStyle(fontSize: 20),
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(8, 20, 0, 8),
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(8, 20, 0, 8),
                               child: Row(
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -832,7 +857,8 @@ class _WeatherListState extends State<WeatherList> {
                                     style: TextStyle(),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        5, 0, 0, 0),
                                     child: Text(
                                       '22kmph',
                                       style: TextStyle(
@@ -843,7 +869,8 @@ class _WeatherListState extends State<WeatherList> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        10, 0, 0, 0),
                                     child: Text(
                                       'visibility',
                                       style: TextStyle(
@@ -853,7 +880,8 @@ class _WeatherListState extends State<WeatherList> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        5, 0, 0, 0),
                                     child: Text(
                                       '5kms',
                                       style: TextStyle(
@@ -911,14 +939,16 @@ class _WeatherListState extends State<WeatherList> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(8, 8, 0, 0),
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(8, 8, 0, 0),
                               child: Text(
                                 'Sunday',
                                 style: TextStyle(fontSize: 20),
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(8, 20, 0, 8),
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(8, 20, 0, 8),
                               child: Row(
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -929,7 +959,8 @@ class _WeatherListState extends State<WeatherList> {
                                     style: TextStyle(),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        5, 0, 0, 0),
                                     child: Text(
                                       '22kmph',
                                       style: TextStyle(
@@ -940,7 +971,8 @@ class _WeatherListState extends State<WeatherList> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        10, 0, 0, 0),
                                     child: Text(
                                       'visibility',
                                       style: TextStyle(
@@ -950,7 +982,8 @@ class _WeatherListState extends State<WeatherList> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        5, 0, 0, 0),
                                     child: Text(
                                       '5kms',
                                       style: TextStyle(
@@ -1049,14 +1082,16 @@ class _Weatherlist2State extends State<Weatherlist2> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(8, 8, 0, 0),
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(8, 8, 0, 0),
                               child: Text(
                                 'Sunday',
                                 style: TextStyle(fontSize: 20),
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(8, 20, 0, 8),
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(8, 20, 0, 8),
                               child: Row(
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -1067,7 +1102,8 @@ class _Weatherlist2State extends State<Weatherlist2> {
                                     style: TextStyle(),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        5, 0, 0, 0),
                                     child: Text(
                                       '22kmph',
                                       style: TextStyle(
@@ -1078,7 +1114,8 @@ class _Weatherlist2State extends State<Weatherlist2> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        10, 0, 0, 0),
                                     child: Text(
                                       'visibility',
                                       style: TextStyle(
@@ -1088,7 +1125,8 @@ class _Weatherlist2State extends State<Weatherlist2> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        5, 0, 0, 0),
                                     child: Text(
                                       '5kms',
                                       style: TextStyle(
@@ -1146,14 +1184,16 @@ class _Weatherlist2State extends State<Weatherlist2> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(8, 8, 0, 0),
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(8, 8, 0, 0),
                               child: Text(
                                 'Monday',
                                 style: TextStyle(fontSize: 20),
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(8, 20, 0, 8),
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(8, 20, 0, 8),
                               child: Row(
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -1164,7 +1204,8 @@ class _Weatherlist2State extends State<Weatherlist2> {
                                     style: TextStyle(),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        5, 0, 0, 0),
                                     child: Text(
                                       '22kmph',
                                       style: TextStyle(
@@ -1175,7 +1216,8 @@ class _Weatherlist2State extends State<Weatherlist2> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        10, 0, 0, 0),
                                     child: Text(
                                       'visibility',
                                       style: TextStyle(
@@ -1185,7 +1227,8 @@ class _Weatherlist2State extends State<Weatherlist2> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        5, 0, 0, 0),
                                     child: Text(
                                       '5kms',
                                       style: TextStyle(
@@ -1243,14 +1286,16 @@ class _Weatherlist2State extends State<Weatherlist2> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(8, 8, 0, 0),
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(8, 8, 0, 0),
                               child: Text(
                                 'Tuesday',
                                 style: TextStyle(fontSize: 20),
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(8, 20, 0, 8),
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(8, 20, 0, 8),
                               child: Row(
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -1261,7 +1306,8 @@ class _Weatherlist2State extends State<Weatherlist2> {
                                     style: TextStyle(),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        5, 0, 0, 0),
                                     child: Text(
                                       '22kmph',
                                       style: TextStyle(
@@ -1272,7 +1318,8 @@ class _Weatherlist2State extends State<Weatherlist2> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        10, 0, 0, 0),
                                     child: Text(
                                       'visibility',
                                       style: TextStyle(
@@ -1282,7 +1329,8 @@ class _Weatherlist2State extends State<Weatherlist2> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        5, 0, 0, 0),
                                     child: Text(
                                       '5kms',
                                       style: TextStyle(
@@ -1340,14 +1388,16 @@ class _Weatherlist2State extends State<Weatherlist2> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(8, 8, 0, 0),
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(8, 8, 0, 0),
                               child: Text(
                                 'Wednesday',
                                 style: TextStyle(fontSize: 20),
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(8, 20, 0, 8),
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(8, 20, 0, 8),
                               child: Row(
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -1358,7 +1408,8 @@ class _Weatherlist2State extends State<Weatherlist2> {
                                     style: TextStyle(),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        5, 0, 0, 0),
                                     child: Text(
                                       '22kmph',
                                       style: TextStyle(
@@ -1369,7 +1420,8 @@ class _Weatherlist2State extends State<Weatherlist2> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        10, 0, 0, 0),
                                     child: Text(
                                       'visibility',
                                       style: TextStyle(
@@ -1379,7 +1431,8 @@ class _Weatherlist2State extends State<Weatherlist2> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        5, 0, 0, 0),
                                     child: Text(
                                       '5kms',
                                       style: TextStyle(
@@ -1437,14 +1490,16 @@ class _Weatherlist2State extends State<Weatherlist2> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(8, 8, 0, 0),
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(8, 8, 0, 0),
                               child: Text(
                                 'Thursday',
                                 style: TextStyle(fontSize: 20),
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(8, 20, 0, 8),
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(8, 20, 0, 8),
                               child: Row(
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -1455,7 +1510,8 @@ class _Weatherlist2State extends State<Weatherlist2> {
                                     style: TextStyle(),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        5, 0, 0, 0),
                                     child: Text(
                                       '22kmph',
                                       style: TextStyle(
@@ -1466,7 +1522,8 @@ class _Weatherlist2State extends State<Weatherlist2> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        10, 0, 0, 0),
                                     child: Text(
                                       'visibility',
                                       style: TextStyle(
@@ -1476,7 +1533,8 @@ class _Weatherlist2State extends State<Weatherlist2> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        5, 0, 0, 0),
                                     child: Text(
                                       '5kms',
                                       style: TextStyle(
@@ -1534,14 +1592,16 @@ class _Weatherlist2State extends State<Weatherlist2> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(8, 8, 0, 0),
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(8, 8, 0, 0),
                               child: Text(
                                 'Friday',
                                 style: TextStyle(fontSize: 20),
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(8, 20, 0, 8),
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(8, 20, 0, 8),
                               child: Row(
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -1552,7 +1612,8 @@ class _Weatherlist2State extends State<Weatherlist2> {
                                     style: TextStyle(),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        5, 0, 0, 0),
                                     child: Text(
                                       '22kmph',
                                       style: TextStyle(
@@ -1563,7 +1624,8 @@ class _Weatherlist2State extends State<Weatherlist2> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        10, 0, 0, 0),
                                     child: Text(
                                       'visibility',
                                       style: TextStyle(
@@ -1573,7 +1635,8 @@ class _Weatherlist2State extends State<Weatherlist2> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        5, 0, 0, 0),
                                     child: Text(
                                       '5kms',
                                       style: TextStyle(
@@ -1631,14 +1694,16 @@ class _Weatherlist2State extends State<Weatherlist2> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(8, 8, 0, 0),
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(8, 8, 0, 0),
                               child: Text(
                                 'Saturday',
                                 style: TextStyle(fontSize: 20),
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(8, 20, 0, 8),
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(8, 20, 0, 8),
                               child: Row(
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -1649,7 +1714,8 @@ class _Weatherlist2State extends State<Weatherlist2> {
                                     style: TextStyle(),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        5, 0, 0, 0),
                                     child: Text(
                                       '22kmph',
                                       style: TextStyle(
@@ -1660,7 +1726,8 @@ class _Weatherlist2State extends State<Weatherlist2> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        10, 0, 0, 0),
                                     child: Text(
                                       'visibility',
                                       style: TextStyle(
@@ -1670,7 +1737,8 @@ class _Weatherlist2State extends State<Weatherlist2> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        5, 0, 0, 0),
                                     child: Text(
                                       '5kms',
                                       style: TextStyle(
@@ -1728,14 +1796,16 @@ class _Weatherlist2State extends State<Weatherlist2> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(8, 8, 0, 0),
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(8, 8, 0, 0),
                               child: Text(
                                 'Sunday',
                                 style: TextStyle(fontSize: 20),
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(8, 20, 0, 8),
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(8, 20, 0, 8),
                               child: Row(
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -1746,7 +1816,8 @@ class _Weatherlist2State extends State<Weatherlist2> {
                                     style: TextStyle(),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        5, 0, 0, 0),
                                     child: Text(
                                       '22kmph',
                                       style: TextStyle(
@@ -1757,7 +1828,8 @@ class _Weatherlist2State extends State<Weatherlist2> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        10, 0, 0, 0),
                                     child: Text(
                                       'visibility',
                                       style: TextStyle(
@@ -1767,7 +1839,8 @@ class _Weatherlist2State extends State<Weatherlist2> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        5, 0, 0, 0),
                                     child: Text(
                                       '5kms',
                                       style: TextStyle(
@@ -1841,7 +1914,9 @@ class _Weatherlist3State extends State<Weatherlist3> {
                     title: const Text('Earth Quake'),
                     subtitle: const Text('Current Update'),
                     trailing: Icon(
-                      _customTileExpanded ? Icons.arrow_drop_down_circle : Icons.arrow_drop_down,
+                      _customTileExpanded
+                          ? Icons.arrow_drop_down_circle
+                          : Icons.arrow_drop_down,
                     ),
                     children: <Widget>[
                       ListTile(
@@ -1901,7 +1976,9 @@ class _Weatherlist3State extends State<Weatherlist3> {
                     title: const Text('Earth Quake'),
                     subtitle: const Text('Current Update'),
                     trailing: Icon(
-                      _customTileExpanded ? Icons.arrow_drop_down_circle : Icons.arrow_drop_down,
+                      _customTileExpanded
+                          ? Icons.arrow_drop_down_circle
+                          : Icons.arrow_drop_down,
                     ),
                     children: <Widget>[
                       ListTile(
@@ -1961,7 +2038,9 @@ class _Weatherlist3State extends State<Weatherlist3> {
                     title: const Text('Earth Quake'),
                     subtitle: const Text('Current Update'),
                     trailing: Icon(
-                      _customTileExpanded ? Icons.arrow_drop_down_circle : Icons.arrow_drop_down,
+                      _customTileExpanded
+                          ? Icons.arrow_drop_down_circle
+                          : Icons.arrow_drop_down,
                     ),
                     children: <Widget>[
                       ListTile(
@@ -2021,7 +2100,9 @@ class _Weatherlist3State extends State<Weatherlist3> {
                     title: const Text('Earth Quake'),
                     subtitle: const Text('Current Update'),
                     trailing: Icon(
-                      _customTileExpanded ? Icons.arrow_drop_down_circle : Icons.arrow_drop_down,
+                      _customTileExpanded
+                          ? Icons.arrow_drop_down_circle
+                          : Icons.arrow_drop_down,
                     ),
                     children: <Widget>[
                       ListTile(
@@ -2081,7 +2162,9 @@ class _Weatherlist3State extends State<Weatherlist3> {
                     title: const Text('Earth Quake'),
                     subtitle: const Text('Current Update'),
                     trailing: Icon(
-                      _customTileExpanded ? Icons.arrow_drop_down_circle : Icons.arrow_drop_down,
+                      _customTileExpanded
+                          ? Icons.arrow_drop_down_circle
+                          : Icons.arrow_drop_down,
                     ),
                     children: <Widget>[
                       ListTile(
@@ -2141,7 +2224,9 @@ class _Weatherlist3State extends State<Weatherlist3> {
                     title: const Text('Earth Quake'),
                     subtitle: const Text('Current Update'),
                     trailing: Icon(
-                      _customTileExpanded ? Icons.arrow_drop_down_circle : Icons.arrow_drop_down,
+                      _customTileExpanded
+                          ? Icons.arrow_drop_down_circle
+                          : Icons.arrow_drop_down,
                     ),
                     children: <Widget>[
                       ListTile(
@@ -2201,7 +2286,9 @@ class _Weatherlist3State extends State<Weatherlist3> {
                     title: const Text('Earth Quake'),
                     subtitle: const Text('Current Update'),
                     trailing: Icon(
-                      _customTileExpanded ? Icons.arrow_drop_down_circle : Icons.arrow_drop_down,
+                      _customTileExpanded
+                          ? Icons.arrow_drop_down_circle
+                          : Icons.arrow_drop_down,
                     ),
                     children: <Widget>[
                       ListTile(
@@ -2261,7 +2348,9 @@ class _Weatherlist3State extends State<Weatherlist3> {
                     title: const Text('Earth Quake'),
                     subtitle: const Text('Current Update'),
                     trailing: Icon(
-                      _customTileExpanded ? Icons.arrow_drop_down_circle : Icons.arrow_drop_down,
+                      _customTileExpanded
+                          ? Icons.arrow_drop_down_circle
+                          : Icons.arrow_drop_down,
                     ),
                     children: <Widget>[
                       ListTile(

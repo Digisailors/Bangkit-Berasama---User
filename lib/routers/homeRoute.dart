@@ -1,21 +1,26 @@
-import 'package:bangkit/ngo/floodreleif.dart';
-import 'package:bangkit/ngo/home.dart';
+import 'package:bangkit/constants/controller_constants.dart';
+import 'package:bangkit/models/ngo.dart';
+import 'package:bangkit/screens/adunList.dart';
+import 'package:bangkit/screens/home.dart';
+import 'package:bangkit/screens/repo_list.dart';
+import 'package:bangkit/services/firebase.dart';
 import 'package:flutter/material.dart';
 
 class HomeRoute extends StatelessWidget {
-  const HomeRoute({Key? key, required this.selectedIndex}) : super(key: key);
-  final int selectedIndex;
+  const HomeRoute({
+    Key? key,
+  }) : super(key: key);
 
-  Widget getWidgets(selectedIndex) {
-    switch (selectedIndex) {
+  Widget getWidgets() {
+    switch (pageController.pageNumber) {
       case 0:
         return HomePage();
       case 1:
-        return FloodRelief();
+        return NgoList(query: ngos);
       case 2:
-        return Container(color: Colors.grey);
+        return NgoList(query: Ngo.list(type: Type.floodReleif));
       case 3:
-        return Container(color: Colors.white);
+        return AdunList(query: aduns);
       default:
         return Container(color: Colors.white);
     }
@@ -23,8 +28,19 @@ class HomeRoute extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: getWidgets(selectedIndex),
+    return WillPopScope(
+      onWillPop: () async {
+        if (pageController.pageNumber == 0) {
+          return true;
+        } else {
+          pageController.pageNumber = 0;
+          Navigator.of(context).popAndPushNamed('/bottomRoute');
+          return false;
+        }
+      },
+      child: Scaffold(
+        body: getWidgets(),
+      ),
     );
   }
 }

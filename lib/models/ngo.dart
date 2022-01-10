@@ -43,7 +43,8 @@ class Ngo {
         props: json["props"],
         type: Type.values.elementAt(json["type"] ?? 0),
         entityType: EntityType.values.elementAt(json["entityType"] ?? 0),
-        serviceTypes: List<ServiceType>.from(json["serviceTypes"].map((x) => ServiceType.values.elementAt(x))),
+        serviceTypes: List<ServiceType>.from(
+            json["serviceTypes"].map((x) => ServiceType.values.elementAt(x))),
         postCode: json["postCode"] ?? '',
       );
 
@@ -57,7 +58,9 @@ class Ngo {
         "props": props,
         "type": type.index,
         "entityType": entityType != null ? entityType!.index : null,
-        "serviceTypes": serviceTypes != null ? List<dynamic>.from(serviceTypes!.map((x) => x.index)) : null,
+        "serviceTypes": serviceTypes != null
+            ? List<dynamic>.from(serviceTypes!.map((x) => x.index))
+            : null,
         "modifiedDate": DateTime.now(),
         "postCode": postCode,
         "searchText": searchString,
@@ -69,34 +72,54 @@ class Ngo {
       if (snapshot.exists) {
         var data = snapshot.data() as Map<String, dynamic>;
         ngo.id = data['ngos'] + 1;
-        return transaction.update(counters, {"ngos": ngo.id}).set(ngos.doc(ngo.id.toString()), ngo.toJson());
+        return transaction.update(counters, {"ngos": ngo.id}).set(
+            ngos.doc(ngo.id.toString()), ngo.toJson());
       }
     }).then((value) {
       return {"code": "Success", "message": "Added"};
     }).catchError((error) {
+      print(error);
       return {"code": "Failed", "message": error.toString()};
     });
   }
 
   delete() {
-    ngos.doc(id.toString()).delete().then((value) => {"code": "success", "message": "NGO has been deleted"}).catchError((error) {
+    ngos
+        .doc(id.toString())
+        .delete()
+        .then((value) => {"code": "success", "message": "NGO has been deleted"})
+        .catchError((error) {
       return {"code": "Failed", "message": error.toString()};
     });
   }
 
-  static list({required Type type, required String postCode, EntityType? entityType, List<ServiceType>? serviceTypes, String? searchText}) {
+  static list(
+      {Type? type,
+      String? postCode,
+      EntityType? entityType,
+      List<ServiceType>? serviceTypes,
+      String? searchText}) {
     Query query = ngos;
+    if (postCode != null) {
+      query = query.where("postCode", isEqualTo: postCode);
+    }
+    if (type != null) {
+      query = query.where("type", isEqualTo: type.index);
+    }
     if (entityType != null) {
       query = query.where("entityType", isEqualTo: entityType.index);
     }
     if (serviceTypes != null) {
-      query = query.where("serviceTypes", arrayContainsAny: serviceTypes.map((e) => e.index).toList());
+      query = query.where("serviceTypes",
+          arrayContainsAny: serviceTypes.map((e) => e.index).toList());
     }
     if (serviceTypes != null) {
-      query = query.where("serviceTypes", arrayContainsAny: serviceTypes.map((e) => e.index).toList());
+      query = query.where("serviceTypes",
+          arrayContainsAny: serviceTypes.map((e) => e.index).toList());
     }
     if (serviceTypes != null) {
-      query = query.where("serviceTypes", arrayContainsAny: serviceTypes.map((e) => e.index).toList());
+      query = query.where("serviceTypes",
+          arrayContainsAny: serviceTypes.map((e) => e.index).toList());
     }
     return query;
   }

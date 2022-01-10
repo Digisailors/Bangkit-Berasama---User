@@ -13,7 +13,8 @@ class Registration extends StatefulWidget {
 class _RegistrationState extends State<Registration> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
-  final TextEditingController secondaryphoneController = TextEditingController();
+  final TextEditingController secondaryphoneController =
+      TextEditingController();
   final TextEditingController icnumberController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController primaryAdresssLine1 = TextEditingController();
@@ -25,8 +26,10 @@ class _RegistrationState extends State<Registration> {
   final TextEditingController roofcolorController = TextEditingController();
   final TextEditingController doorcolorController = TextEditingController();
   final TextEditingController landmarkController = TextEditingController();
-  final TextEditingController primaryaddrsseController = TextEditingController();
-  final TextEditingController secondaryaddressController = TextEditingController();
+  final TextEditingController primaryaddrsseController =
+      TextEditingController();
+  final TextEditingController secondaryaddressController =
+      TextEditingController();
   final TextEditingController roofcolor2Controller = TextEditingController();
   final TextEditingController doorcolor2Controller = TextEditingController();
   final TextEditingController landmark2Controller = TextEditingController();
@@ -67,20 +70,28 @@ class _RegistrationState extends State<Registration> {
     roofColorSecondary = colors.first;
     emailController.text = authController.auth.currentUser!.email ?? '';
 
-    primaryCodeList = postalCodes[primaryState]!.map((e) => e["postCode"].toString()).toList();
-    secondaryCodeList = postalCodes[secondaryState]!.map((e) => e["postCode"].toString()).toList();
+    primaryCodeList = postalCodes[primaryState]!
+        .map((e) => e["postCode"].toString())
+        .toList();
+    secondaryCodeList = postalCodes[secondaryState]!
+        .map((e) => e["postCode"].toString())
+        .toList();
     primaryPostCode = primaryCodeList.first;
     secondaryPostCode = secondaryCodeList.first;
     print("$primaryPostCode, $secondaryPostCode");
   }
 
   setPrimaryPostalCodes() {
-    primaryCodeList = postalCodes[primaryState]!.map((e) => e["postCode"].toString()).toList();
+    primaryCodeList = postalCodes[primaryState]!
+        .map((e) => e["postCode"].toString())
+        .toList();
     primaryPostCode = primaryCodeList.first;
   }
 
   setSecondaryPostalCodes() {
-    secondaryCodeList = postalCodes[secondaryState]!.map((e) => e["postCode"].toString()).toList();
+    secondaryCodeList = postalCodes[secondaryState]!
+        .map((e) => e["postCode"].toString())
+        .toList();
     secondaryPostCode = secondaryCodeList.first;
   }
 
@@ -131,7 +142,9 @@ class _RegistrationState extends State<Registration> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(child: const Icon(Icons.logout), onPressed: authController.auth.signOut),
+      floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.logout),
+          onPressed: authController.auth.signOut),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         leading: IconButton(
@@ -177,7 +190,8 @@ class _RegistrationState extends State<Registration> {
                 keyboardType: TextInputType.phone,
                 validator: (value) {
                   value = value ?? '';
-                  var s = value.isEmpty ? "Phone Number is required field" : null;
+                  var s =
+                      value.isEmpty ? "Phone Number is required field" : null;
                   return s;
                 },
               ),
@@ -189,7 +203,8 @@ class _RegistrationState extends State<Registration> {
                 keyboardType: TextInputType.phone,
                 validator: (value) {
                   value = value ?? '';
-                  var s = value.isEmpty ? "Phone Number is required field" : null;
+                  var s =
+                      value.isEmpty ? "Phone Number is required field" : null;
                   return s;
                 },
               ),
@@ -221,7 +236,9 @@ class _RegistrationState extends State<Registration> {
                 leading: const Icon(Icons.home),
                 title: const Text('House address'),
                 trailing: Icon(
-                  _customTileExpanded ? Icons.arrow_drop_down_circle : Icons.arrow_drop_down,
+                  _customTileExpanded
+                      ? Icons.arrow_drop_down_circle
+                      : Icons.arrow_drop_down,
                 ),
                 children: <Widget>[
                   const Divider(),
@@ -240,7 +257,8 @@ class _RegistrationState extends State<Registration> {
                     keyboardType: TextInputType.emailAddress,
                     validator: (value) {
                       value = value ?? '';
-                      var s = value.isEmpty ? "ICNumber is required field" : null;
+                      var s =
+                          value.isEmpty ? "ICNumber is required field" : null;
                       return s;
                     },
                   ),
@@ -262,7 +280,8 @@ class _RegistrationState extends State<Registration> {
                           setPrimaryPostalCodes();
                         });
                       },
-                      item: states.map<DropdownMenuItem<String>>((String value) {
+                      item:
+                          states.map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
                           child: Text(value),
@@ -281,7 +300,8 @@ class _RegistrationState extends State<Registration> {
                           primaryPostCode = newValue!;
                         });
                       },
-                      item: primaryCodeList.map<DropdownMenuItem<String>>((String value) {
+                      item: primaryCodeList
+                          .map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
                           child: Text(value),
@@ -307,7 +327,8 @@ class _RegistrationState extends State<Registration> {
                           doorColorPrimary = newValue!;
                         });
                       },
-                      item: colors.map<DropdownMenuItem<String>>((String value) {
+                      item:
+                          colors.map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
                           child: Row(
@@ -315,7 +336,12 @@ class _RegistrationState extends State<Registration> {
                             children: [
                               Text(value),
                               const SizedBox(width: 15),
-                              Container(height: 10, width: 10, color: Colors.primaries.elementAt(colors.indexWhere((element) => element == value))),
+                              Container(
+                                  height: 10,
+                                  width: 10,
+                                  color: Colors.primaries.elementAt(
+                                      colors.indexWhere(
+                                          (element) => element == value))),
                             ],
                           ),
                         );
@@ -333,7 +359,8 @@ class _RegistrationState extends State<Registration> {
                           roofColorPrimary = newValue!;
                         });
                       },
-                      item: colors.map<DropdownMenuItem<String>>((String value) {
+                      item:
+                          colors.map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
                           child: Row(
@@ -341,7 +368,12 @@ class _RegistrationState extends State<Registration> {
                             children: [
                               Text(value),
                               const SizedBox(width: 15),
-                              Container(height: 10, width: 10, color: Colors.primaries.elementAt(colors.indexWhere((element) => element == value))),
+                              Container(
+                                  height: 10,
+                                  width: 10,
+                                  color: Colors.primaries.elementAt(
+                                      colors.indexWhere(
+                                          (element) => element == value))),
                             ],
                           ),
                         );
@@ -357,7 +389,9 @@ class _RegistrationState extends State<Registration> {
                 leading: const Icon(Icons.home),
                 title: const Text('Secondary House address'),
                 trailing: Icon(
-                  _customTileExpanded ? Icons.arrow_drop_down_circle : Icons.arrow_drop_down,
+                  _customTileExpanded
+                      ? Icons.arrow_drop_down_circle
+                      : Icons.arrow_drop_down,
                 ),
                 children: [
                   const Divider(),
@@ -376,7 +410,8 @@ class _RegistrationState extends State<Registration> {
                     keyboardType: TextInputType.emailAddress,
                     validator: (value) {
                       value = value ?? '';
-                      var s = value.isEmpty ? "ICNumber is required field" : null;
+                      var s =
+                          value.isEmpty ? "ICNumber is required field" : null;
                       return s;
                     },
                   ),
@@ -398,7 +433,8 @@ class _RegistrationState extends State<Registration> {
                           setSecondaryPostalCodes();
                         });
                       },
-                      item: states.map<DropdownMenuItem<String>>((String value) {
+                      item:
+                          states.map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
                           child: Text(value),
@@ -417,7 +453,8 @@ class _RegistrationState extends State<Registration> {
                           secondaryPostCode = newValue!;
                         });
                       },
-                      item: secondaryCodeList.map<DropdownMenuItem<String>>((String value) {
+                      item: secondaryCodeList
+                          .map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
                           child: Text(value),
@@ -449,7 +486,8 @@ class _RegistrationState extends State<Registration> {
                           doorColorSecondary = newValue!;
                         });
                       },
-                      item: colors.map<DropdownMenuItem<String>>((String value) {
+                      item:
+                          colors.map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
                           child: Row(
@@ -457,7 +495,12 @@ class _RegistrationState extends State<Registration> {
                             children: [
                               Text(value),
                               const SizedBox(width: 15),
-                              Container(height: 10, width: 10, color: Colors.primaries.elementAt(colors.indexWhere((element) => element == value))),
+                              Container(
+                                  height: 10,
+                                  width: 10,
+                                  color: Colors.primaries.elementAt(
+                                      colors.indexWhere(
+                                          (element) => element == value))),
                             ],
                           ),
                         );
@@ -475,7 +518,8 @@ class _RegistrationState extends State<Registration> {
                           roofColorSecondary = newValue!;
                         });
                       },
-                      item: colors.map<DropdownMenuItem<String>>((String value) {
+                      item:
+                          colors.map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
                           child: Row(
@@ -483,7 +527,12 @@ class _RegistrationState extends State<Registration> {
                             children: [
                               Text(value),
                               const SizedBox(width: 15),
-                              Container(height: 10, width: 10, color: Colors.primaries.elementAt(colors.indexWhere((element) => element == value))),
+                              Container(
+                                  height: 10,
+                                  width: 10,
+                                  color: Colors.primaries.elementAt(
+                                      colors.indexWhere(
+                                          (element) => element == value))),
                             ],
                           ),
                         );
@@ -499,7 +548,8 @@ class _RegistrationState extends State<Registration> {
                       if (_formKey.currentState?.validate() ?? false) {
                         _formKey.currentState?.save();
                         Profile submitProfile = getsubmitData();
-                        // submitProfile.addUser(authController.auth.currentUser!.uid);
+                        submitProfile
+                            .addUser(authController.auth.currentUser!.uid);
                       }
                     },
                     child: const Text(
@@ -669,7 +719,8 @@ class CustomTextFormfieldRed extends StatelessWidget {
             ),
             filled: true,
             fillColor: Colors.white,
-            contentPadding: const EdgeInsetsDirectional.fromSTEB(16, 16, 16, 16),
+            contentPadding:
+                const EdgeInsetsDirectional.fromSTEB(16, 16, 16, 16),
           ),
           style: const TextStyle(
             fontFamily: 'Lexend Deca',
