@@ -22,8 +22,9 @@ class HomePage extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Image.asset('assets/bina.png', height: 80),
-          // actions: const [Icon(Icons.filter_alt, color: Colors.blue)],
+          toolbarHeight: 80,
+          title: Image.asset('assets/bina.png', height: 150),
+          centerTitle: true,
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -35,34 +36,32 @@ class HomePage extends StatelessWidget {
                 child: CarouselSlider(
                   items: [
                     // Generated code for this Card Widget...
-                    Card(
-                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                      color: Colors.white,
-                      elevation: 6,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Stack(
-                        children: const [
-                          WeatherBoard(
-                            assetlocation:
-                                'https://cdn-icons-png.flaticon.com/512/1146/1146869.png',
-                          ),
-                        ],
-                      ),
-                    ),
-                    Card(
-                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                      color: Colors.white,
-                      elevation: 6,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: const WeatherBoard(
-                        assetlocation:
-                            'https://cdn-icons-png.flaticon.com/512/3445/3445722.png',
-                      ),
-                    ),
+                    // Card(
+                    //   clipBehavior: Clip.antiAliasWithSaveLayer,
+                    //   color: Colors.white,
+                    //   elevation: 6,
+                    //   shape: RoundedRectangleBorder(
+                    //     borderRadius: BorderRadius.circular(8),
+                    //   ),
+                    //   child: Stack(
+                    //     children: const [
+                    //       WeatherBoard(
+                    //         assetlocation: 'https://cdn-icons-png.flaticon.com/512/1146/1146869.png',
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
+                    // Card(
+                    //   clipBehavior: Clip.antiAliasWithSaveLayer,
+                    //   color: Colors.white,
+                    //   elevation: 6,
+                    //   shape: RoundedRectangleBorder(
+                    //     borderRadius: BorderRadius.circular(8),
+                    //   ),
+                    //   child: const WeatherBoard(
+                    //     assetlocation: 'https://cdn-icons-png.flaticon.com/512/3445/3445722.png',
+                    //   ),
+                    // ),
 
                     Card(
                       clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -76,8 +75,7 @@ class HomePage extends StatelessWidget {
                           Align(
                               alignment: AlignmentDirectional(-0.8, -0.65),
                               child: VideoApp(
-                                url:
-                                    'https://media.istockphoto.com/videos/hurricane-matthew-2016-landfall-radar-video-id1017267864',
+                                url: 'https://media.istockphoto.com/videos/hurricane-matthew-2016-landfall-radar-video-id1017267864',
                               )),
                         ],
                       ),
@@ -126,33 +124,27 @@ class HomePage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        CategorySquareTile(
-                            assetPath: 'assets/police.png',
-                            label: 'Police\nReport',
-                            onTap: () {}),
+                        CategorySquareTile(assetPath: 'assets/police.png', label: 'Police\nReport', onTap: () {}),
                         CategorySquareTile(
                             assetPath: 'assets/2.png',
                             label: 'Repository',
                             onTap: () {
                               pageController.pageNumber = 1;
-                              Navigator.of(context)
-                                  .popAndPushNamed('/bottomRoute');
+                              Navigator.of(context).popAndPushNamed('/bottomRoute');
                             }),
                         CategorySquareTile(
                             assetPath: 'assets/floodrelief.png',
                             label: 'Flood Relief',
                             onTap: () {
                               pageController.pageNumber = 2;
-                              Navigator.of(context)
-                                  .popAndPushNamed('/bottomRoute');
+                              Navigator.of(context).popAndPushNamed('/bottomRoute');
                             }),
                         CategorySquareTile(
                             assetPath: 'assets/adun.png',
                             label: 'Adun',
                             onTap: () {
                               pageController.pageNumber = 3;
-                              Navigator.of(context)
-                                  .popAndPushNamed('/bottomRoute');
+                              Navigator.of(context).popAndPushNamed('/bottomRoute');
                             }),
                       ],
                     ),
@@ -190,8 +182,7 @@ class HomePage extends StatelessWidget {
                           assetPath: 'assets/weather.png',
                           label: 'Weather\nForecast',
                           onTap: () {
-                            Navigator.of(context)
-                                .pushNamed('/ngoEmergencyLanding');
+                            Navigator.of(context).pushNamed('/ngoEmergencyLanding');
                           }),
                       CategorySquareTile(
                           assetPath: 'assets/floodarea.png',
@@ -203,16 +194,14 @@ class HomePage extends StatelessWidget {
                           assetPath: 'assets/pond.png',
                           label: 'Retention\nPonds',
                           onTap: () {
-                            Navigator.of(context)
-                                .pushNamed('/ngoEmergencyLanding');
+                            Navigator.of(context).pushNamed('/ngoEmergencyLanding');
                           }),
                       CategorySquareTile(
                           assetPath: 'assets/Rebuild.png',
                           label: 'Rebuild',
                           onTap: () {
                             print('feedback');
-                            Navigator.of(context)
-                                .pushNamed('/ngoEmergencyLanding');
+                            Navigator.of(context).pushNamed('/ngoEmergencyLanding');
                           }),
                     ],
                   ),
@@ -256,9 +245,7 @@ class CategorySquareTile extends StatelessWidget {
                 style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(Colors.white),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18.0),
-                            side: const BorderSide(color: Colors.white))))),
+                        RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0), side: const BorderSide(color: Colors.white))))),
           ),
         ),
         Text(label),

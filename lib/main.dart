@@ -42,26 +42,23 @@ class MyApp extends StatelessWidget {
           labelStyle: TextStyle(color: Colors.pink[800]), // color for text
           indicator: const BoxDecoration(color: Color(0xFF00b3df)),
         ),
-        scaffoldBackgroundColor: Colors.white,
+        scaffoldBackgroundColor: Color(0xFFF5F5F5),
         bottomAppBarTheme: const BottomAppBarTheme(),
-        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-            elevation: 5, backgroundColor: Colors.blue),
+        bottomNavigationBarTheme: const BottomNavigationBarThemeData(elevation: 5, backgroundColor: Colors.blue),
         appBarTheme: const AppBarTheme(backgroundColor: Colors.white),
         chipTheme: const ChipThemeData(
           elevation: 4,
-          backgroundColor: Colors.grey,
-          selectedColor: Color(0xFF63e5ff),
+          backgroundColor: Colors.white,
+          selectedColor: Color(0xFF22A8E0),
           disabledColor: Colors.white,
+          showCheckmark: false,
           padding: EdgeInsets.all(0.0),
           brightness: Brightness.light,
           secondaryLabelStyle: TextStyle(color: Colors.black),
-          labelStyle: TextStyle(color: Colors.black),
+          labelStyle: TextStyle(color: Colors.white),
           secondarySelectedColor: Color(0xFF63e5ff),
         ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-            style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all(const Color(0xFF00b3df)))),
+        elevatedButtonTheme: ElevatedButtonThemeData(style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xFF00b3df)))),
       ),
       home: LandingPage(),
     );
@@ -84,9 +81,7 @@ class _AddAppState extends State<AddApp> {
       drawer: Drawer(
         child: Column(
           children: [
-            SizedBox(
-              height: 60,
-            ),
+            const SizedBox(height: 60),
             ListTile(
               title: const Text("ADD ADUN"),
               onTap: () {

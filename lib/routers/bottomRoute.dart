@@ -2,6 +2,7 @@ import 'package:bangkit/constants/controller_constants.dart';
 import 'package:bangkit/profile/profile.dart';
 import 'package:bangkit/routers/homeRoute.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class BottomRouter extends StatefulWidget {
   BottomRouter({
@@ -55,8 +56,8 @@ class _BottomRouterState extends State<BottomRouter> {
                   // backgroundColor: Colors.red,
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(Icons.money_sharp),
-                  label: 'AIDS 7 Grants',
+                  icon: Icon(FontAwesomeIcons.moneyBillWave),
+                  label: 'Aid & Grants',
                   tooltip: 'Home',
 
                   // backgroundColor: Colors.red,

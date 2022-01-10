@@ -1,8 +1,5 @@
 import 'package:bangkit/models/ngo.dart';
-import 'package:bangkit/services/firebase.dart';
 import 'package:flutter/material.dart';
-
-import 'repo_list.dart';
 
 class CustomExpansionTile extends StatelessWidget {
   const CustomExpansionTile({Key? key, required this.ngo}) : super(key: key);
@@ -10,8 +7,10 @@ class CustomExpansionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // ngo.update();
     return Card(
       child: ExpansionTile(
+        // leading: CircleAvatar(foregroundImage: Image.network(src),),
         title: Text(
           ngo.name,
           style: const TextStyle(fontWeight: FontWeight.bold),
@@ -27,7 +26,10 @@ class CustomExpansionTile extends StatelessWidget {
                 padding: EdgeInsets.all(8.0),
                 child: Icon(Icons.location_on, color: Colors.red),
               ),
-              Text(ngo.address)
+              Text(
+                ngo.address,
+                softWrap: true,
+              )
             ],
             mainAxisSize: MainAxisSize.max,
           ),

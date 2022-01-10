@@ -11,8 +11,10 @@ class Ngo {
     required this.name,
     required this.address,
     required this.postCode,
+    required this.state,
     required this.phoneNumber,
     required this.email,
+    required this.image,
     required this.description,
     required this.contactPersonName,
     this.props,
@@ -22,9 +24,11 @@ class Ngo {
   });
   int? id;
   String name;
+  String image;
   String address;
   String contactPersonName;
   String postCode;
+  String state;
   String phoneNumber;
   String email;
   String description;
@@ -34,36 +38,54 @@ class Ngo {
   List<ServiceType>? serviceTypes;
 
   factory Ngo.fromJson(Map<String, dynamic> json) => Ngo(
+        id: json["id"],
         name: json["name"] ?? '',
         address: json["address"] ?? '',
         phoneNumber: json["phoneNumber"] ?? '',
+        image: json["image"] ?? '',
         email: json["email"] ?? '',
         description: json["description"] ?? '',
         contactPersonName: json["contactPersonName"] ?? '',
         props: json["props"],
         type: Type.values.elementAt(json["type"] ?? 0),
         entityType: EntityType.values.elementAt(json["entityType"] ?? 0),
-        serviceTypes: List<ServiceType>.from(
-            json["serviceTypes"].map((x) => ServiceType.values.elementAt(x))),
+        serviceTypes: List<ServiceType>.from(json["serviceTypes"].map((x) => ServiceType.values.elementAt(x))),
         postCode: json["postCode"] ?? '',
+        state: json["state"] ?? '',
       );
+
+  get searchArray {
+    var returns = [];
+    returns.add(state);
+    if (entityType == EntityType.government) {
+      returns.add("government");
+    }
+    if (entityType == EntityType.private) {
+      returns.add("private");
+    }
+    if (serviceTypes != null) {
+      returns.addAll(serviceTypes!.map((e) => e.index).toList());
+    }
+    return returns;
+  }
 
   Map<String, dynamic> toJson() => {
         "name": name,
         "address": address,
         "phoneNumber": phoneNumber,
         "email": email,
+        "state": state,
+        "image": image,
         "description": description,
         "contactPersonName": contactPersonName,
         "props": props,
         "type": type.index,
         "entityType": entityType != null ? entityType!.index : null,
-        "serviceTypes": serviceTypes != null
-            ? List<dynamic>.from(serviceTypes!.map((x) => x.index))
-            : null,
+        "serviceTypes": serviceTypes != null ? List<dynamic>.from(serviceTypes!.map((x) => x.index)) : null,
         "modifiedDate": DateTime.now(),
         "postCode": postCode,
         "searchText": searchString,
+        "searchArray": searchArray,
       };
 
   static addNgo(Ngo ngo) async {
@@ -72,8 +94,7 @@ class Ngo {
       if (snapshot.exists) {
         var data = snapshot.data() as Map<String, dynamic>;
         ngo.id = data['ngos'] + 1;
-        return transaction.update(counters, {"ngos": ngo.id}).set(
-            ngos.doc(ngo.id.toString()), ngo.toJson());
+        return transaction.update(counters, {"ngos": ngo.id}).set(ngos.doc(ngo.id.toString()), ngo.toJson());
       }
     }).then((value) {
       return {"code": "Success", "message": "Added"};
@@ -83,12 +104,12 @@ class Ngo {
     });
   }
 
+  update() {
+    return ngos.doc(id.toString()).update(toJson()).then((value) => print("sucess"));
+  }
+
   delete() {
-    ngos
-        .doc(id.toString())
-        .delete()
-        .then((value) => {"code": "success", "message": "NGO has been deleted"})
-        .catchError((error) {
+    ngos.doc(id.toString()).delete().then((value) => {"code": "success", "message": "NGO has been deleted"}).catchError((error) {
       return {"code": "Failed", "message": error.toString()};
     });
   }
@@ -98,8 +119,14 @@ class Ngo {
       String? postCode,
       EntityType? entityType,
       List<ServiceType>? serviceTypes,
-      String? searchText}) {
-    Query query = ngos;
+      String? searchText,
+      List<String>? states,
+      Query? query}) {
+    query = query ?? ngos;
+    if (states != null) {
+      query = query.where("state", whereIn: states);
+      // print(await query.get().then((value) => value.docs.length));
+    }
     if (postCode != null) {
       query = query.where("postCode", isEqualTo: postCode);
     }
@@ -110,16 +137,13 @@ class Ngo {
       query = query.where("entityType", isEqualTo: entityType.index);
     }
     if (serviceTypes != null) {
-      query = query.where("serviceTypes",
-          arrayContainsAny: serviceTypes.map((e) => e.index).toList());
+      query = query.where("serviceTypes", arrayContainsAny: serviceTypes.map((e) => e.index).toList());
     }
     if (serviceTypes != null) {
-      query = query.where("serviceTypes",
-          arrayContainsAny: serviceTypes.map((e) => e.index).toList());
+      query = query.where("serviceTypes", arrayContainsAny: serviceTypes.map((e) => e.index).toList());
     }
     if (serviceTypes != null) {
-      query = query.where("serviceTypes",
-          arrayContainsAny: serviceTypes.map((e) => e.index).toList());
+      query = query.where("serviceTypes", arrayContainsAny: serviceTypes.map((e) => e.index).toList());
     }
     return query;
   }
@@ -136,6 +160,34 @@ class Ngo {
   }
 }
 
-enum Type { medical, floodReleif, volunteer }
+class Address {
+  Address({
+    required this.line1,
+    required this.line2,
+    required this.state,
+    required this.pincode,
+  });
+
+  String line1;
+  String line2;
+  String state;
+  String pincode;
+
+  factory Address.fromJson(Map<String, dynamic> json) => Address(
+        line1: json["line1"],
+        line2: json["line2"],
+        state: json["state"],
+        pincode: json["pincode"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "line1": line1,
+        "line2": line2,
+        "state": state,
+        "pincode": pincode,
+      };
+}
+
+enum Type { medical, floodReleif }
 enum EntityType { government, private }
 enum ServiceType { cleaning, food, assistance }

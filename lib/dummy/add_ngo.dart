@@ -18,6 +18,8 @@ class _AddNgoState extends State<AddNgo> {
 
   final postCodeController = TextEditingController();
 
+  final stateController = TextEditingController();
+
   final phoneNumberController = TextEditingController();
 
   final contactPersonController = TextEditingController();
@@ -43,18 +45,16 @@ class _AddNgoState extends State<AddNgo> {
               var ngo = Ngo(
                   name: nameController.text,
                   address: addressController.text,
+                  image: '',
                   postCode: postCodeController.text,
+                  state: stateController.text,
                   phoneNumber: phoneNumberController.text,
                   email: emailController.text,
                   contactPersonName: contactPersonController.text,
                   description: descriptioncontroller.text,
                   type: type ?? Type.medical,
                   entityType: entity,
-                  serviceTypes: [
-                    ServiceType.assistance,
-                    ServiceType.cleaning,
-                    ServiceType.food
-                  ]);
+                  serviceTypes: [ServiceType.assistance, ServiceType.cleaning, ServiceType.food]);
               Ngo.addNgo(ngo);
             },
           ),
@@ -68,29 +68,19 @@ class _AddNgoState extends State<AddNgo> {
                     style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                   ),
                 ),
-                CustomTextFormField(
-                    labelText: 'name', controller: nameController),
+                CustomTextFormField(labelText: 'name', controller: nameController),
                 const SizedBox(height: 10),
-                CustomTextFormField(
-                    labelText: 'Contact Person Name',
-                    controller: contactPersonController),
+                CustomTextFormField(labelText: 'Contact Person Name', controller: contactPersonController),
                 const SizedBox(height: 10),
-                CustomTextFormField(
-                    labelText: 'address', controller: addressController),
+                CustomTextFormField(labelText: 'address', controller: addressController),
                 const SizedBox(height: 10),
-                CustomTextFormField(
-                    labelText: 'phoneNumber',
-                    controller: phoneNumberController),
+                CustomTextFormField(labelText: 'phoneNumber', controller: phoneNumberController),
                 const SizedBox(height: 10),
-                CustomTextFormField(
-                    labelText: 'email', controller: emailController),
+                CustomTextFormField(labelText: 'email', controller: emailController),
                 const SizedBox(height: 10),
-                CustomTextFormField(
-                    labelText: 'Post Code', controller: postCodeController),
+                CustomTextFormField(labelText: 'Post Code', controller: postCodeController),
                 const SizedBox(height: 10),
-                CustomTextFormField(
-                    labelText: 'description',
-                    controller: descriptioncontroller),
+                CustomTextFormField(labelText: 'description', controller: descriptioncontroller),
                 const SizedBox(height: 10),
                 DropdownButtonFormField<Type>(
                   value: type,
@@ -99,10 +89,7 @@ class _AddNgoState extends State<AddNgo> {
                       type = value;
                     });
                   },
-                  items: Type.values
-                      .map((e) =>
-                          DropdownMenuItem(value: e, child: Text(e.toString())))
-                      .toList(),
+                  items: Type.values.map((e) => DropdownMenuItem(value: e, child: Text(e.toString()))).toList(),
                 ),
                 DropdownButtonFormField<EntityType>(
                   value: entity,
@@ -111,10 +98,7 @@ class _AddNgoState extends State<AddNgo> {
                       entity = type;
                     });
                   },
-                  items: EntityType.values
-                      .map((e) =>
-                          DropdownMenuItem(value: e, child: Text(e.toString())))
-                      .toList(),
+                  items: EntityType.values.map((e) => DropdownMenuItem(value: e, child: Text(e.toString()))).toList(),
                 ),
                 DropdownButtonFormField<ServiceType>(
                   value: serviceType,
@@ -123,10 +107,7 @@ class _AddNgoState extends State<AddNgo> {
                       serviceType = stype;
                     });
                   },
-                  items: ServiceType.values
-                      .map((e) =>
-                          DropdownMenuItem(value: e, child: Text(e.toString())))
-                      .toList(),
+                  items: ServiceType.values.map((e) => DropdownMenuItem(value: e, child: Text(e.toString()))).toList(),
                 )
               ],
             ),

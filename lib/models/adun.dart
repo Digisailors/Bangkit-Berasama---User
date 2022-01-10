@@ -45,8 +45,7 @@ class Adun {
       if (snapshot.exists) {
         var data = snapshot.data() as Map<String, dynamic>;
         adun.id = data['aduns'] + 1;
-        return transaction.update(counters, {"aduns": adun.id}).set(
-            aduns.doc(adun.id.toString()), adun.toJson());
+        return transaction.update(counters, {"aduns": adun.id}).set(aduns.doc(adun.id.toString()), adun.toJson());
       }
     }).then((value) {
       return {"code": "Success", "message": "Added"};
