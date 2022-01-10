@@ -1,26 +1,19 @@
-import 'dart:developer';
-
 import 'package:bangkit/constants/controller_constants.dart';
-import 'package:bangkit/constants/themeconstants.dart';
 import 'package:bangkit/models/rebuild.dart';
 import 'package:bangkit/services/firebase.dart';
-import 'package:bangkit/widgets/dropdownSelect.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 
-import 'repoRouter.dart';
-
-class rebuildList extends StatefulWidget {
-  rebuildList({Key? key, required this.query}) : super(key: key);
+class RebuildList extends StatefulWidget {
+  RebuildList({Key? key, required this.query}) : super(key: key);
 
   final String query;
 
   @override
-  State<rebuildList> createState() => _rebuildListState();
+  State<RebuildList> createState() => _RebuildListState();
 }
 
-class _rebuildListState extends State<rebuildList> {
+class _RebuildListState extends State<RebuildList> {
   List<String> states = [];
   // ServiceType serviceType = ServiceType.cleaning;
   // bool isGovernment = true;
