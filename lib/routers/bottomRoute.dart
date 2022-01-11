@@ -1,6 +1,7 @@
 import 'package:bangkit/constants/controller_constants.dart';
 import 'package:bangkit/profile/profile.dart';
 import 'package:bangkit/routers/homeRoute.dart';
+import 'package:bangkit/screens/aid%20&grants/aidpost.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -21,7 +22,7 @@ class _BottomRouterState extends State<BottomRouter> {
       case 0:
         return const HomeRoute();
       case 1:
-        return Container(color: Colors.red);
+        return AidAndGrants ();
       case 2:
         return Container(color: Colors.green);
       case 3:
@@ -56,7 +57,7 @@ class _BottomRouterState extends State<BottomRouter> {
                   // backgroundColor: Colors.red,
                 ),
                 BottomNavigationBarItem(
-                  icon: Icon(FontAwesomeIcons.moneyBillWave),
+                  icon: ImageIcon(AssetImage('assets/aid.png')),
                   label: 'Aid & Grants',
                   tooltip: 'Home',
 

@@ -46,7 +46,8 @@ class MyApp extends StatelessWidget {
         ),
         scaffoldBackgroundColor: Color(0xFFF5F5F5),
         bottomAppBarTheme: const BottomAppBarTheme(),
-        bottomNavigationBarTheme: const BottomNavigationBarThemeData(elevation: 5, backgroundColor: Colors.blue),
+        bottomNavigationBarTheme:
+            const BottomNavigationBarThemeData(elevation: 5, backgroundColor: Colors.blue),
         appBarTheme: const AppBarTheme(backgroundColor: Colors.white),
         chipTheme: const ChipThemeData(
           elevation: 4,
@@ -60,9 +61,11 @@ class MyApp extends StatelessWidget {
           labelStyle: TextStyle(color: Colors.white),
           secondarySelectedColor: Color(0xFF63e5ff),
         ),
-        elevatedButtonTheme: ElevatedButtonThemeData(style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xFF00b3df)))),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+            style:
+                ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xFF00b3df)))),
       ),
-      home: LandingPage(),
+      home: AddApp(),
     );
   }
 }
@@ -75,37 +78,65 @@ class AddApp extends StatefulWidget {
 }
 
 class _AddAppState extends State<AddApp> {
+  final pageController = PageController();
   bool toggle = true;
+  int index = 0;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(backgroundColor: Colors.blue),
-        drawer: Drawer(
-          child: Column(
-            children: [
-              const SizedBox(height: 60),
-              ListTile(
-                title: const Text("ADD ADUN"),
-                onTap: () {
-                  setState(() {
-                    toggle = !toggle;
-                  });
-                },
-              ),
-              ListTile(
-                title: const Text("ADD NGO"),
-                onTap: () {
-                  setState(() {
-                    toggle = !toggle;
-                  });
-                },
-              ),
-            ],
+    return DefaultTabController(
+      initialIndex: 1,
+      length: 3,
+      child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.blue,
+            bottom: TabBar(
+              tabs: [
+                Tab(
+                  child: Text("NGO"),
+                ),
+                Tab(
+                  child: Text("ADUN"),
+                ),
+                Tab(
+                  child: Text("REBUILD"),
+                ),
+              ],
+            ),
           ),
-        ),
-        body: PageView(
-          controller: PageController(initialPage: 0),
-          children: [AddAdun(), AddNgo(), Addrebuild()],
-        ));
+          drawer: Drawer(
+            child: Column(
+              children: [
+                const SizedBox(height: 60),
+                ListTile(
+                  title: const Text("ADD ADUN"),
+                  onTap: () {
+                    setState(() {
+                      pageController.jumpToPage(0);
+                    });
+                  },
+                ),
+                ListTile(
+                  title: const Text("ADD NGO"),
+                  onTap: () {
+                    setState(() {
+                      pageController.jumpToPage(1);
+                    });
+                  },
+                ),
+                ListTile(
+                  title: const Text("ADD REBUILD"),
+                  onTap: () {
+                    setState(() {
+                      pageController.jumpToPage(2);
+                    });
+                  },
+                ),
+              ],
+            ),
+          ),
+          body: TabBarView(
+            children: [AddAdun(), AddNgo(), Addrebuild()],
+          )),
+    );
   }
 }

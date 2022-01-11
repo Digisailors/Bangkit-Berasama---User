@@ -241,13 +241,17 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
         },
         leading: Padding(
           padding: const EdgeInsets.all(4.0),
-          child: ClipOval(
-            child: AspectRatio(
-                aspectRatio: 1,
-                child: Image.network(
-                  widget.rebuild.image,
-                  fit: BoxFit.cover,
-                )),
+          child: Card(
+            elevation: 10,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
+            child: ClipOval(
+              child: AspectRatio(
+                  aspectRatio: 1,
+                  child: Image.network(
+                    widget.rebuild.image,
+                    fit: BoxFit.cover,
+                  )),
+            ),
           ),
         ),
         title: Padding(
