@@ -24,7 +24,7 @@ class NgoService {
     return servicelist;
   }
 
-  static getServicesStream() async {
+  static Stream<QuerySnapshot<Map<String, dynamic>>> getServicesStream() {
     return services.snapshots();
   }
 }

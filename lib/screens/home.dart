@@ -3,7 +3,7 @@ import 'package:bangkit/constants/themeconstants.dart';
 import 'package:bangkit/models/profile.dart';
 import 'package:bangkit/weather/weatherwidgets.dart';
 import 'package:bangkit/widgets/widgets.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
@@ -96,54 +96,51 @@ class HomePage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Align(
+                  const Align(
                     alignment: Alignment.centerLeft,
                     child: Padding(
-                      padding: const EdgeInsets.all(4.0),
+                      padding: EdgeInsets.only(bottom: 4, left: 8, right: 8, top: 8),
                       child: Text(
-                        'Information',
-                        style: Theme.of(context).textTheme.headline6,
+                        "Categories",
+                        style: TextStyle(
+                          // shadows: [Shadow(color: Colors.black, offset: Offset(0, -5))],
+                          color: Colors.black,
+                          fontSize: 20,
+
+                          // decoration: TextDecoration.underline,
+                          // decorationColor: Colors.blue,
+                          decorationThickness: 4,
+                        ),
                       ),
                     ),
                   ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: Container(
-                        height: getHeight(context) * 0.004,
-                        width: getWidth(context) * 0.4,
-                        color: const Color(0xFF22A8E0),
-                      ),
-                    ),
-                  ),
+                  const Divider(),
                   SizedBox(
-                    height: getHeight(context) * 0.02,
+                    height: getHeight(context) * 0.012,
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        CategorySquareTile(assetPath: 'assets/police.png', label: 'Police\nReport', onTap: () {}),
                         CategorySquareTile(
-                            assetPath: 'assets/3.png',
+                            assetPath: 'assets/ngologo.png',
                             label: 'Repository',
                             onTap: () {
                               pageController.pageNumber = 1;
                               Navigator.of(context).popAndPushNamed('/bottomRoute');
                             }),
                         CategorySquareTile(
-                            assetPath: 'assets/floodrelief.png',
-                            label: 'Flood Relief',
+                            assetPath: 'assets/aa.png',
+                            label: 'Gov Agencies',
                             onTap: () {
                               pageController.pageNumber = 2;
                               Navigator.of(context).popAndPushNamed('/bottomRoute');
                             }),
                         CategorySquareTile(
                             assetPath: 'assets/adun.png',
-                            label: 'Adun',
+                            label: 'ADUN',
                             onTap: () {
                               pageController.pageNumber = 3;
                               Navigator.of(context).popAndPushNamed('/bottomRoute');
@@ -151,24 +148,20 @@ class HomePage extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Align(
+                  const Align(
                     alignment: Alignment.centerLeft,
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.only(left: 8, top: 10, right: 8),
                       child: Text(
-                        'Natural disaster',
-                        style: Theme.of(context).textTheme.headline6,
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: Container(
-                        height: getHeight(context) * 0.004,
-                        width: getWidth(context) * 0.4,
-                        color: const Color(0xFF22A8E0),
+                        "Disaster Information",
+                        style: TextStyle(
+                          // shadows: [Shadow(color: Colors.black, offset: Offset(0, -5))],
+                          color: Colors.black,
+                          fontSize: 20,
+                          // decoration: TextDecoration.underline,
+                          // decorationColor: Colors.blue,
+                          // decorationThickness: 4,
+                        ),
                       ),
                     ),
                   ),
@@ -180,6 +173,12 @@ class HomePage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      CategorySquareTile(
+                          assetPath: 'assets/police.png',
+                          label: 'E-PDRM\nReporting',
+                          onTap: () {
+                            launch("https://ereporting.rmp.gov.my/index.aspx");
+                          }),
                       CategorySquareTile(
                           assetPath: 'assets/weather.png',
                           label: 'Weather\nForecast',
@@ -198,13 +197,13 @@ class HomePage extends StatelessWidget {
                           onTap: () {
                             Navigator.of(context).pushNamed('/ngoEmergencyLanding');
                           }),
-                      CategorySquareTile(
-                          assetPath: 'assets/Rebuild.png',
-                          label: 'Rebuild',
-                          onTap: () {
-                            pageController.pageNumber = 4;
-                            Navigator.of(context).popAndPushNamed('/bottomRoute');
-                          }),
+                      // CategorySquareTile(
+                      //     assetPath: 'assets/Rebuild.png',
+                      //     label: 'Rebuild',
+                      //     onTap: () {
+                      //       pageController.pageNumber = 4;
+                      //       Navigator.of(context).popAndPushNamed('/bottomRoute');
+                      //     }),
                     ],
                   ),
                 ],

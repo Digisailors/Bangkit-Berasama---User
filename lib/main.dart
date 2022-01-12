@@ -1,19 +1,21 @@
 import 'package:bangkit/constants/controller_constants.dart';
 import 'package:bangkit/models/service_category.dart';
 import 'package:bangkit/web/add_adun.dart';
+import 'package:bangkit/web/add_agency.dart';
 import 'package:bangkit/web/add_ngo.dart';
 import 'package:bangkit/web/add_rebuild.dart';
-import 'package:bangkit/routers/bottomRoute.dart';
+import 'package:bangkit/routers/bottom_route.dart';
 import 'package:bangkit/routers/landing_page.dart';
 import 'package:bangkit/web/add_service.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 
+import 'constants/stateslist.dart';
 import 'controllers/auth_controller.dart';
 import 'controllers/page_controller.dart';
 import 'firebase_options.dart';
-import 'routers/homeRoute.dart';
+import 'routers/home_route.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -69,7 +71,7 @@ class MyApp extends StatelessWidget {
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xFF00b3df)))),
       ),
-      home: MyApp(),
+      home: LandingPage(),
     );
   }
 }
@@ -93,8 +95,11 @@ class _AddAppState extends State<AddApp> {
       child: Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.blue,
-            bottom: TabBar(
+            bottom: const TabBar(
               tabs: [
+                Tab(
+                  child: Text("Gov"),
+                ),
                 Tab(
                   child: Text("NGO"),
                 ),
@@ -102,10 +107,7 @@ class _AddAppState extends State<AddApp> {
                   child: Text("ADUN"),
                 ),
                 Tab(
-                  child: Text("REBUILD"),
-                ),
-                Tab(
-                  child: Text("ADD SERVICE"),
+                  child: Text("Services"),
                 ),
               ],
             ),
@@ -130,19 +132,19 @@ class _AddAppState extends State<AddApp> {
                     });
                   },
                 ),
-                ListTile(
-                  title: const Text("ADD REBUILD"),
-                  onTap: () {
-                    setState(() {
-                      pageController.jumpToPage(2);
-                    });
-                  },
-                ),
+                // ListTile(
+                //   title: const Text("ADD REBUILD"),
+                //   onTap: () {
+                //     setState(() {
+                //       pageController.jumpToPage(2);
+                //     });
+                //   },
+                // ),
               ],
             ),
           ),
           body: TabBarView(
-            children: [AddNgo(), AddAdun(), Addrebuild(), const AddService()],
+            children: [AddAgency(), AddNgo(), AddAdun(), const AddService()],
           )),
     );
   }

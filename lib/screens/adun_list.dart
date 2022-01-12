@@ -1,3 +1,4 @@
+import 'package:bangkit/constants/constituency_list.dart';
 import 'package:bangkit/constants/controller_constants.dart';
 import 'package:bangkit/models/adun.dart';
 import 'package:bangkit/services/firebase.dart';
@@ -18,20 +19,22 @@ class _AdunListState extends State<AdunList> {
     query = aduns;
   }
 
-  List<String> states = [];
+  List<String> selectedStates = [];
+  List<String> selectedFederals = [];
   late Query query;
   void _showMultiSelect(BuildContext context) async {
     await showDialog(
       context: context,
       builder: (ctx) {
         return MultiSelectDialog(
-          items: postalCodes.keys.map((e) => MultiSelectItem(e.toString(), e.toString())).toList(),
-          initialValue: states,
+          title: const Text("Select State"),
+          items: federals.keys.map((e) => MultiSelectItem(e.toString(), e.toString())).toList(),
+          initialValue: selectedStates,
           onConfirm: (values) async {
-            states = values.map((e) => e.toString()).toList();
+            selectedStates = values.map((e) => e.toString()).toList();
             setState(() {
               query = aduns;
-              query = query.where("state", whereIn: states);
+              query = query.where("state", whereIn: selectedStates);
             });
           },
         );
@@ -54,83 +57,116 @@ class _AdunListState extends State<AdunList> {
           child: const Icon(Icons.arrow_back, color: Colors.blue),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: EdgeInsets.all(4.0),
-                      child: Text(
-                        'ADUN',
-                        style: TextStyle(
-                          shadows: [Shadow(color: Colors.black, offset: Offset(0, -5))],
-                          color: Colors.transparent,
-                          fontSize: 20,
-                          decoration: TextDecoration.underline,
-                          decorationColor: Colors.blue,
-                          decorationThickness: 4,
-                        ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: EdgeInsets.all(4.0),
+                    child: Text(
+                      'ADUN LIST',
+                      style: TextStyle(
+                        shadows: [Shadow(color: Colors.black, offset: Offset(0, -5))],
+                        color: Colors.transparent,
+                        fontSize: 20,
+                        decoration: TextDecoration.underline,
+                        decorationColor: Colors.blue,
+                        decorationThickness: 4,
                       ),
                     ),
                   ),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    _showMultiSelect(context);
-                  },
-                  child: const Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: Icon(
-                      Icons.filter_alt_sharp,
-                      color: Color(0xFF22A8E0),
-                    ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  _showMultiSelect(context);
+                },
+                child: const Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Icon(
+                    Icons.filter_alt_sharp,
+                    color: Color(0xFF22A8E0),
                   ),
-                )
-              ]),
-            ),
-            StreamBuilder<QuerySnapshot>(
-              stream: query.snapshots(),
-              builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
-                if (streamSnapshot.connectionState == ConnectionState.active) {
-                  if (streamSnapshot.hasError) {
-                    return const Text("Error");
-                  }
-                  if (streamSnapshot.connectionState == ConnectionState.waiting) {
-                    return Column(
-                      children: const [
-                        CircularProgressIndicator(),
-                        Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text("Loading"),
-                        )
-                      ],
-                    );
-                  }
-                  // print(streamSnapshot.hasData);
-                  return ListView(
+                ),
+              )
+            ]),
+          ),
+          MultiSelectDialogField(
+            buttonText: const Text("Select Constituency"),
+            title: const Text("Select Constituency"),
+            searchable: true,
+            searchHint: "Select Constituency",
+            items: getFederals(),
+            onConfirm: (List<String?> values) {
+              setState(() {
+                selectedFederals = values.map((e) => e.toString()).toList();
+              });
+            },
+          ),
+          StreamBuilder<QuerySnapshot>(
+            stream: query.snapshots(),
+            builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+              if (streamSnapshot.connectionState == ConnectionState.active) {
+                if (streamSnapshot.hasError) {
+                  return const Text("Error");
+                }
+                if (streamSnapshot.connectionState == ConnectionState.waiting) {
+                  return Column(
+                    children: const [
+                      CircularProgressIndicator(),
+                      Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text("Loading"),
+                      )
+                    ],
+                  );
+                }
+                // print(streamSnapshot.hasData);
+                return Expanded(
+                  child: ListView(
+                    padding: const EdgeInsets.all(8),
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
                     children: streamSnapshot.data!.docs.map((snapshot) {
                       var data = snapshot.data()! as Map<String, dynamic>;
+                      var adun = Adun.fromJson(data);
+                      if (selectedFederals.isNotEmpty) {
+                        var result = selectedFederals.contains(adun.federal);
+                        return result ? CustomExpansionTile(ngo: adun) : Container();
+                      } else {
+                        return CustomExpansionTile(ngo: adun);
+                      }
                       // print("I am data $data");
-                      return CustomExpansionTile(ngo: Adun.fromJson(data));
                     }).toList(),
-                  );
-                } else {
-                  return Container();
-                }
-              },
-            ),
-          ],
-        ),
+                  ),
+                );
+              } else {
+                return Container();
+              }
+            },
+          ),
+        ],
       ),
     );
+  }
+
+  getFederals() {
+    var returns = [];
+    if (selectedStates.isEmpty) {
+      federals.keys.forEach((element) {
+        returns.addAll(federals[element]!.keys.toList());
+      });
+    } else {
+      selectedStates.forEach((element) {
+        returns.addAll(federals[element]!.keys.toList());
+      });
+    }
+    return returns.map((e) => MultiSelectItem(e.toString(), e)).toList();
   }
 }
 
@@ -245,7 +281,7 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
                 padding: const EdgeInsets.symmetric(vertical: 4),
                 child: Text(
                   widget.ngo.description,
-                  maxLines: 3,
+                  maxLines: 2,
                   softWrap: true,
                   style: const TextStyle(overflow: TextOverflow.ellipsis),
                 ),
@@ -254,6 +290,14 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
         iconColor: Colors.red,
         expandedCrossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              widget.ngo.description,
+              maxLines: 20,
+              softWrap: true,
+            ),
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -263,7 +307,7 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
               ),
               Flexible(
                 child: Text(
-                  widget.ngo.officeAddress,
+                  "${widget.ngo.officeAddress}, ${widget.ngo.state}, ${widget.ngo.postCode}",
                   maxLines: 3,
                   softWrap: true,
                   style: const TextStyle(overflow: TextOverflow.clip),
@@ -305,13 +349,16 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
             ],
             mainAxisSize: MainAxisSize.max,
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              widget.ngo.description,
-              maxLines: 20,
-              softWrap: true,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Icon(Icons.facebook, color: Colors.red),
+              ),
+              Text(widget.ngo.weburl)
+            ],
+            mainAxisSize: MainAxisSize.max,
           ),
           const SizedBox(height: 8),
         ],

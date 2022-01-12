@@ -1,6 +1,6 @@
 import 'package:bangkit/constants/controller_constants.dart';
 import 'package:bangkit/profile/profile.dart';
-import 'package:bangkit/routers/homeRoute.dart';
+import 'package:bangkit/routers/home_route.dart';
 import 'package:bangkit/screens/aid%20&grants/aidpost.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -22,9 +22,15 @@ class _BottomRouterState extends State<BottomRouter> {
       case 0:
         return const HomeRoute();
       case 1:
-        return AidAndGrants ();
+        return AidAndGrants();
       case 2:
-        return Container(color: Colors.green);
+        return Container(
+          color: Colors.white,
+          child: const Center(
+            child: Text("This page is under construction"),
+          ),
+        );
+
       case 3:
         return ProfileWidget(profileModel: profileController.profile!);
     }
@@ -45,6 +51,7 @@ class _BottomRouterState extends State<BottomRouter> {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: BottomNavigationBar(
+              // showUnselectedLabels: true,
               selectedItemColor: Colors.blue,
               unselectedItemColor: Colors.grey,
               elevation: 0,
@@ -74,7 +81,6 @@ class _BottomRouterState extends State<BottomRouter> {
                   icon: Icon(Icons.person),
                   label: 'Profile',
                   tooltip: 'Home',
-
                   // backgroundColor: Colors.red,
                 ),
               ],

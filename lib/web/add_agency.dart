@@ -10,14 +10,14 @@ import 'package:get/get.dart';
 import 'dart:io';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
-class AddNgo extends StatefulWidget {
-  AddNgo({Key? key}) : super(key: key);
+class AddAgency extends StatefulWidget {
+  AddAgency({Key? key}) : super(key: key);
 
   @override
-  State<AddNgo> createState() => _AddNgoState();
+  State<AddAgency> createState() => _AddAgencyState();
 }
 
-class _AddNgoState extends State<AddNgo> {
+class _AddAgencyState extends State<AddAgency> {
   final nameController = TextEditingController();
 
   final addressController = TextEditingController();
@@ -85,32 +85,6 @@ class _AddNgoState extends State<AddNgo> {
           floatingActionButton: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Padding(
-              //   padding: const EdgeInsets.all(8.0),
-              //   child: FloatingActionButton(
-              //       child: const Icon(Icons.file_upload_outlined),
-              //       onPressed: () async {
-              //         await chooseFile();
-              //         await uploadFile(File(_path)).then((value) {
-              //           showDialog(
-              //               context: context,
-              //               builder: (context) {
-              //                 return AlertDialog(
-              //                   title: Text(value),
-              //                 );
-              //               });
-              //         }).catchError((error) {
-              //           showDialog(
-              //               context: context,
-              //               builder: (context) {
-              //                 return AlertDialog(
-              //                   title: Text(error.toString()),
-              //                 );
-              //               });
-              //         });
-              //         imageController.text = _path;
-              //       }),
-              // ),
               FloatingActionButton(
                 child: const Icon(Icons.add),
                 onPressed: () {
@@ -125,7 +99,7 @@ class _AddNgoState extends State<AddNgo> {
                     contactPersonName: contactPersonController.text,
                     description: descriptioncontroller.text,
                     service: selectedService,
-                    entityType: EntityType.private,
+                    entityType: EntityType.government,
                     serviceType: serviceType,
                     urlWeb: urlControlller.text,
                     urlSocialMedia: '',
@@ -160,7 +134,7 @@ class _AddNgoState extends State<AddNgo> {
                   const Padding(
                     padding: EdgeInsets.all(16.0),
                     child: Text(
-                      "Add NGO",
+                      "ADD Government Agency",
                       style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                     ),
                   ),

@@ -47,6 +47,8 @@ dependencies:
   getwidget: ^2.0.4
   multi_select_flutter: ^4.0.0
   image_picker: ^0.8.4+4
+  url_launcher: ^6.0.18
+  dropdown_search: ^2.0.1
 
 
 dev_dependencies:
@@ -64,7 +66,7 @@ dev_dependencies:
 flutter_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/logo option square transparent (1).png"
+  image_path: "assets/bina.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

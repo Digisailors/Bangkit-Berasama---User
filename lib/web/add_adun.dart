@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:bangkit/constants/constituency_list.dart';
+import 'package:bangkit/constants/controller_constants.dart';
 import 'package:bangkit/models/adun.dart';
 import 'package:bangkit/profile/profileregistration.dart';
 import 'package:bangkit/widgets/widgets.dart';
@@ -30,7 +32,22 @@ class _AddAdunState extends State<AddAdun> {
   final descriptioncontroller = TextEditingController();
   final imageController = TextEditingController();
   final stateController = TextEditingController();
+  final weburlController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+    selectedState = federals.keys.first;
+    federalList = federals.keys.toList();
+    selectedFederal = federalList.first;
+  }
+
+  var selectedState;
+
+  var selectedFederal;
+
+  List<String> federalList = [];
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -39,7 +56,7 @@ class _AddAdunState extends State<AddAdun> {
             child: const Icon(Icons.add),
             onPressed: () {
               var adun = Adun(
-                state: stateController.text,
+                state: selectedState,
                 name: nameController.text,
                 contactNumber: phoneNumberController.text,
                 description: descriptioncontroller.text,
@@ -47,8 +64,10 @@ class _AddAdunState extends State<AddAdun> {
                 officeAddress: addressController.text,
                 postCode: postCodeController.text,
                 image: imageController.text,
+                weburl: weburlController.text,
+                federal: selectedFederal,
               );
-
+              print("I am inside");
               if (_formKey.currentState?.validate() ?? false) {
                 _formKey.currentState?.save();
                 Adun.addAdun(adun).then((value) => showDialog(
@@ -133,6 +152,17 @@ class _AddAdunState extends State<AddAdun> {
                       }
                     },
                   ),
+                  CustomTextFormfieldRed(
+                    labelText: 'Web / SocialMedia Reference',
+                    controller: weburlController,
+                    keyboardType: TextInputType.emailAddress,
+                    validator: (value) {
+                      value = value ?? '';
+                      if (value.isEmpty) {
+                        return "This is a required field";
+                      }
+                    },
+                  ),
                   const SizedBox(height: 10),
                   CustomTextFormfieldRed(
                     labelText: 'description',
@@ -156,15 +186,27 @@ class _AddAdunState extends State<AddAdun> {
                     },
                   ),
                   const SizedBox(height: 10),
-                  CustomTextFormfieldRed(
-                    labelText: 'State',
-                    controller: stateController,
-                    validator: (value) {
-                      value = value ?? '';
-                      if (value.isEmpty) {
-                        return "This is a required field";
-                      }
+                  CustomDropDownButtonformField(
+                    labelText: "State",
+                    value: selectedState,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedState = value ?? selectedState;
+                        federalList = federals[selectedState]!.keys.toList();
+                        selectedFederal = federalList.first;
+                      });
                     },
+                    item: federals.keys.map((e) => DropdownMenuItem(child: Text(e.toString()), value: e.toString())).toList(),
+                  ),
+                  CustomDropDownButtonformField(
+                    labelText: "Federal constituency",
+                    value: selectedFederal,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedFederal = value ?? selectedFederal;
+                      });
+                    },
+                    item: federalList.map((e) => DropdownMenuItem(value: e.toString(), child: Text(e.toString()))).toList(),
                   ),
                   const SizedBox(height: 10),
                 ],
@@ -172,5 +214,15 @@ class _AddAdunState extends State<AddAdun> {
             ),
           )),
     );
+  }
+
+  getFederals() {
+    return federals[selectedState]!
+        .keys
+        .map((e) => DropdownMenuItem(
+              child: Text(e.toString()),
+              value: e.toString(),
+            ))
+        .toList();
   }
 }

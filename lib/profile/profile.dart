@@ -26,8 +26,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
         body: StreamBuilder<Object>(
             stream: widget.profileModel.getCurrentUserasStream(),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
-              if (snapshot.connectionState == ConnectionState.active &&
-                  snapshot.hasData) {
+              if (snapshot.connectionState == ConnectionState.active && snapshot.hasData) {
                 if (snapshot.data.data() != null) {
                   var user = Profile.fromJson(snapshot.data.data());
                 }
@@ -47,20 +46,15 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                 child: CircleAvatar(
                                   backgroundColor: Colors.white,
                                   radius: 50,
-                                  child: Image.asset('assets/man.png',
-                                      height: 80, width: 80),
+                                  child: Image.asset('assets/man.png', height: 80, width: 80),
                                 ),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(100)),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
                               ),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: Text(
                                   widget.profileModel.name,
-                                  style: const TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20),
+                                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
                                 ),
                               )
                             ],
@@ -72,6 +66,20 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                         padding: const EdgeInsets.all(8.0),
                         child: ElevatedButton(
                           onPressed: () {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: const Text("This page is under development"),
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: const Text("OK"))
+                                    ],
+                                  );
+                                });
                             // Get.to(() => EditProfile(
                             //       profile: widget.profileModel,
                             //     ));
@@ -117,8 +125,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                 color: Colors.red,
                               ),
                               title: const Text('Secondar Contact Number'),
-                              subtitle:
-                                  Text(widget.profileModel.secondaryPhone),
+                              subtitle: Text(widget.profileModel.secondaryPhone),
                             ),
                             ListTile(
                               leading: const Icon(
@@ -149,10 +156,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                 color: Colors.red,
                               ),
                               title: const Text('Address'),
-                              subtitle: Text(
-                                  widget.profileModel.primaryAddress.line1 +
-                                      '\n' +
-                                      widget.profileModel.primaryAddress.line2),
+                              subtitle: Text(widget.profileModel.primaryAddress.line1 + '\n' + widget.profileModel.primaryAddress.line2),
                             ),
                             ListTile(
                               leading: const Icon(
@@ -160,8 +164,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                 color: Colors.red,
                               ),
                               title: const Text('State'),
-                              subtitle: Text(
-                                  widget.profileModel.primaryAddress.state),
+                              subtitle: Text(widget.profileModel.primaryAddress.state),
                             ),
                             ListTile(
                               leading: const Icon(
@@ -169,8 +172,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                 color: Colors.red,
                               ),
                               title: const Text('Postcode'),
-                              subtitle: Text(
-                                  widget.profileModel.primaryAddress.pincode),
+                              subtitle: Text(widget.profileModel.primaryAddress.pincode),
                             ),
                             ListTile(
                               leading: const Icon(
@@ -178,8 +180,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                 color: Colors.red,
                               ),
                               title: const Text('Description'),
-                              subtitle: Text(widget
-                                  .profileModel.primaryAddress.description),
+                              subtitle: Text(widget.profileModel.primaryAddress.description),
                             ),
                             ListTile(
                               leading: const Icon(
@@ -187,8 +188,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                 color: Colors.red,
                               ),
                               title: const Text('Door Color'),
-                              subtitle: Text(
-                                  widget.profileModel.primaryAddress.doorColor),
+                              subtitle: Text(widget.profileModel.primaryAddress.doorColor),
                             ),
                             ListTile(
                               leading: const Icon(
@@ -196,8 +196,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                 color: Colors.red,
                               ),
                               title: const Text('Roof Color'),
-                              subtitle: Text(
-                                  widget.profileModel.primaryAddress.roofColor),
+                              subtitle: Text(widget.profileModel.primaryAddress.roofColor),
                             ),
                           ],
                         ),
@@ -220,10 +219,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                 color: Colors.red,
                               ),
                               title: const Text('Address'),
-                              subtitle: Text(widget
-                                      .profileModel.secondaryAddress.line1 +
-                                  '\n' +
-                                  widget.profileModel.secondaryAddress.line2),
+                              subtitle: Text(widget.profileModel.secondaryAddress.line1 + '\n' + widget.profileModel.secondaryAddress.line2),
                             ),
                             ListTile(
                               leading: const Icon(
@@ -231,8 +227,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                 color: Colors.red,
                               ),
                               title: const Text('State'),
-                              subtitle: Text(
-                                  widget.profileModel.secondaryAddress.state),
+                              subtitle: Text(widget.profileModel.secondaryAddress.state),
                             ),
                             ListTile(
                               leading: const Icon(
@@ -240,8 +235,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                 color: Colors.red,
                               ),
                               title: const Text('Postcode'),
-                              subtitle: Text(
-                                  widget.profileModel.secondaryAddress.pincode),
+                              subtitle: Text(widget.profileModel.secondaryAddress.pincode),
                             ),
                             ListTile(
                               leading: const Icon(
@@ -249,8 +243,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                 color: Colors.red,
                               ),
                               title: const Text('Description'),
-                              subtitle: Text(widget
-                                  .profileModel.secondaryAddress.description),
+                              subtitle: Text(widget.profileModel.secondaryAddress.description),
                             ),
                             ListTile(
                               leading: const Icon(
@@ -258,8 +251,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                 color: Colors.red,
                               ),
                               title: const Text('Door Color'),
-                              subtitle: Text(widget
-                                  .profileModel.secondaryAddress.doorColor),
+                              subtitle: Text(widget.profileModel.secondaryAddress.doorColor),
                             ),
                             ListTile(
                               leading: const Icon(
@@ -267,8 +259,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                 color: Colors.red,
                               ),
                               title: const Text('Roof Color'),
-                              subtitle: Text(widget
-                                  .profileModel.secondaryAddress.roofColor),
+                              subtitle: Text(widget.profileModel.secondaryAddress.roofColor),
                             ),
                           ],
                         ),

@@ -11,6 +11,8 @@ class Adun {
     required this.postCode,
     required this.emailAddress,
     required this.description,
+    required this.weburl,
+    required this.federal,
   });
 
   int? id;
@@ -22,6 +24,8 @@ class Adun {
   String emailAddress;
   String description;
   String image;
+  String weburl;
+  String federal;
 
   factory Adun.fromJson(Map<String, dynamic> json) => Adun(
         id: json["id"],
@@ -33,6 +37,8 @@ class Adun {
         postCode: json["postCode"],
         emailAddress: json["emailAddress"],
         description: json["description"],
+        weburl: json['weburl'],
+        federal: json["federal"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -46,6 +52,8 @@ class Adun {
         "emailAddress": emailAddress,
         "description": description,
         "searchString": searchString,
+        "weburl": weburl,
+        "federal": federal,
       };
   static Future<dynamic> addAdun(Adun adun) async {
     return firestore.runTransaction((transaction) async {
@@ -80,4 +88,6 @@ class Adun {
     returns.add(text);
     return returns;
   }
+
+  makeSearchArray() {}
 }

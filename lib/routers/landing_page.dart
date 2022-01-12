@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import '../auth/verify_email.dart';
 import '../models/profile.dart';
 import '../profile/profileregistration.dart';
-import 'bottomRoute.dart';
+import 'bottom_route.dart';
 
 class LandingPage extends StatelessWidget {
   const LandingPage({
@@ -24,15 +24,12 @@ class LandingPage extends StatelessWidget {
             var user = snapshot.data;
             if (user!.emailVerified) {
               return StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                stream: Profile.getUserProfileAsStream(
-                    authController.auth.currentUser!.uid),
+                stream: Profile.getUserProfileAsStream(authController.auth.currentUser!.uid),
                 builder: (BuildContext context, AsyncSnapshot profileSnapshot) {
                   print(" am here");
-                  if (profileSnapshot.connectionState ==
-                      ConnectionState.active) {
+                  if (profileSnapshot.connectionState == ConnectionState.active) {
                     if (profileSnapshot.hasData & profileSnapshot.data.exists) {
-                      var profile =
-                          Profile.fromJson(profileSnapshot.data!.data());
+                      var profile = Profile.fromJson(profileSnapshot.data!.data());
                       profileController.profile = profile;
 
                       return BottomRouter();
@@ -40,8 +37,7 @@ class LandingPage extends StatelessWidget {
                       return const Registration();
                     }
                   } else {
-                    return const Scaffold(
-                        body: Center(child: CircularProgressIndicator()));
+                    return const Scaffold(body: Center(child: CircularProgressIndicator()));
                   }
                 },
               );

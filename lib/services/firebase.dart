@@ -29,7 +29,6 @@ CollectionReference<Map<String, dynamic>> services = firestore.collection('Servi
 DocumentReference<Map<String, dynamic>> counters = firestore.collection('globalData').doc('counters');
 
 Future<String> uploadFile(File file) async {
-  var url = await storage.ref("pics").child(basename(file.path)).putFile(file).then((value) async => await value.ref.getDownloadURL());
-  print("url : $url");
+  var url = await storage.ref("pics").child(basename(file.path)).putBlob(file.readAsBytes()).snapshot.ref.getDownloadURL();
   return url;
 }

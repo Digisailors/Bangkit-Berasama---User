@@ -24,6 +24,18 @@ class Auth implements AuthBase {
   @override
   Stream<User?> authStateChanges() => _firebaseAuth.authStateChanges();
 
+  Stream<bool> checkUserVerified() async* {
+    bool verified = false;
+    while (!verified) {
+      await Future.delayed(Duration(seconds: 5));
+      if (currentUser != null) {
+        await currentUser!.reload();
+        verified = currentUser!.emailVerified;
+        if (verified) yield true;
+      }
+    }
+  }
+
   @override
   User? get currentUser => _firebaseAuth.currentUser;
 

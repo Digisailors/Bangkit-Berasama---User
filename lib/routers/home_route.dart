@@ -1,6 +1,6 @@
 import 'package:bangkit/constants/controller_constants.dart';
 import 'package:bangkit/models/ngo.dart';
-import 'package:bangkit/screens/adunList.dart';
+import 'package:bangkit/screens/adun_list.dart';
 import 'package:bangkit/screens/home.dart';
 import 'package:bangkit/screens/rebuildList.dart';
 import 'package:bangkit/screens/repo_list.dart';
@@ -17,13 +17,17 @@ class HomeRoute extends StatelessWidget {
       case 0:
         return HomePage();
       case 1:
-        return NgoList(query: "repos");
+        return NgoList(
+          query: ngos.where("entityType", isEqualTo: 1),
+          entityType: 'NGO REPOSITORY',
+        );
       case 2:
-        return NgoList(query: "");
+        return NgoList(query: ngos.where("entityType", isEqualTo: 0), entityType: 'GOVERNMENT AGENCIES');
       case 3:
         return AdunList();
       case 4:
-        return RebuildList(query: "repos");
+        return NgoList(
+            query: ngos.where("entityType", isEqualTo: 0).where("serviceType", isEqualTo: "Rebuild"), entityType: 'GOVERNMENT REBUILD AGENCIES');
       default:
         return Container(color: Colors.white);
     }

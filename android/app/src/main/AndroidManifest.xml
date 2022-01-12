@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.techinsight.bangkit">
    <application
-        android:label="bangkit"
+        android:label="Bina Bersama"
         android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"

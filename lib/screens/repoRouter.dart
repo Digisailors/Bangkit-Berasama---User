@@ -3,6 +3,7 @@
 import 'package:bangkit/models/ngo.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CustomExpansionTile extends StatefulWidget {
   const CustomExpansionTile({Key? key, required this.ngo}) : super(key: key);
@@ -26,7 +27,7 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
           });
         },
         leading: Padding(
-          padding: const EdgeInsets.only(bottom: 8, left: 4, right: 4, top: 4),
+          padding: const EdgeInsets.only(bottom: 16, left: 4, right: 4, top: 4),
           child: ClipOval(
             child: AspectRatio(
                 aspectRatio: 1,
@@ -47,7 +48,7 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
             ? Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4),
                 child: Text(
-                  widget.ngo.description,
+                  widget.ngo.description + "\n\nService Type : ${widget.ngo.service}",
                   maxLines: 2,
                   softWrap: true,
                   style: const TextStyle(overflow: TextOverflow.ellipsis),
@@ -57,6 +58,15 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
         iconColor: Colors.red,
         expandedCrossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              "\nService Type : ${widget.ngo.service}\n",
+              maxLines: 2,
+              softWrap: true,
+              style: const TextStyle(overflow: TextOverflow.ellipsis),
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
@@ -74,7 +84,7 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
               ),
               Flexible(
                 child: Text(
-                  widget.ngo.address,
+                  widget.ngo.address + ",${widget.ngo.postCode}, ${widget.ngo.state}",
                   maxLines: 3,
                   softWrap: true,
                   style: const TextStyle(overflow: TextOverflow.clip),
@@ -97,33 +107,42 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Icon(Icons.phone, color: Colors.red),
+              GestureDetector(
+                onTap: _launchPhoneURL,
+                child: const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Icon(Icons.phone, color: Colors.red),
+                ),
               ),
               Text(widget.ngo.phoneNumber)
             ],
             mainAxisSize: MainAxisSize.max,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Icon(Icons.mail, color: Colors.red),
-              ),
-              Text(widget.ngo.email)
-            ],
-            mainAxisSize: MainAxisSize.max,
+          GestureDetector(
+            onTap: _launchMailURL,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Icon(Icons.mail, color: Colors.red),
+                ),
+                Text(widget.ngo.email)
+              ],
+              mainAxisSize: MainAxisSize.max,
+            ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Icon(FontAwesomeIcons.facebook, color: Colors.red),
+              GestureDetector(
+                onTap: _launchURL,
+                child: const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Icon(FontAwesomeIcons.facebook, color: Colors.red),
+                ),
               ),
-              Text(widget.ngo.urlSocialMedia)
+              Text(widget.ngo.urlWeb)
             ],
             mainAxisSize: MainAxisSize.max,
           ),
@@ -131,5 +150,42 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
         ],
       ),
     );
+  }
+
+  void _launchMailURL() async {
+    final Uri params = Uri(
+      scheme: 'mailto',
+      path: widget.ngo.email,
+    );
+    String url = params.toString();
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      print('Could not launch $url');
+    }
+  }
+
+  void _launchPhoneURL() async {
+    if (await canLaunch("tel:${widget.ngo.phoneNumber}")) {
+      await launch("tel:${widget.ngo.phoneNumber}");
+    } else {
+      print('Could not launch ${widget.ngo.phoneNumber}');
+    }
+  }
+
+  void _launchURL() async {
+    if (await canLaunch("tel:${widget.ngo.urlWeb}")) {
+      await launch("tel:${widget.ngo.urlWeb}");
+    } else {
+      print('Could not launch ${widget.ngo.urlWeb}');
+    }
+  }
+
+  void _launchMapURL() async {
+    if (await canLaunch("https://www.google.com/maps/search/${widget.ngo.address}")) {
+      await launch("https://www.google.com/maps/search/${widget.ngo.address}");
+    } else {
+      print('Could not launch ${widget.ngo.address}');
+    }
   }
 }
