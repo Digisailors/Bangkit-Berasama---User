@@ -75,23 +75,26 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
               softWrap: true,
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              const Padding(
-                padding: EdgeInsets.all(8),
-                child: Icon(Icons.location_on, color: Colors.red),
-              ),
-              Flexible(
-                child: Text(
-                  widget.ngo.address + ",${widget.ngo.postCode}, ${widget.ngo.state}",
-                  maxLines: 3,
-                  softWrap: true,
-                  style: const TextStyle(overflow: TextOverflow.clip),
+          GestureDetector(
+            onTap: _launchMapURL,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.all(8),
+                  child: Icon(Icons.location_on, color: Colors.red),
                 ),
-              )
-            ],
-            mainAxisSize: MainAxisSize.max,
+                Flexible(
+                  child: Text(
+                    widget.ngo.address + ",${widget.ngo.postCode}, ${widget.ngo.state}",
+                    maxLines: 3,
+                    softWrap: true,
+                    style: const TextStyle(overflow: TextOverflow.clip),
+                  ),
+                )
+              ],
+              mainAxisSize: MainAxisSize.max,
+            ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -132,19 +135,19 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
               mainAxisSize: MainAxisSize.max,
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              GestureDetector(
-                onTap: _launchURL,
-                child: const Padding(
+          GestureDetector(
+            onTap: _launchURL,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const Padding(
                   padding: EdgeInsets.all(8.0),
                   child: Icon(FontAwesomeIcons.facebook, color: Colors.red),
                 ),
-              ),
-              Text(widget.ngo.urlWeb)
-            ],
-            mainAxisSize: MainAxisSize.max,
+                Text(widget.ngo.urlWeb)
+              ],
+              mainAxisSize: MainAxisSize.max,
+            ),
           ),
           const SizedBox(height: 8),
         ],
@@ -158,34 +161,20 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
       path: widget.ngo.email,
     );
     String url = params.toString();
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      print('Could not launch $url');
-    }
+    await launch(url);
   }
 
   void _launchPhoneURL() async {
-    if (await canLaunch("tel:${widget.ngo.phoneNumber}")) {
-      await launch("tel:${widget.ngo.phoneNumber}");
-    } else {
-      print('Could not launch ${widget.ngo.phoneNumber}');
-    }
+    await launch("tel:${widget.ngo.phoneNumber}");
   }
 
   void _launchURL() async {
-    if (await canLaunch("tel:${widget.ngo.urlWeb}")) {
-      await launch("tel:${widget.ngo.urlWeb}");
-    } else {
-      print('Could not launch ${widget.ngo.urlWeb}');
+    if (await canLaunch(widget.ngo.urlWeb)) {
+      await launch(widget.ngo.urlWeb);
     }
   }
 
   void _launchMapURL() async {
-    if (await canLaunch("https://www.google.com/maps/search/${widget.ngo.address}")) {
-      await launch("https://www.google.com/maps/search/${widget.ngo.address}");
-    } else {
-      print('Could not launch ${widget.ngo.address}');
-    }
+    await launch("https://www.google.com/maps/search/${widget.ngo.address}");
   }
 }
