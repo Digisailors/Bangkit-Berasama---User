@@ -1,11 +1,14 @@
+import 'dart:async';
+import 'package:bangkit/constants/controller_constants.dart';
 import 'package:bangkit/models/ngo.dart';
+import 'package:bangkit/services/firebase.dart';
 import 'package:flutter/material.dart';
 import '../profile/profileregistration.dart';
 import 'dart:ui';
-
+import 'package:image_picker/image_picker.dart';
 import 'package:get/get.dart';
-
-import 'package:flutter/material.dart';
+import 'dart:io';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class AddNgo extends StatefulWidget {
   AddNgo({Key? key}) : super(key: key);
@@ -35,11 +38,23 @@ class _AddNgoState extends State<AddNgo> {
 
   final entityTypeController = TextEditingController();
 
+  final urlControlller = TextEditingController();
+
   final imageController = TextEditingController();
 
   EntityType? entity = EntityType.government;
   // var type;
   ServiceType? serviceType = ServiceType.assistance;
+
+  late String selectedService;
+  String selectedState = postalCodes.keys.first;
+
+  List<String> services = [];
+  // late  List<Paths?> _paths = [];
+  late List<String?> items = [null];
+  late List<Widget> _storeItmes = [];
+  String _path = '';
+  File? _file = null;
 
   @override
   void initState() {
@@ -47,6 +62,17 @@ class _AddNgoState extends State<AddNgo> {
     super.initState();
     entity = EntityType.government;
     serviceType = ServiceType.assistance;
+    services = serviceListController.service ?? [];
+    selectedService = services.first;
+  }
+
+  Future chooseFile() async {
+    var file = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (file != null) {
+      setState(() {
+        _path = file.path;
+      });
+    }
   }
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -54,41 +80,57 @@ class _AddNgoState extends State<AddNgo> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          floatingActionButton: FloatingActionButton(
-            child: const Icon(Icons.add),
-            onPressed: () {
-              var ngo = Ngo(
-                  name: nameController.text,
-                  address: addressController.text,
-                  image: imageController.text,
-                  postCode: postCodeController.text,
-                  state: stateController.text,
-                  phoneNumber: phoneNumberController.text,
-                  email: emailController.text,
-                  contactPersonName: contactPersonController.text,
-                  description: descriptioncontroller.text,
-                  // type: type ?? Type.medical,
-                  entityType: entity,
-                  serviceType: serviceType);
-              if (_formKey.currentState?.validate() ?? false) {
-                _formKey.currentState?.save();
-                Ngo.addNgo(ngo).then((value) => showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: const Text("Successfully Saved"),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: const Text("Okay"),
-                          )
-                        ],
-                      );
-                    }));
-              }
-            },
+          floatingActionButton: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: FloatingActionButton(onPressed: () async {
+                  await chooseFile();
+                  _path = await uploadFile(File(_path));
+                  imageController.text = _path;
+                }),
+              ),
+              FloatingActionButton(
+                child: const Icon(Icons.add),
+                onPressed: () {
+                  var ngo = Ngo(
+                    name: nameController.text,
+                    address: addressController.text,
+                    image: imageController.text,
+                    postCode: postCodeController.text,
+                    state: selectedState,
+                    phoneNumber: phoneNumberController.text,
+                    email: emailController.text,
+                    contactPersonName: contactPersonController.text,
+                    description: descriptioncontroller.text,
+                    service: selectedService,
+                    entityType: entity,
+                    serviceType: serviceType,
+                    urlWeb: urlControlller.text,
+                    urlSocialMedia: '',
+                  );
+                  if (_formKey.currentState?.validate() ?? false) {
+                    _formKey.currentState?.save();
+                    Ngo.addNgo(ngo).then((value) => showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: const Text("Successfully Saved"),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text("Okay"),
+                              )
+                            ],
+                          );
+                        }));
+                  }
+                },
+              ),
+            ],
           ),
           body: SingleChildScrollView(
             child: Form(
@@ -183,16 +225,6 @@ class _AddNgoState extends State<AddNgo> {
                     },
                   ),
                   const SizedBox(height: 10),
-                  CustomTextFormfieldRed(
-                    labelText: 'State',
-                    controller: stateController,
-                    validator: (value) {
-                      value = value ?? '';
-                      if (value.isEmpty) {
-                        return "This is a required field";
-                      }
-                    },
-                  ),
                   const SizedBox(height: 10),
                   CustomTextFormfieldRed(
                     labelText: 'description',
@@ -205,33 +237,30 @@ class _AddNgoState extends State<AddNgo> {
                     },
                   ),
                   const SizedBox(height: 10),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: DropdownButtonFormField(
-                        // validator: (value) => value != null ? "Field is Required" : null,
-                        value: entity,
-                        onChanged: (EntityType? type) {
-                          setState(() {
-                            entity = type;
-                          });
-                        },
-                        items: EntityType.values.map((e) => DropdownMenuItem(value: e, child: Text(e.toString()))).toList()),
+                  CustomDropDownButtonformField(
+                    labelText: "State",
+                    value: selectedState,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedState = value ?? selectedState;
+                      });
+                    },
+                    item: postalCodes.keys
+                        .map((e) => DropdownMenuItem(
+                              child: Text(e),
+                              value: e,
+                            ))
+                        .toList(),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: DropdownButtonFormField<ServiceType>(
-                      // validator: (value) => value != null ? "Field is Required" : null,
-                      value: serviceType,
-                      onChanged: (ServiceType? stype) {
-                        setState(() {
-                          serviceType = stype;
-                        });
-                      },
-                      items: ServiceType.values.map((e) => DropdownMenuItem(value: e, child: Text(e.toString()))).toList(),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 60,
+                  CustomDropDownButtonformField(
+                    labelText: "Service",
+                    value: selectedService,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedState = value ?? selectedState;
+                      });
+                    },
+                    item: services.map((e) => DropdownMenuItem(value: e, child: Text(e.toString()))).toList(),
                   ),
                 ],
               ),

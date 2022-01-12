@@ -12,3 +12,8 @@ class ProfileController extends GetxController {
   static ProfileController instance = Get.find();
   Profile? profile;
 }
+
+class ServiceListController extends GetxController {
+  static ServiceListController instance = Get.find();
+  List<String>? service = [];
+}

@@ -17,6 +17,9 @@ class Ngo {
     required this.image,
     required this.description,
     required this.contactPersonName,
+    required this.service,
+    required this.urlWeb,
+    required this.urlSocialMedia,
     this.props,
     this.type,
     this.entityType,
@@ -31,7 +34,10 @@ class Ngo {
   String state;
   String phoneNumber;
   String email;
+  String urlWeb;
+  String urlSocialMedia;
   String description;
+  String service;
   String? props;
   Type? type;
   EntityType? entityType;
@@ -52,6 +58,9 @@ class Ngo {
         serviceType: ServiceType.values.elementAt(json["serviceType"] ?? 0),
         postCode: json["postCode"] ?? '',
         state: json["state"] ?? '',
+        service: json['service'] ?? '',
+        urlSocialMedia: json['urlSocialMedia'] ?? '',
+        urlWeb: json['urlWeb'] ?? '',
       );
 
   get searchArray {
@@ -86,6 +95,9 @@ class Ngo {
         "postCode": postCode,
         "searchText": searchString,
         "searchArray": searchArray,
+        "service": service,
+        "urlWeb": urlWeb,
+        "urlSocialMedia": urlSocialMedia,
       };
 
   static Future<dynamic> addNgo(Ngo ngo) async {

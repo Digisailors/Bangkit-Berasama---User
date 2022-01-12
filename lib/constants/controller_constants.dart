@@ -4,6 +4,7 @@ import 'package:bangkit/controllers/page_controller.dart';
 AuthController authController = AuthController.instance;
 IndexController pageController = IndexController.instance;
 ProfileController profileController = ProfileController.instance;
+ServiceListController serviceListController = ServiceListController.instance;
 
 enum AuthProvider { phoneNUmber, email }
 

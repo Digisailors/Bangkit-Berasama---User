@@ -1,5 +1,8 @@
+// ignore_for_file: file_names
+
 import 'package:bangkit/models/ngo.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class CustomExpansionTile extends StatefulWidget {
   const CustomExpansionTile({Key? key, required this.ngo}) : super(key: key);
@@ -23,7 +26,7 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
           });
         },
         leading: Padding(
-          padding: const EdgeInsets.all(4.0),
+          padding: const EdgeInsets.only(bottom: 8, left: 4, right: 4, top: 4),
           child: ClipOval(
             child: AspectRatio(
                 aspectRatio: 1,
@@ -45,7 +48,7 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
                 padding: const EdgeInsets.symmetric(vertical: 4),
                 child: Text(
                   widget.ngo.description,
-                  maxLines: 3,
+                  maxLines: 2,
                   softWrap: true,
                   style: const TextStyle(overflow: TextOverflow.ellipsis),
                 ),
@@ -54,6 +57,14 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
         iconColor: Colors.red,
         expandedCrossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              widget.ngo.description,
+              maxLines: 20,
+              softWrap: true,
+            ),
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -105,13 +116,16 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
             ],
             mainAxisSize: MainAxisSize.max,
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              widget.ngo.description,
-              maxLines: 20,
-              softWrap: true,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Icon(FontAwesomeIcons.facebook, color: Colors.red),
+              ),
+              Text(widget.ngo.urlSocialMedia)
+            ],
+            mainAxisSize: MainAxisSize.max,
           ),
           const SizedBox(height: 8),
         ],

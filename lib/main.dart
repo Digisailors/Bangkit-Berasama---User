@@ -1,8 +1,11 @@
-import 'package:bangkit/dummy/add_adun.dart';
-import 'package:bangkit/dummy/add_ngo.dart';
-import 'package:bangkit/dummy/add_rebuild.dart';
+import 'package:bangkit/constants/controller_constants.dart';
+import 'package:bangkit/models/service_category.dart';
+import 'package:bangkit/web/add_adun.dart';
+import 'package:bangkit/web/add_ngo.dart';
+import 'package:bangkit/web/add_rebuild.dart';
 import 'package:bangkit/routers/bottomRoute.dart';
 import 'package:bangkit/routers/landing_page.dart';
+import 'package:bangkit/web/add_service.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
@@ -17,9 +20,13 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   Get.put(AuthController());
   Get.put(IndexController());
   Get.put(ProfileController());
+  Get.put(ServiceListController());
+
+  serviceListController.service = await NgoService.getServices();
   runApp(const MyApp());
 }
 
@@ -44,10 +51,9 @@ class MyApp extends StatelessWidget {
           labelStyle: TextStyle(color: Colors.pink[800]), // color for text
           indicator: const BoxDecoration(color: Color(0xFF00b3df)),
         ),
-        scaffoldBackgroundColor: Color(0xFFF5F5F5),
+        scaffoldBackgroundColor: const Color(0xFFF5F5F5),
         bottomAppBarTheme: const BottomAppBarTheme(),
-        bottomNavigationBarTheme:
-            const BottomNavigationBarThemeData(elevation: 5, backgroundColor: Colors.blue),
+        bottomNavigationBarTheme: const BottomNavigationBarThemeData(elevation: 5, backgroundColor: Colors.blue),
         appBarTheme: const AppBarTheme(backgroundColor: Colors.white),
         chipTheme: const ChipThemeData(
           elevation: 4,
@@ -61,11 +67,9 @@ class MyApp extends StatelessWidget {
           labelStyle: TextStyle(color: Colors.white),
           secondarySelectedColor: Color(0xFF63e5ff),
         ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-            style:
-                ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xFF00b3df)))),
+        elevatedButtonTheme: ElevatedButtonThemeData(style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xFF00b3df)))),
       ),
-      home: AddApp(),
+      home: MyApp(),
     );
   }
 }
@@ -84,8 +88,8 @@ class _AddAppState extends State<AddApp> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      initialIndex: 1,
-      length: 3,
+      initialIndex: 0,
+      length: 4,
       child: Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.blue,
@@ -99,6 +103,9 @@ class _AddAppState extends State<AddApp> {
                 ),
                 Tab(
                   child: Text("REBUILD"),
+                ),
+                Tab(
+                  child: Text("ADD SERVICE"),
                 ),
               ],
             ),
@@ -135,7 +142,7 @@ class _AddAppState extends State<AddApp> {
             ),
           ),
           body: TabBarView(
-            children: [AddAdun(), AddNgo(), Addrebuild()],
+            children: [AddNgo(), AddAdun(), Addrebuild(), const AddService()],
           )),
     );
   }
