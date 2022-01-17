@@ -3,6 +3,7 @@ import 'package:bangkit/models/service_category.dart';
 import 'package:bangkit/web/add_adun.dart';
 import 'package:bangkit/web/add_agency.dart';
 import 'package:bangkit/web/add_ngo.dart';
+import 'package:bangkit/web/add_post.dart';
 import 'package:bangkit/web/add_rebuild.dart';
 import 'package:bangkit/routers/bottom_route.dart';
 import 'package:bangkit/routers/landing_page.dart';
@@ -91,7 +92,7 @@ class _AddAppState extends State<AddApp> {
   Widget build(BuildContext context) {
     return DefaultTabController(
       initialIndex: 0,
-      length: 4,
+      length: 5,
       child: Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.blue,
@@ -108,6 +109,9 @@ class _AddAppState extends State<AddApp> {
                 ),
                 Tab(
                   child: Text("Services"),
+                ),
+                Tab(
+                  child: Text("AID & GRANT"),
                 ),
               ],
             ),
@@ -144,7 +148,7 @@ class _AddAppState extends State<AddApp> {
             ),
           ),
           body: TabBarView(
-            children: [AddAgency(), AddNgo(), AddAdun(), const AddService()],
+            children: [AddAgency(), AddNgo(), AddAdun(), const AddService(), AddPost()],
           )),
     );
   }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bangkit/constants/controller_constants.dart';
 
 import 'package:flutter/material.dart';
@@ -11,6 +13,23 @@ class VerifyEmail extends StatefulWidget {
 
 class _VerifyEmailState extends State<VerifyEmail> {
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    Timer.periodic(Duration(seconds: 5), (timer) {
+      authController.auth.currentUser!.reload();
+
+      if (authController.auth.currentUser!.emailVerified) {
+        Navigator.of(context).popAndPushNamed('/');
+        timer.cancel();
+      }
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

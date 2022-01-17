@@ -23,8 +23,10 @@ final FirebaseStorage storage = FirebaseStorage.instance;
 CollectionReference<Map<String, dynamic>> users = firestore.collection('Users');
 CollectionReference<Map<String, dynamic>> ngos = firestore.collection('Ngos');
 CollectionReference<Map<String, dynamic>> aduns = firestore.collection('Aduns');
+CollectionReference<Map<String, dynamic>> posts = firestore.collection('Posts');
 CollectionReference<Map<String, dynamic>> rebuilds = firestore.collection('Rebuilds');
 CollectionReference<Map<String, dynamic>> services = firestore.collection('Services');
+CollectionReference<Map<String, dynamic>> feedbacks = firestore.collection('Feedbacks');
 
 DocumentReference<Map<String, dynamic>> counters = firestore.collection('globalData').doc('counters');
 

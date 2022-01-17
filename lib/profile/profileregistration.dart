@@ -2,6 +2,7 @@ import 'package:bangkit/constants/controller_constants.dart';
 import 'package:bangkit/models/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import '../models/feedback.dart' as f;
 
 class Registration extends StatefulWidget {
   const Registration({Key? key}) : super(key: key);

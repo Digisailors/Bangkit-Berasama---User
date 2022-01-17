@@ -1,24 +1,25 @@
 import 'package:bangkit/constants/themeconstants.dart';
+import 'package:bangkit/models/aid_and_grant.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
+import 'package:photo_view/photo_view.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Story extends StatefulWidget {
-  const Story({Key? key}) : super(key: key);
-
+  const Story({Key? key, required this.post}) : super(key: key);
+  final Post post;
   @override
   State<Story> createState() => _StoryState();
 }
 
 class _StoryState extends State<Story> {
-
-
-  bool isUseful =false;
-
+  bool isUseful = false;
 
   Widget getImage(BuildContext context, String url, width, height) {
     return Padding(
-      padding:EdgeInsets.all(10.0),
+      padding: const EdgeInsets.all(10.0),
       child: Row(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -27,21 +28,23 @@ class _StoryState extends State<Story> {
             width: width,
             height: height,
             decoration: BoxDecoration(
-              color: Color(0xFFDBE2E7),
+              // color: Color(0xFFDBE2E7),
+              color: Colors.black,
               borderRadius: BorderRadius.circular(16),
             ),
             child: Stack(
               children: [
-                Align(
-                  alignment: AlignmentDirectional(0, 0),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(16),
-                    child: Image.network(
-                      url,
-                      width: double.infinity,
-                      height: double.infinity,
-                      fit: BoxFit.cover,
-                    ),
+                GestureDetector(
+                  onTap: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return PhotoView(imageProvider: NetworkImage(url));
+                        });
+                  },
+                  child: Align(
+                    alignment: AlignmentDirectional(0, 0),
+                    child: Image.network(url),
                   ),
                 ),
                 Padding(
@@ -80,18 +83,73 @@ class _StoryState extends State<Story> {
     );
   }
 
-  Widget listOfDetails(title,icon) {
+  Widget getAttachmentTile(url) {
+    return GestureDetector(
+      onTap: () async {
+        await launch(url);
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(left: 16.0),
+        child: Container(
+          height: 80,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            color: Colors.grey,
+          ),
+          child: const AspectRatio(
+            aspectRatio: 1,
+            child: Icon(
+              Icons.attach_file,
+              size: 30,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget getImageTile(url) {
+    return GestureDetector(
+      onTap: () async {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return PhotoView(imageProvider: NetworkImage(url));
+            });
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(left: 16.0),
+        child: Container(
+          height: 80,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            color: Colors.grey,
+          ),
+          child: AspectRatio(
+            aspectRatio: 1,
+            child: Image.network(url, fit: BoxFit.contain),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget listOfDetails(title, icon) {
     return Padding(
       padding: const EdgeInsets.all(4.0),
       child: Column(
         mainAxisSize: MainAxisSize.max,
         children: [
           ListTile(
-            leading: Icon(icon,color: Color(0xFF00b3df),),
-            title: Text(title,style: getText(context).subtitle2,),
+            leading: Icon(
+              icon,
+              color: Color(0xFF00b3df),
+            ),
+            title: Text(
+              title,
+              style: getText(context).subtitle2,
+            ),
           ),
-
-
         ],
       ),
     );
@@ -99,22 +157,16 @@ class _StoryState extends State<Story> {
 
   @override
   Widget build(BuildContext context) {
-
-
-
-
     return // Generated code for this Column Widget...
         SafeArea(
-          child: Scaffold(
-            appBar:AppBar(
-              iconTheme: IconThemeData(color: Colors.black),
-              automaticallyImplyLeading: true,
-
-              centerTitle: true,
-              title: SizedBox( height: getHeight(context)*0.15,
-                  child: Image.asset('assets/bina.png')),
-            ),
-      body: Column(
+      child: Scaffold(
+        appBar: AppBar(
+          iconTheme: const IconThemeData(color: Colors.black),
+          automaticallyImplyLeading: true,
+          centerTitle: true,
+          title: SizedBox(height: getHeight(context) * 0.15, child: Image.asset('assets/bina.png')),
+        ),
+        body: Column(
           mainAxisSize: MainAxisSize.max,
           children: [
             Expanded(
@@ -124,15 +176,14 @@ class _StoryState extends State<Story> {
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(24, 20, 24, 0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(24, 20, 24, 0),
                       child: Text(
-                        'Help Support Families of Frontline Forest'
-                        'Staff Who Died of Covid',
+                        widget.post.title,
                         overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.left,
                         maxLines: 3,
                         softWrap: true,
-                        style: TextStyle(
+                        style: const TextStyle(
                           overflow: TextOverflow.ellipsis,
                           fontFamily: 'Lexend Deca',
                           color: Color(0xFF090F13),
@@ -141,7 +192,6 @@ class _StoryState extends State<Story> {
                         ),
                       ),
                     ),
-
                     Padding(
                       padding: EdgeInsetsDirectional.fromSTEB(24, 4, 24, 0),
                       child: Row(
@@ -149,14 +199,10 @@ class _StoryState extends State<Story> {
                         children: [
                           Expanded(
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 24),
+                              padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 24),
                               child: Text(
-                                'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna '
-                                'aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo '
-                                'consequat.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi.\n'
-                                'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore '
-                                'magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi.',
-                                style: TextStyle(
+                                widget.post.description,
+                                style: const TextStyle(
                                   fontFamily: 'Lexend Deca',
                                   color: Color(0xFF8B97A2),
                                   fontSize: 14,
@@ -175,7 +221,7 @@ class _StoryState extends State<Story> {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          'Images&Videos',
+                          'Images & Videos',
                           style: Theme.of(context).textTheme.headline6,
                         ),
                       ),
@@ -194,47 +240,13 @@ class _StoryState extends State<Story> {
                     const Divider(),
                     SizedBox(
                         height: getHeight(context) * 0.20,
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: [
-                              getImage(
-                                context,
-                                'https://i.ibb.co/F8LcyML/222.jpg'
-                                'Urgently '
-                                'needed 4x4 vehicles and boats to assist flood victims in shah alam.Ngo1 kuala lampur',
-                                getHeight(context) * 0.10,
-                                getHeight(context) * 0.10,
-                              ),
-                              getImage(
-                                context,
-                                'https://i.ibb.co/4dZFVYN/333.jpg'
-                                'People Need Climate Adaption Fund'
-                                'Ngo1'
-                                'kuala lampur',
-                                getHeight(context) * 0.10,
-                                getHeight(context) * 0.10,
-                              ),
-                              getImage(
-                                context,
-                                'https://cdn-icons-png.flaticon.com/512/860/860831.png',
-                                getHeight(context) * 0.10,
-                                getHeight(context) * 0.10,
-                              ),
-                              getImage(
-                                context,
-                                'https://i.ibb.co/4dZFVYN/333.jpg'
-                                    'People Need Climate Adaption Fund'
-                                    'Ngo1'
-                                    'kuala lampur',
-                                getHeight(context) * 0.10,
-                                getHeight(context) * 0.10,
-                              ),
-                            ],
-                          ),
-                        )),
-
-
+                        child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: widget.post.media == null
+                                ? [Container()]
+                                // : widget.post.media!.map((e) => getImage(context, e, getHeight(context) * 0.10, getHeight(context) * 0.10)).toList(),
+                                : widget.post.media!.map((e) => getImageTile(e)).toList())),
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Padding(
@@ -257,121 +269,45 @@ class _StoryState extends State<Story> {
                       ),
                     ),
                     const Divider(),
-
                     SizedBox(
                         height: getHeight(context) * 0.20,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            getImage(
-                              context,
-                              'https://cdn-icons-png.flaticon.com/512/3997/3997593.png',
-                              getHeight(context) * 0.10,
-                              getHeight(context) * 0.10,
-                            ),
-
-                          ],
+                          mainAxisSize: MainAxisSize.max,
+                          children: widget.post.attachments!.map((e) => getAttachmentTile(e)).toList(),
                         )),
-                    Divider(),
-
-                    SizedBox(
+                    const Divider(),
+                    const SizedBox(
                       height: 20,
                     ),
-                    listOfDetails(
-                      '2, Jalan Medini Utara 4, 79250 Nusajaya, Johor, Malaysia',Icons.location_pin
-
+                    listOfDetails(widget.post.address, Icons.location_pin),
+                    listOfDetails(widget.post.name, Icons.person),
+                    listOfDetails(widget.post.phone, Icons.phone),
+                    listOfDetails(widget.post.email, Icons.mail),
+                    const Divider(),
+                    RatingBar.builder(
+                      ignoreGestures: !widget.post.canRate,
+                      initialRating: widget.post.myRating.toDouble(),
+                      allowHalfRating: false,
+                      itemBuilder: (context, _) => const Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                      ),
+                      onRatingUpdate: (double value) {
+                        print(value);
+                        widget.post.ratePost(value.toInt());
+                      },
                     ),
-                    listOfDetails(
-                        'Adam',Icons.person
-
-                    ),
-                    listOfDetails(
-                        '+60 826505648',Icons.phone
-
-                    ),
-                    listOfDetails(
-                        'new.info@gmail.com',Icons.mail
-
-                    ),
-                    Divider(),
-                    ButtonBar(
-
-                      alignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        ElevatedButton(
-                          style: ButtonStyle(
-                              elevation: MaterialStateProperty.all(0),
-                              backgroundColor: MaterialStateProperty.all(Color(0xFFF5F5F5))
-                          ),
-
-                          onPressed: () {
-                            setState(() {
-
-                              isUseful=true;
-                            });
-                            // Perform some action
-                          },
-                          child: SizedBox(
-                            width: getWidth(context)*0.25,
-                            child: Row(
-                              children: [
-                                Icon(isUseful==true?Icons.thumb_up:Icons.thumb_up_alt_outlined,color: isUseful==true?Colors.green: Color
-                                  (0xFF22A8E0) ,),
-
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text('Useful',style: TextStyle(color: isUseful==true?Colors.green: Color
-                                    (0xFF22A8E0))),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-
-                        ElevatedButton(
-                          style: ButtonStyle(
-                              elevation: MaterialStateProperty.all(0),
-                              backgroundColor: MaterialStateProperty.all(Color(0xFFF5F5F5))
-                          ),
-
-                          onPressed: () {
-                            setState(() {
-                              isUseful=false;
-
-
-                            });
-                            // Perform some action
-                          },
-                          child: SizedBox(
-                            width: getWidth(context)*0.25,
-                            child: Row(
-                              children: [
-                                Icon(isUseful==false?Icons.thumb_down:Icons.thumb_down_alt_outlined,color:
-                                isUseful==false?Colors.green: Color
-                                  (0xFF22A8E0) ,),
-
-                                Padding(
-                                  padding:  EdgeInsets.only(left: 8.0),
-                                  child: Text('Not Useful',style: TextStyle(color:
-                                  isUseful==false?Colors
-                                      .green: Color
-                                    (0xFF22A8E0))),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-
-                    SizedBox(height: getHeight(context)*0.20,)
+                    SizedBox(
+                      height: getHeight(context) * 0.20,
+                    )
                   ],
                 ),
               ),
             ),
           ],
+        ),
       ),
-    ),
-        );
+    );
   }
 }

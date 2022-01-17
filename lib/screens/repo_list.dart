@@ -36,10 +36,18 @@ class _NgoListState extends State<NgoList> {
     setState(() {
       query = widget.query;
       if (states.isNotEmpty) {
-        query = query.where("state", whereIn: states);
+        if (states.length < 6) {
+          query = query.where("state", whereIn: states);
+        } else {
+          var uncheckedStates = postalCodes.keys.toList().where((element) => !states.contains(element)).toList();
+          query = query.where("state", whereNotIn: uncheckedStates);
+        }
       }
       if (selectedService != null) {
-        query = query.where("service", isEqualTo: selectedService);
+        query = query.where(
+          "service",
+          isEqualTo: selectedService,
+        );
       }
     });
   }
