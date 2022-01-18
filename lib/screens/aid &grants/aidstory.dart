@@ -7,6 +7,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class Story extends StatefulWidget {
   const Story({Key? key, required this.post}) : super(key: key);
@@ -82,6 +83,10 @@ class _StoryState extends State<Story> {
     );
   }
 
+  List<String> get attachments => widget.post.attachments ?? [];
+  List<String> get videos => widget.post.videos ?? [];
+  List<String> get media => widget.post.media ?? [];
+
   @override
   Widget build(BuildContext context) {
     return // Generated code for this Column Widget...
@@ -143,9 +148,9 @@ class _StoryState extends State<Story> {
                       ),
                     ),
                     const Divider(),
-                    MediaLister(type: FileType.image, urls: widget.post.media ?? []),
-                    MediaLister(type: FileType.video, urls: widget.post.videos ?? []),
-                    MediaLister(type: FileType.attachment, urls: widget.post.attachments ?? []),
+                    media.isEmpty ? Container() : MediaLister(type: FileType.image, urls: widget.post.media ?? []),
+                    videos.isEmpty ? Container() : MediaLister(type: FileType.video, urls: widget.post.videos ?? []),
+                    attachments.isEmpty ? Container() : MediaLister(type: FileType.attachment, urls: widget.post.attachments ?? []),
                     const SizedBox(
                       height: 20,
                     ),
@@ -154,6 +159,10 @@ class _StoryState extends State<Story> {
                     listOfDetails(widget.post.phone, Icons.phone),
                     listOfDetails(widget.post.email, Icons.mail),
                     const Divider(),
+                    Padding(
+                      padding: EdgeInsets.all(8),
+                      child: widget.post.canRate ? Text("Please rate below") : Text("Thanks for your rating"),
+                    ),
                     RatingBar.builder(
                       ignoreGestures: !widget.post.canRate,
                       initialRating: widget.post.myRating.toDouble(),
@@ -165,6 +174,7 @@ class _StoryState extends State<Story> {
                       onRatingUpdate: (double value) {
                         print(value);
                         widget.post.ratePost(value.toInt());
+                        setState(() {});
                       },
                     ),
                     SizedBox(
@@ -191,22 +201,20 @@ class MediaLister extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              _array[type.index],
-              style: Theme.of(context).textTheme.headline6!.merge(const TextStyle(
-                    shadows: [Shadow(color: Colors.black, offset: Offset(0, -5))],
-                    color: Colors.transparent,
-                    decoration: TextDecoration.underline,
-                    decorationColor: Color(0xFF22A8E0),
-                    decorationThickness: 3,
-                    decorationStyle: TextDecorationStyle.solid,
-                  )),
-            ),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+          child: Text(
+            _array[type.index],
+            style: Theme.of(context).textTheme.headline6!.merge(const TextStyle(
+                  shadows: [Shadow(color: Colors.black, offset: Offset(0, -5))],
+                  color: Colors.transparent,
+                  decoration: TextDecoration.underline,
+                  decorationColor: Color(0xFF22A8E0),
+                  decorationThickness: 3,
+                  decorationStyle: TextDecorationStyle.solid,
+                )),
           ),
         ),
         Container(
@@ -260,7 +268,37 @@ class MediaLister extends StatelessWidget {
   }
 
   Widget getVideoTile(urls, context) {
-    return SizedBox(height: 80, width: 80, child: VideoItem(url: urls));
+    var id;
+
+    if (urls.toString().contains("=")) {
+      id = urls.toString().split("=").last;
+    } else {
+      id = urls.toString().split("/").last;
+    }
+
+    var url = "https://img.youtube.com/vi/$id/0.jpg";
+    return GestureDetector(
+      onTap: () {
+        Get.to(() => YouTube(id: id));
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(left: 16.0),
+        child: Container(
+          height: 80,
+          width: 80,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            color: Colors.grey,
+            image: DecorationImage(image: NetworkImage(url), fit: BoxFit.contain, scale: 0.5),
+          ),
+          child: Icon(
+            Icons.play_arrow,
+            size: 30,
+            color: Colors.grey.shade200,
+          ),
+        ),
+      ),
+    );
   }
 
   Widget getAttachmentTile(url, [context]) {
@@ -283,6 +321,64 @@ class MediaLister extends StatelessWidget {
               size: 30,
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class YouTube extends StatefulWidget {
+  const YouTube({Key? key, required this.id}) : super(key: key);
+
+  final String id;
+
+  @override
+  State<YouTube> createState() => _YouTubeState();
+}
+
+class _YouTubeState extends State<YouTube> {
+  bool mute = true;
+  @override
+  void initState() {
+    super.initState();
+    _controller = YoutubePlayerController(
+      initialVideoId: widget.id,
+      flags: YoutubePlayerFlags(
+        autoPlay: true,
+        mute: mute,
+      ),
+    );
+  }
+
+  Widget getMuteIcon() {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          mute = !mute;
+        });
+        if (mute) {
+          _controller.mute();
+        } else {
+          _controller.unMute();
+        }
+      },
+      child: mute ? const Icon(Icons.volume_off) : const Icon(Icons.volume_up),
+    );
+  }
+
+  late YoutubePlayerController _controller;
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: YoutubePlayer(
+          controller: _controller,
+          width: getWidth(context),
+          bottomActions: [
+            CurrentPosition(),
+            ProgressBar(isExpanded: true),
+            getMuteIcon(),
+          ],
         ),
       ),
     );

@@ -39,11 +39,10 @@ class _WeatherHomeState extends State<WeatherHome> {
                   '.com/videos/hurricane-infrared-satellite-view-video-id91487341');
 
         case 2:
-          return VideoApp2(
+          return VideoApp(
             url: 'https://media.istockphoto.com/videos/hurricane-infrared-satellite-view-video-id91487341',
           );
-        case 3:
-          return Videoapp3();
+
         case 4:
           return WeatherBoard2();
         case 5:

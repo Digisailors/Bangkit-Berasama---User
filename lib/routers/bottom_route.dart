@@ -103,7 +103,7 @@ class _BottomRouterState extends State<BottomRouter> {
     return Scaffold(
       body: getWidgets(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
-        // showUnselectedLabels: true,
+        showUnselectedLabels: true,
         selectedItemColor: Colors.blue,
         unselectedItemColor: Colors.grey,
         elevation: 0,

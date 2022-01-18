@@ -15,13 +15,12 @@ class AidAndGrants extends StatefulWidget {
 }
 
 class _AidAndGrantsState extends State<AidAndGrants> {
-  bool isUseful = false;
-
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
           title: SizedBox(height: getHeight(context) * 0.15, child: Image.asset('assets/bina.png')),
+          // bottom: PreferredSize(child: child, preferredSize: preferredSize),
         ),
         body: SafeArea(
           child: RefreshIndicator(

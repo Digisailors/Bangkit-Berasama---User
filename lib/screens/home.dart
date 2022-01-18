@@ -130,7 +130,7 @@ class HomePage extends StatelessWidget {
                   ),
                   Wrap(
                     crossAxisAlignment: WrapCrossAlignment.center,
-                    alignment: WrapAlignment.center,
+                    alignment: WrapAlignment.start,
                     runSpacing: 10,
                     children: [
                       CategorySquareTile(
