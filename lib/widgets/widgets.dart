@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class CustomTextFormField extends StatelessWidget {
   const CustomTextFormField({
@@ -227,7 +228,7 @@ class CustomDropDown extends StatelessWidget {
 }
 
 class RadioButton extends StatefulWidget {
-  RadioButton({required this.function});
+  const RadioButton({required this.function});
   final VoidCallback function;
   @override
   State<RadioButton> createState() => _RadioButtonState();
@@ -259,6 +260,56 @@ class _RadioButtonState extends State<RadioButton> {
               }),
         ),
       ],
+    );
+  }
+}
+
+class VideoItem extends StatefulWidget {
+  const VideoItem({Key? key, required this.url}) : super(key: key);
+
+  final String url;
+
+  @override
+  _VideoItemState createState() => _VideoItemState();
+}
+
+class _VideoItemState extends State<VideoItem> {
+  late VideoPlayerController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = VideoPlayerController.network(widget.url)
+      ..initialize().then((_) {
+        setState(() {}); //when your thumbnail will show.
+      });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: _controller.value.isInitialized
+          ? SizedBox(
+              width: 100.0,
+              height: 56.0,
+              child: VideoPlayer(_controller),
+            )
+          : const CircularProgressIndicator(),
+      title: Text(widget.url.split('/').last),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => VideoApp(url: widget.url),
+          ),
+        );
+      },
     );
   }
 }

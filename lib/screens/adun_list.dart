@@ -1,5 +1,6 @@
 import 'package:bangkit/constants/constituency_list.dart';
 import 'package:bangkit/constants/controller_constants.dart';
+import 'package:bangkit/constants/themeconstants.dart';
 import 'package:bangkit/models/adun.dart';
 import 'package:bangkit/services/firebase.dart';
 import 'package:flutter/material.dart';
@@ -45,18 +46,7 @@ class _AdunListState extends State<AdunList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 80,
-        title: Image.asset('assets/bina.png', height: 150),
-        centerTitle: true,
-        leading: GestureDetector(
-          onTap: () {
-            pageController.pageNumber = 0;
-            Navigator.popAndPushNamed(context, '/bottomRoute');
-          },
-          child: const Icon(Icons.arrow_back, color: Colors.blue),
-        ),
-      ),
+      appBar: getAppBar(context),
       body: Column(
         children: [
           Padding(

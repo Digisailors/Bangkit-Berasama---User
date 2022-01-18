@@ -1,4 +1,5 @@
 import 'package:bangkit/constants/controller_constants.dart';
+import 'package:bangkit/constants/themeconstants.dart';
 import 'package:bangkit/models/ngo.dart';
 import 'package:bangkit/models/service_category.dart';
 import 'package:bangkit/services/firebase.dart';
@@ -71,18 +72,7 @@ class _NgoListState extends State<NgoList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 90,
-        title: Image.asset('assets/bina.png', height: 150),
-        centerTitle: true,
-        leading: GestureDetector(
-          onTap: () {
-            pageController.pageNumber = 0;
-            Navigator.popAndPushNamed(context, '/bottomRoute');
-          },
-          child: const Icon(Icons.arrow_back, color: Colors.blue),
-        ),
-      ),
+      appBar: getAppBar(context),
       body: Column(
         children: [
           Padding(

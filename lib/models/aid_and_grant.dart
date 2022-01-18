@@ -18,6 +18,7 @@ class Post {
     required this.description,
     this.media,
     this.attachments,
+    this.videos,
     required this.name,
     required this.address,
     required this.state,
@@ -34,6 +35,7 @@ class Post {
   String description;
   List<String>? media;
   List<String>? attachments;
+  List<String>? videos;
 
   String name;
   String address;
@@ -61,6 +63,7 @@ class Post {
       description: json["description"],
       media: List<String>.from((json["media"] ?? []).map((x) => x)),
       attachments: List<String>.from((json["attachments"] ?? []).map((x) => x)),
+      videos: List<String>.from((json["videos"] ?? []).map((x) => x)),
       address: json["address"],
       state: json["state"],
       pincode: json["pincode"],
@@ -76,6 +79,7 @@ class Post {
         "description": description,
         "media": media != null ? List<dynamic>.from(media!.map((x) => x)) : media,
         "attachments": attachments == null ? [] : List<dynamic>.from(attachments!.map((x) => x)),
+        "videos": videos == null ? [] : List<dynamic>.from(videos!.map((x) => x)),
         "name": name,
         "address": address,
         "state": state,

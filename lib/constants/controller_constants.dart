@@ -5,6 +5,7 @@ AuthController authController = AuthController.instance;
 IndexController pageController = IndexController.instance;
 ProfileController profileController = ProfileController.instance;
 ServiceListController serviceListController = ServiceListController.instance;
+DamLinkController links = DamLinkController.instance;
 
 enum AuthProvider { phoneNUmber, email }
 

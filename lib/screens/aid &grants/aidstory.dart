@@ -1,5 +1,6 @@
 import 'package:bangkit/constants/themeconstants.dart';
 import 'package:bangkit/models/aid_and_grant.dart';
+import 'package:bangkit/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -16,72 +17,6 @@ class Story extends StatefulWidget {
 
 class _StoryState extends State<Story> {
   bool isUseful = false;
-
-  Widget getImage(BuildContext context, String url, width, height) {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            width: width,
-            height: height,
-            decoration: BoxDecoration(
-              // color: Color(0xFFDBE2E7),
-              color: Colors.black,
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Stack(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    showDialog(
-                        context: context,
-                        builder: (context) {
-                          return PhotoView(imageProvider: NetworkImage(url));
-                        });
-                  },
-                  child: Align(
-                    alignment: AlignmentDirectional(0, 0),
-                    child: Image.network(url),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(16, 16, 16, 16),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Card(
-                            clipBehavior: Clip.antiAliasWithSaveLayer,
-                            color: Color(0x3A000000),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
-                          Card(
-                            clipBehavior: Clip.antiAliasWithSaveLayer,
-                            color: Color(0x3A000000),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
   Widget getAttachmentTile(url) {
     return GestureDetector(
@@ -135,22 +70,14 @@ class _StoryState extends State<Story> {
   }
 
   Widget listOfDetails(title, icon) {
-    return Padding(
-      padding: const EdgeInsets.all(4.0),
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          ListTile(
-            leading: Icon(
-              icon,
-              color: Color(0xFF00b3df),
-            ),
-            title: Text(
-              title,
-              style: getText(context).subtitle2,
-            ),
-          ),
-        ],
+    return ListTile(
+      leading: Icon(
+        icon,
+        color: const Color(0xFF00b3df),
+      ),
+      title: Text(
+        title,
+        style: getText(context).subtitle2,
       ),
     );
   }
@@ -193,7 +120,7 @@ class _StoryState extends State<Story> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(24, 4, 24, 0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(24, 4, 24, 0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
@@ -216,67 +143,9 @@ class _StoryState extends State<Story> {
                       ),
                     ),
                     const Divider(),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          'Images & Videos',
-                          style: Theme.of(context).textTheme.headline6,
-                        ),
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 8.0),
-                        child: Container(
-                          height: getHeight(context) * 0.004,
-                          width: getWidth(context) * 0.4,
-                          color: const Color(0xFF22A8E0),
-                        ),
-                      ),
-                    ),
-                    const Divider(),
-                    SizedBox(
-                        height: getHeight(context) * 0.20,
-                        child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: widget.post.media == null
-                                ? [Container()]
-                                // : widget.post.media!.map((e) => getImage(context, e, getHeight(context) * 0.10, getHeight(context) * 0.10)).toList(),
-                                : widget.post.media!.map((e) => getImageTile(e)).toList())),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          'Attachment',
-                          style: Theme.of(context).textTheme.headline6,
-                        ),
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 8.0),
-                        child: Container(
-                          height: getHeight(context) * 0.004,
-                          width: getWidth(context) * 0.4,
-                          color: const Color(0xFF22A8E0),
-                        ),
-                      ),
-                    ),
-                    const Divider(),
-                    SizedBox(
-                        height: getHeight(context) * 0.20,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.max,
-                          children: widget.post.attachments!.map((e) => getAttachmentTile(e)).toList(),
-                        )),
-                    const Divider(),
+                    MediaLister(type: FileType.image, urls: widget.post.media ?? []),
+                    MediaLister(type: FileType.video, urls: widget.post.videos ?? []),
+                    MediaLister(type: FileType.attachment, urls: widget.post.attachments ?? []),
                     const SizedBox(
                       height: 20,
                     ),
@@ -299,7 +168,7 @@ class _StoryState extends State<Story> {
                       },
                     ),
                     SizedBox(
-                      height: getHeight(context) * 0.20,
+                      height: getHeight(context) * 0.1,
                     )
                   ],
                 ),
@@ -311,3 +180,113 @@ class _StoryState extends State<Story> {
     );
   }
 }
+
+class MediaLister extends StatelessWidget {
+  const MediaLister({Key? key, required this.type, required this.urls}) : super(key: key);
+
+  final FileType type;
+  final List<String> urls;
+
+  static const _array = ["Images", "Videos", "Attachments"];
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              _array[type.index],
+              style: Theme.of(context).textTheme.headline6!.merge(const TextStyle(
+                    shadows: [Shadow(color: Colors.black, offset: Offset(0, -5))],
+                    color: Colors.transparent,
+                    decoration: TextDecoration.underline,
+                    decorationColor: Color(0xFF22A8E0),
+                    decorationThickness: 3,
+                    decorationStyle: TextDecorationStyle.solid,
+                  )),
+            ),
+          ),
+        ),
+        Container(
+          margin: const EdgeInsets.all(8),
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: urls.isEmpty ? const [Text("No files found")] : urls.map((e) => getTile(e, context)).toList(),
+          ),
+        ),
+        const Divider(),
+      ],
+    );
+  }
+
+  Widget getTile(urls, context) {
+    switch (type) {
+      case FileType.image:
+        return getImageTile(urls, context);
+      case FileType.video:
+        return getVideoTile(urls, context);
+      case FileType.attachment:
+        return getAttachmentTile(urls, context);
+    }
+  }
+
+  Widget getImageTile(url, context) {
+    return GestureDetector(
+      onTap: () {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return PhotoView(imageProvider: NetworkImage(url));
+            });
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(left: 16.0),
+        child: Container(
+          height: 80,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            color: Colors.grey,
+          ),
+          child: AspectRatio(
+            aspectRatio: 1,
+            child: Image.network(url, fit: BoxFit.contain),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget getVideoTile(urls, context) {
+    return SizedBox(height: 80, width: 80, child: VideoItem(url: urls));
+  }
+
+  Widget getAttachmentTile(url, [context]) {
+    return GestureDetector(
+      onTap: () async {
+        await launch(url);
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(left: 16.0),
+        child: Container(
+          height: 80,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            color: Colors.grey,
+          ),
+          child: const AspectRatio(
+            aspectRatio: 1,
+            child: Icon(
+              Icons.attach_file,
+              size: 30,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+enum FileType { image, video, attachment }

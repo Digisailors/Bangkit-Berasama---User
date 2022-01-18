@@ -20,6 +20,7 @@ import 'routers/home_route.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -28,6 +29,7 @@ Future<void> main() async {
   Get.put(IndexController());
   Get.put(ProfileController());
   Get.put(ServiceListController());
+  Get.put(DamLinkController());
 
   serviceListController.service = await NgoService.getServices();
   runApp(const MyApp());

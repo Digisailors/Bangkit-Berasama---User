@@ -1,31 +1,24 @@
+// ignore_for_file: empty_statements
+
 import 'package:bangkit/constants/controller_constants.dart';
 import 'package:bangkit/constants/themeconstants.dart';
 import 'package:bangkit/models/profile.dart';
-import 'package:bangkit/weather/weatherwidgets.dart';
+import 'package:bangkit/screens/page_view.dart';
 import 'package:bangkit/widgets/widgets.dart';
+import 'package:get/get.dart';
+
 import 'package:url_launcher/url_launcher.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
-  HomePage({Key? key}) : super(key: key);
-
-  List<Widget> _widgetOptions = <Widget>[
-    Container(color: Colors.amber),
-    Container(),
-    // FloodRelief(),
-    Container(color: Colors.red),
-  ];
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          toolbarHeight: 80,
-          title: Image.asset('assets/bina.png', height: 150),
-          centerTitle: true,
-        ),
+        appBar: getAppBar(context),
         body: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.max,
@@ -35,34 +28,6 @@ class HomePage extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 20, bottom: 16),
                 child: CarouselSlider(
                   items: [
-                    // Generated code for this Card Widget...
-                    // Card(
-                    //   clipBehavior: Clip.antiAliasWithSaveLayer,
-                    //   color: Colors.white,
-                    //   elevation: 6,
-                    //   shape: RoundedRectangleBorder(
-                    //     borderRadius: BorderRadius.circular(8),
-                    //   ),
-                    //   child: Stack(
-                    //     children: const [
-                    //       WeatherBoard(
-                    //         assetlocation: 'https://cdn-icons-png.flaticon.com/512/1146/1146869.png',
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
-                    // Card(
-                    //   clipBehavior: Clip.antiAliasWithSaveLayer,
-                    //   color: Colors.white,
-                    //   elevation: 6,
-                    //   shape: RoundedRectangleBorder(
-                    //     borderRadius: BorderRadius.circular(8),
-                    //   ),
-                    //   child: const WeatherBoard(
-                    //     assetlocation: 'https://cdn-icons-png.flaticon.com/512/3445/3445722.png',
-                    //   ),
-                    // ),
-
                     Card(
                       clipBehavior: Clip.antiAliasWithSaveLayer,
                       color: Colors.white,
@@ -84,7 +49,7 @@ class HomePage extends StatelessWidget {
                   options: CarouselOptions(
                       enableInfiniteScroll: false,
                       reverse: false,
-                      height: getHeight(context) * 0.25,
+                      height: getHeight(context) * 0.2,
                       // enlargeCenterPage: true,
                       autoPlay: false,
                       aspectRatio: 5 / 2),
@@ -118,35 +83,29 @@ class HomePage extends StatelessWidget {
                   SizedBox(
                     height: getHeight(context) * 0.012,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        CategorySquareTile(
-                            assetPath: 'assets/ngologo.png',
-                            label: 'Repository',
-                            onTap: () {
-                              pageController.pageNumber = 1;
-                              Navigator.of(context).popAndPushNamed('/bottomRoute');
-                            }),
-                        CategorySquareTile(
-                            assetPath: 'assets/aa.png',
-                            label: 'Gov Agencies',
-                            onTap: () {
-                              pageController.pageNumber = 2;
-                              Navigator.of(context).popAndPushNamed('/bottomRoute');
-                            }),
-                        CategorySquareTile(
-                            assetPath: 'assets/adun.png',
-                            label: 'ADUN',
-                            onTap: () {
-                              pageController.pageNumber = 3;
-                              Navigator.of(context).popAndPushNamed('/bottomRoute');
-                            }),
-                      ],
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      CategorySquareTile(
+                          assetPath: 'assets/ngologo.png',
+                          label: 'Database',
+                          onTap: () {
+                            pageController.load!(1);
+                          }),
+                      CategorySquareTile(
+                          assetPath: 'assets/aa.png',
+                          label: 'Gov Agencies',
+                          onTap: () {
+                            pageController.load!(2);
+                          }),
+                      CategorySquareTile(
+                          assetPath: 'assets/adun.png',
+                          label: 'ADUN',
+                          onTap: () {
+                            pageController.load!(3);
+                          }),
+                    ],
                   ),
                   const Align(
                     alignment: Alignment.centerLeft,
@@ -169,33 +128,43 @@ class HomePage extends StatelessWidget {
                   SizedBox(
                     height: getHeight(context) * 0.02,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    alignment: WrapAlignment.center,
+                    runSpacing: 10,
                     children: [
                       CategorySquareTile(
                           assetPath: 'assets/police.png',
                           label: 'E-PDRM\nReporting',
                           onTap: () {
                             launch("https://ereporting.rmp.gov.my/index.aspx");
+                            // Get.to(() => const WebViewer(url: "https://ereporting.rmp.gov.my/index.aspx"));
+                            //  pageController.load!(0);
                           }),
                       CategorySquareTile(
                           assetPath: 'assets/weather.png',
                           label: 'Weather\nForecast',
                           onTap: () {
-                            Navigator.of(context).pushNamed('/ngoEmergencyLanding');
+                            pageController.load!(4);
                           }),
                       CategorySquareTile(
                           assetPath: 'assets/floodarea.png',
                           label: 'Flood Prone\nArea',
                           onTap: () {
-                            // Get.to(() =>FloodRelief());
+                            pageController.load!(5);
                           }),
                       CategorySquareTile(
                           assetPath: 'assets/pond.png',
                           label: 'Retention\nPonds',
                           onTap: () {
-                            Navigator.of(context).pushNamed('/ngoEmergencyLanding');
+                            pageController.load!(6);
+                          }),
+                      CategorySquareTile(
+                          assetPath: 'assets/dam.jpeg',
+                          label: 'Hydraulic\nStructures',
+                          onTap: () {
+                            // pageController.pageNumber = 7;
+                            Get.to(() => const WebViewer(url: "https://ihydro.sarawak.gov.my/iHydro/en/map/maps.jsp"));
                           }),
                       // CategorySquareTile(
                       //     assetPath: 'assets/Rebuild.png',
@@ -206,6 +175,7 @@ class HomePage extends StatelessWidget {
                       //     }),
                     ],
                   ),
+                  const SizedBox(height: 10),
                 ],
               ),
 
@@ -233,28 +203,31 @@ class CategorySquareTile extends StatelessWidget {
   final void Function()? onTap;
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(
-          height: MediaQuery.of(context).size.width / 5,
-          width: MediaQuery.of(context).size.width / 5,
-          child: Padding(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: ElevatedButton(
-                onPressed: onTap,
-                child: Image.asset(
-                  assetPath,
-                  fit: BoxFit.fitHeight,
-                  scale: 0.1,
-                ),
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.white),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0), side: const BorderSide(color: Colors.white))))),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          SizedBox(
+            height: MediaQuery.of(context).size.width / 5,
+            width: MediaQuery.of(context).size.width / 5,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: ElevatedButton(
+                  onPressed: onTap,
+                  child: Image.asset(
+                    assetPath,
+                    fit: BoxFit.fitHeight,
+                    scale: 0.1,
+                  ),
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.white),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0), side: const BorderSide(color: Colors.white))))),
+            ),
           ),
-        ),
-        Text(label),
-      ],
+          Text(label),
+        ],
+      ),
     );
   }
 }

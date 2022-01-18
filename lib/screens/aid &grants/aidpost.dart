@@ -24,27 +24,33 @@ class _AidAndGrantsState extends State<AidAndGrants> {
           title: SizedBox(height: getHeight(context) * 0.15, child: Image.asset('assets/bina.png')),
         ),
         body: SafeArea(
-          child: SingleChildScrollView(
-            child: Container(
-              decoration: const BoxDecoration(),
+          child: RefreshIndicator(
+            onRefresh: () {
+              setState(() {});
+              return Future.delayed(const Duration(seconds: 1));
+            },
+            child: SingleChildScrollView(
               child: Container(
-                decoration: BoxDecoration(color: Colors.white.withOpacity(0.8)),
-                child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                  stream: posts.snapshots(),
-                  builder: (BuildContext context, snapshot) {
-                    if (snapshot.hasData) {
-                      List<Post> tempPosts = snapshot.data!.docs.map((e) => Post.fromJson(e.data())).toList();
-                      return Column(
-                        children: tempPosts.map((e) {
-                          return PostTile(post: e);
-                        }).toList(),
-                      );
-                    }
-                    if (snapshot.hasError) {
-                      return const Center(child: Text("Error Occured"));
-                    }
-                    return const Center(child: CircularProgressIndicator());
-                  },
+                decoration: const BoxDecoration(),
+                child: Container(
+                  decoration: BoxDecoration(color: Colors.white.withOpacity(0.8)),
+                  child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                    stream: posts.orderBy("created", descending: true).snapshots(),
+                    builder: (BuildContext context, snapshot) {
+                      if (snapshot.hasData) {
+                        List<Post> tempPosts = snapshot.data!.docs.map((e) => Post.fromJson(e.data())).toList();
+                        return Column(
+                          children: tempPosts.map((e) {
+                            return PostTile(post: e);
+                          }).toList(),
+                        );
+                      }
+                      if (snapshot.hasError) {
+                        return const Center(child: Text("Error Occured"));
+                      }
+                      return const Center(child: CircularProgressIndicator());
+                    },
+                  ),
                 ),
               ),
             ),
@@ -61,6 +67,14 @@ class PostTile extends StatefulWidget {
 }
 
 class _PostTileState extends State<PostTile> {
+  get averageRating {
+    if (widget.post.totalRaters == 0) {
+      return 0.0;
+    }
+    print("==============>     ${widget.post.totalRating}");
+    return (widget.post.totalRating * 1.0) / (widget.post.totalRaters * 1.0).toDouble();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -90,7 +104,7 @@ class _PostTileState extends State<PostTile> {
                           builder: (context, snapshot) {
                             if (snapshot.connectionState == ConnectionState.active || snapshot.connectionState == ConnectionState.done) {
                               return RatingBarIndicator(
-                                rating: widget.post.totalRating.toDouble() / widget.post.totalRaters,
+                                rating: averageRating,
                                 itemBuilder: (context, index) => const Icon(
                                   Icons.star,
                                   color: Colors.amber,
