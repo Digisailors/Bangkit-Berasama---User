@@ -1,63 +1,63 @@
-// To parse this JSON data, do
-//
-//     final feedback = feedbackFromJson(jsonString);
-
 import 'dart:convert';
 
-import 'package:bangkit/services/firebase.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-Feedback feedbackFromJson(String str) => Feedback.fromJson(json.decode(str));
+MyFeedback feedbackFromJson(String str) => MyFeedback.fromJson(json.decode(str));
 
-String feedbackToJson(Feedback data) => json.encode(data.toJson());
+String feedbackToJson(MyFeedback data) => json.encode(data.toJson());
 
-class Feedback {
-  Feedback({
-    this.id,
+CollectionReference feedback = FirebaseFirestore.instance.collection('Feedback');
+
+class MyFeedback {
+  MyFeedback({
+    this.uid,
     required this.title,
     required this.description,
-    required this.rating,
-    required this.uid,
-    required this.name,
+    required this.raiseddDate,
+    required this.starRatings,
   });
 
-  String? id;
+  String? uid;
   String title;
   String description;
-  int rating;
-  String uid;
-  String name;
+  DateTime raiseddDate;
+  int starRatings;
 
-  factory Feedback.fromJson(Map<String, dynamic> json) => Feedback(
-        id: json["id"],
-        title: json["title"],
-        description: json["description"],
-        rating: json["rating"],
-        uid: json["uid"],
-        name: json["name"],
-      );
+  factory MyFeedback.fromJson(Map<String, dynamic> json) => MyFeedback(
+    uid: json["uid"],
+    title: json["title"],
+    description: json["description"],
+    raiseddDate: json["raiseddDate"].toDate(),
+    starRatings: json["starRatings"],
+  );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "title": title,
-        "description": description,
-        "rating": rating,
-        "uid": uid,
-        "name": name,
-      };
+    "uid": uid,
+    "title": title,
+    "description": description,
+    "raiseddDate": raiseddDate,
+    "starRatings": starRatings,
+  };
 
-  static Future<dynamic> addfeedback(Feedback feedback) async {
-    return firestore.runTransaction((transaction) async {
-      DocumentSnapshot snapshot = await transaction.get(counters);
-      if (snapshot.exists) {
-        var data = snapshot.data() as Map<String, dynamic>;
-        feedback.id = data['feedbacks'] + 1;
-        return transaction.update(counters, {"feedbacks": feedback.id}).set(feedbacks.doc(feedback.id.toString()), feedback.toJson());
-      }
-    }).then((value) {
-      return {"code": "Success", "message": "Added"};
-    }).catchError((error) {
-      print(error);
-      return {"code": "Failed", "message": error.toString()};
-    });
+  Future<void> addFeedback() async{
+    // Call the user's CollectionReference to add a new user
+    return feedback.doc(uid)
+        .set(toJson())
+        .then((value) => print("Feedback Added"))
+        .catchError((error) => "Failed to add user: $error");
   }
+  Future<void> deleteFeedback() {
+    return feedback
+        .doc(uid)
+        .delete()
+        .then((value) => print("Feedback Deleted"))
+        .catchError((error) => print("Failed to delete Feedback: $error"));
+  }
+
+
+
+
+
+
+
 }
