@@ -2,14 +2,80 @@ import 'package:bangkit/models/aid_and_grant.dart';
 import 'package:bangkit/profile/profileregistration.dart';
 import 'package:flutter/material.dart';
 
-class AddPost extends StatefulWidget {
-  AddPost({Key? key}) : super(key: key);
+class EditPost extends StatefulWidget {
+  EditPost({Key? key, required this.post}) : super(key: key);
+  final Post post;
 
   @override
-  _AddPostState createState() => _AddPostState();
+  _EditPostState createState() => _EditPostState();
 }
 
-class _AddPostState extends State<AddPost> {
+class _EditPostState extends State<EditPost> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    title.text = widget.post.title;
+    description.text = widget.post.description;
+    if (widget.post.media != null) {
+      switch (widget.post.media!.length) {
+        case 1:
+          media1.text = widget.post.media![0];
+          break;
+        case 2:
+          media1.text = widget.post.media![0];
+          media2.text = widget.post.media![1];
+          break;
+        case 3:
+          media1.text = widget.post.media![0];
+          media2.text = widget.post.media![1];
+          media3.text = widget.post.media![2];
+          break;
+      }
+    }
+
+    if (widget.post.attachments != null) {
+      switch (widget.post.attachments!.length) {
+        case 1:
+          attachment1.text = widget.post.attachments![0];
+          break;
+        case 2:
+          attachment1.text = widget.post.attachments![0];
+          attachment2.text = widget.post.attachments![1];
+          break;
+        case 3:
+          attachment1.text = widget.post.attachments![0];
+          attachment2.text = widget.post.attachments![1];
+          attachment3.text = widget.post.attachments![2];
+          break;
+      }
+    }
+
+    if (widget.post.videos != null) {
+      switch (widget.post.videos!.length) {
+        case 1:
+          video1.text = widget.post.videos![0];
+          break;
+        case 2:
+          video1.text = widget.post.videos![0];
+          video2.text = widget.post.videos![1];
+          break;
+        case 3:
+          video1.text = widget.post.videos![0];
+          video2.text = widget.post.videos![1];
+          video3.text = widget.post.videos![2];
+          break;
+      }
+    }
+
+    address.text = widget.post.address;
+    state.text = widget.post.state;
+    pincode.text = widget.post.pincode;
+    name.text = widget.post.name;
+    phone.text = widget.post.phone;
+    email.text = widget.post.email;
+    super.initState();
+  }
+
   final title = TextEditingController();
   final description = TextEditingController();
   final media1 = TextEditingController();
@@ -84,14 +150,13 @@ class _AddPostState extends State<AddPost> {
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () {
-          print("I am here");
           var result = _formKey.currentState?.validate() ?? false;
           print(_formKey.currentState?.validate());
           if (result) {
-            print(" I passed");
             _formKey.currentState?.save();
             Post post = buildPost();
-            Post.addPost(post).then((value) => showDialog(
+            post.id = widget.post.id;
+            post.update().then((value) => showDialog(
                 context: context,
                 builder: (context) {
                   return AlertDialog(

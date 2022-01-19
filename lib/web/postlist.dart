@@ -8,22 +8,19 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 
-class AidAndGrants extends StatefulWidget {
-  const AidAndGrants({Key? key}) : super(key: key);
+class PostList extends StatefulWidget {
+  const PostList({Key? key}) : super(key: key);
 
   @override
-  _AidAndGrantsState createState() => _AidAndGrantsState();
+  _PostListState createState() => _PostListState();
 }
 
-class _AidAndGrantsState extends State<AidAndGrants> {
+class _PostListState extends State<PostList> {
   bool isUseful = false;
 
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: SizedBox(height: getHeight(context) * 0.15, child: Image.asset('assets/bina.png')),
-        ),
+
         body: SafeArea(
           child: RefreshIndicator(
             onRefresh: () {
@@ -81,7 +78,10 @@ class _PostTileState extends State<PostTile> {
     return Padding(
       padding: const EdgeInsets.only(top: 16.0),
       child: GestureDetector(
-        onTap: () {},
+        onTap: () {
+
+
+        },
         child: Card(
           elevation: 5,
           clipBehavior: Clip.antiAlias,
@@ -137,6 +137,17 @@ class _PostTileState extends State<PostTile> {
                         style: getText(context).bodyText1,
                       ),
                     ),
+                    ButtonBar(
+                      children: [
+                        ElevatedButton(onPressed: (){
+
+                          Get.to(EditPost(post: widget.post));
+                        }, child: Icon(Icons.edit)),
+                        ElevatedButton(onPressed: (){
+                          widget.post.deletePost();
+                        }, child: Icon(Icons.delete))
+                      ],
+                    )
                   ],
                 ),
               ),

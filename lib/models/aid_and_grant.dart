@@ -91,6 +91,12 @@ class Post {
         "updated": updated,
       };
 
+
+
+  update (){
+    return posts.doc(id.toString()).update(toJson()).then((value) => "success").catchError((onError)=>  onError.toString());
+  }
+
   static Future<dynamic> addPost(Post post) async {
     post.created = DateTime.now();
     post.updated = DateTime.now();
@@ -100,12 +106,23 @@ class Post {
       if (snapshot.exists) {
         var data = snapshot.data() as Map<String, dynamic>;
         post.id = (data['posts'] ?? 0) + 1;
-        return transaction.update(counters, {"posts": post.id}).set(posts.doc(post.id.toString()), post.toJson());
+        return transaction
+            .update(counters, {"posts": post.id}).set(posts.doc(post.id.toString()), post.toJson());
       }
     }).then((value) {
       return {"code": "Success", "message": "Added"};
     }).catchError((error) {
       return {"code": "Failed", "message": error.toString()};
+    });
+  }
+
+  deletePost() {
+    posts
+        .doc(id.toString())
+        .delete()
+        .then((value) => {"code": "success", "message": "deleted"})
+        .catchError((error) {
+      return {"code": "success", "message": "$error"};
     });
   }
 
@@ -121,13 +138,20 @@ class Post {
     if (profileController.profile != null && canRate) {
       print("I am inside rate");
       ratings = ratings ?? [];
-      var rating = Rating(uid: profileController.profile!.uid!, name: profileController.profile!.name, stars: stars);
+      var rating = Rating(
+          uid: profileController.profile!.uid!,
+          name: profileController.profile!.name,
+          stars: stars);
       ratings!.add(rating);
       await posts.doc(id.toString()).update({
         "totalRating": FieldValue.increment(stars),
         "totalRaters": FieldValue.increment(1),
       }).then((value) {
-        return posts.doc(id.toString()).collection("ratings").add(rating.toJson()).then((value) => {"code": "Failed", "message": "Added"});
+        return posts
+            .doc(id.toString())
+            .collection("ratings")
+            .add(rating.toJson())
+            .then((value) => {"code": "Failed", "message": "Added"});
       }).catchError((error) {
         // print(error.toString());
         return {"code": "Failed", "message": error.toString()};
@@ -139,7 +163,8 @@ class Post {
     bool result = true;
 
     if ((ratings ?? []).isNotEmpty) {
-      List<dynamic> temp = ratings!.where((element) => element.uid == profileController.profile!.uid).toList();
+      List<dynamic> temp =
+          ratings!.where((element) => element.uid == profileController.profile!.uid).toList();
       result = temp.isEmpty;
     }
 

@@ -8,6 +8,7 @@ import 'package:bangkit/web/add_rebuild.dart';
 import 'package:bangkit/routers/bottom_route.dart';
 import 'package:bangkit/routers/landing_page.dart';
 import 'package:bangkit/web/add_service.dart';
+import 'package:bangkit/web/postlist.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
@@ -74,7 +75,7 @@ class MyApp extends StatelessWidget {
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xFF00b3df)))),
       ),
-      home: LandingPage(),
+      home: AddApp()
     );
   }
 }
@@ -94,7 +95,7 @@ class _AddAppState extends State<AddApp> {
   Widget build(BuildContext context) {
     return DefaultTabController(
       initialIndex: 0,
-      length: 5,
+      length: 6,
       child: Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.blue,
@@ -114,6 +115,9 @@ class _AddAppState extends State<AddApp> {
                 ),
                 Tab(
                   child: Text("AID & GRANT"),
+                ),
+                Tab(
+                  child: Text("Your Posts"),
                 ),
               ],
             ),
@@ -150,7 +154,7 @@ class _AddAppState extends State<AddApp> {
             ),
           ),
           body: TabBarView(
-            children: [AddAgency(), AddNgo(), AddAdun(), const AddService(), AddPost()],
+            children: [AddAgency(), AddNgo(), AddAdun(), AddService(), AddPost(),PostList()],
           )),
     );
   }
