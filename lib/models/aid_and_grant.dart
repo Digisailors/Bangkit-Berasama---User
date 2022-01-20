@@ -90,6 +90,9 @@ class Post {
         "created": created,
         "updated": updated,
       };
+  update() {
+    return posts.doc(id.toString()).update(toJson()).then((value) => {"message": "success"}).catchError((onError) => {"message": onError.toString()});
+  }
 
   static Future<dynamic> addPost(Post post) async {
     post.created = DateTime.now();
