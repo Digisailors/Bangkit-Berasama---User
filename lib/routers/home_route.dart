@@ -2,6 +2,7 @@ import 'package:bangkit/constants/controller_constants.dart';
 import 'package:bangkit/models/ngo.dart';
 import 'package:bangkit/screens/adun_list.dart';
 import 'package:bangkit/screens/home.dart';
+import 'package:bangkit/screens/maps/flood_prone_area.dart';
 import 'package:bangkit/screens/page_view.dart';
 import 'package:bangkit/screens/rebuildList.dart';
 import 'package:bangkit/screens/repo_list.dart';
@@ -41,6 +42,8 @@ class _HomeRouteState extends State<HomeRoute> {
         return NgoList(query: ngos.where("entityType", isEqualTo: 0), entityType: 'GOVERNMENT AGENCIES');
       case 3:
         return AdunList();
+      case 5:
+        return FloodProneArea();
       case 7:
         return const WebViewer();
       default:

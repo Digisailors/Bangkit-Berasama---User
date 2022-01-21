@@ -5,24 +5,23 @@
 import 'dart:convert';
 
 import 'package:bangkit/constants/controller_constants.dart';
+import 'package:bangkit/models/response.dart';
 import 'package:bangkit/services/firebase.dart';
-import 'package:bangkit/services/response.dart';
 
 Profile profileFromJson(String str) => Profile.fromJson(json.decode(str));
 
 String profileToJson(Profile data) => json.encode(data.toJson());
 
 class Profile {
-  Profile({
-    this.uid,
-    required this.name,
-    required this.phone,
-    required this.secondaryPhone,
-    required this.email,
-    required this.primaryAddress,
-    required this.secondaryAddress,
-    required this.icNumber
-  });
+  Profile(
+      {this.uid,
+      required this.name,
+      required this.phone,
+      required this.secondaryPhone,
+      required this.email,
+      required this.primaryAddress,
+      required this.secondaryAddress,
+      required this.icNumber});
 
   String? uid;
   String name;
@@ -35,15 +34,14 @@ class Profile {
   Address secondaryAddress;
 
   factory Profile.fromJson(Map<String, dynamic> json) => Profile(
-        uid: json["uid"],
-        name: json["name"],
-        phone: json["phone"],
-        secondaryPhone: json["secondaryPhone"],
-        email: json["email"],
-        primaryAddress: Address.fromJson(json["primaryAddress"]),
-        secondaryAddress: Address.fromJson(json["secondaryAddress"]),
-    icNumber: json["icNumber"] ?? ''
-      );
+      uid: json["uid"],
+      name: json["name"],
+      phone: json["phone"],
+      secondaryPhone: json["secondaryPhone"],
+      email: json["email"],
+      primaryAddress: Address.fromJson(json["primaryAddress"]),
+      secondaryAddress: Address.fromJson(json["secondaryAddress"]),
+      icNumber: json["icNumber"] ?? '');
 
   Map<String, dynamic> toJson() => {
         "uid": uid,
@@ -60,8 +58,7 @@ class Profile {
     users
         .doc(uid)
         .set(toJson())
-        .then((value) =>
-            Response(code: "Sucess", message: "Your Profile has been registered Successfuly"))
+        .then((value) => Response(code: "Sucess", message: "Your Profile has been registered Successfuly"))
         .catchError((error) {
       return Response(code: "Failed", message: error.toString());
     });
@@ -71,8 +68,7 @@ class Profile {
     users
         .doc(uid)
         .update(toJson())
-        .then((value) =>
-            Response(code: "Success", message: "Your profile has been updated successfully"))
+        .then((value) => Response(code: "Success", message: "Your profile has been updated successfully"))
         .catchError((error) {
       return Response(code: "Failed", message: error.toString());
     });

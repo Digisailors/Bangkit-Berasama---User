@@ -16,4 +16,7 @@ class Response {
         "code": code,
         "message": message,
       };
+
+  factory Response.error(error) => Response(code: "Error", message: error);
+  factory Response.success(message) => Response(code: "Success", message: message);
 }

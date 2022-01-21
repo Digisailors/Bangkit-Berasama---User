@@ -1,3 +1,4 @@
+import 'package:bangkit/models/response.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -367,4 +368,33 @@ class _VideoAppState extends State<VideoApp> {
     super.dispose();
     _controller.dispose();
   }
+}
+
+showFutureDialog({required BuildContext context, required Future<dynamic> future}) {
+  print("I am in future dialog");
+  showDialog(
+      context: context,
+      builder: (context) {
+        return FutureBuilder(
+            future: future,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.active || snapshot.connectionState == ConnectionState.done) {
+                var response = snapshot.data as Response;
+                return AlertDialog(
+                  title: Text(response.code),
+                  content: Text(response.message),
+                  actions: [
+                    ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Text("Okay"))
+                  ],
+                );
+              }
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            });
+      });
 }
