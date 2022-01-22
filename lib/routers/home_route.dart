@@ -5,6 +5,7 @@ import 'package:bangkit/screens/home.dart';
 import 'package:bangkit/screens/page_view.dart';
 import 'package:bangkit/screens/rebuildList.dart';
 import 'package:bangkit/screens/repo_list.dart';
+import 'package:bangkit/screens/weather/weatherhome.dart';
 import 'package:bangkit/services/firebase.dart';
 import 'package:flutter/material.dart';
 
@@ -41,6 +42,8 @@ class _HomeRouteState extends State<HomeRoute> {
         return NgoList(query: ngos.where("entityType", isEqualTo: 0), entityType: 'GOVERNMENT AGENCIES');
       case 3:
         return AdunList();
+      case 4:
+        return WeatherHome();
       case 7:
         return const WebViewer();
       default:

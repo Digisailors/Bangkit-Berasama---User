@@ -1,5 +1,6 @@
 import 'package:bangkit/constants/controller_constants.dart';
 import 'package:bangkit/models/service_category.dart';
+import 'package:bangkit/screens/weather/weatherhome.dart';
 import 'package:bangkit/web/add_adun.dart';
 import 'package:bangkit/web/add_agency.dart';
 import 'package:bangkit/web/add_ngo.dart';
@@ -75,7 +76,7 @@ class MyApp extends StatelessWidget {
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xFF00b3df)))),
       ),
-      home: AddApp()
+      home: LandingPage()
     );
   }
 }
