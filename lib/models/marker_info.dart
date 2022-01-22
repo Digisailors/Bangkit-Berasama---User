@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:html';
 
 import 'package:bangkit/models/response.dart';
 import 'package:bangkit/services/firebase.dart';
@@ -38,17 +37,16 @@ class FloodProneArea {
 
   add() {
     floodProneAreas
-        .doc("$street _$area _$state")
+        .doc(docId)
         .set(toJson())
         .then((value) => Response.success("LocationAdded successfully"))
         .onError((error, stackTrace) => Response.error(error));
   }
 
-  get doc_id => "$street _$area _$state";
-
+  get docId => latlang.toString();
   delete() {
     floodProneAreas
-        .doc(doc_id)
+        .doc(docId)
         .delete()
         .then((value) => Response.success("Deleted sccessfully"))
         .onError((error, stackTrace) => Response.error(error));
@@ -83,6 +81,20 @@ class RetentionPond {
         "max_rain": maxRain,
         "coordinates": coordinates,
       };
+
+  add() {
+    retentionPonds
+        .doc(docId)
+        .set(toJson())
+        .then((value) => Response.success("LocationAdded successfully"))
+        .onError((error, stackTrace) => Response.error(error));
+  }
+
+  get docId => latlang.toString();
+
+  delete() {
+    retentionPonds.doc(docId).delete().then((value) => Response.success("Deleted sccessfully")).onError((error, stackTrace) => Response.error(error));
+  }
 
   LatLng get latlang => LatLng(coordinates.latitude, coordinates.longitude);
 }

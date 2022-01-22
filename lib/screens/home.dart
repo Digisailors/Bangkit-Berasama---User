@@ -3,9 +3,11 @@
 import 'package:bangkit/constants/controller_constants.dart';
 import 'package:bangkit/constants/themeconstants.dart';
 import 'package:bangkit/models/profile.dart';
+import 'package:bangkit/models/weather.dart';
 import 'package:bangkit/screens/page_view.dart';
 import 'package:bangkit/widgets/widgets.dart';
 import 'package:get/get.dart';
+import 'package:photo_view/photo_view.dart';
 
 import 'package:url_launcher/url_launcher.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -27,24 +29,10 @@ class HomePage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 20, bottom: 16),
                 child: CarouselSlider(
-                  items: [
-                    Card(
-                      clipBehavior: Clip.antiAliasWithSaveLayer,
-                      color: Colors.white,
-                      elevation: 6,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Stack(
-                        children: const [
-                          Align(
-                              alignment: AlignmentDirectional(-0.8, -0.65),
-                              child: VideoApp(
-                                url: 'https://media.istockphoto.com/videos/hurricane-matthew-2016-landfall-radar-video-id1017267864',
-                              )),
-                        ],
-                      ),
-                    ),
+                  items: const [
+                    CarouselTile(url: "https://api.met.gov.my/static/images/radar-latest.gif"),
+                    CarouselTile(url: "https://api.met.gov.my/static/images/satelit-latest.gif"),
+                    CarouselTile(url: "https://api.met.gov.my/static/images/swirl-latest.gif"),
                   ],
                   options: CarouselOptions(
                       enableInfiniteScroll: false,
@@ -145,7 +133,8 @@ class HomePage extends StatelessWidget {
                           assetPath: 'assets/weather.png',
                           label: 'Weather\nForecast',
                           onTap: () {
-                            pageController.load!(4);
+                            // pageController.load!(4);
+                            Weather.getWeatherData(3, 101);
                           }),
                       CategorySquareTile(
                           assetPath: 'assets/floodarea.png',
@@ -185,6 +174,40 @@ class HomePage extends StatelessWidget {
               //     'w_603/v1637742107/production/images/campaign/419357/IMG_20210305_110858_fiij8t_1637742113.jpg'),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class CarouselTile extends StatelessWidget {
+  const CarouselTile({
+    Key? key,
+    required this.url,
+  }) : super(key: key);
+
+  final String url;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return PhotoView(imageProvider: NetworkImage(url));
+            });
+      },
+      child: Card(
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        color: Colors.white,
+        elevation: 6,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Image.network(
+          url,
+          fit: BoxFit.fill,
         ),
       ),
     );

@@ -4,7 +4,6 @@ import 'package:bangkit/web/add_adun.dart';
 import 'package:bangkit/web/add_agency.dart';
 import 'package:bangkit/web/add_ngo.dart';
 import 'package:bangkit/web/add_post.dart';
-import 'package:bangkit/web/add_rebuild.dart';
 import 'package:bangkit/routers/bottom_route.dart';
 import 'package:bangkit/routers/landing_page.dart';
 import 'package:bangkit/web/add_service.dart';
@@ -12,8 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 
-import 'constants/stateslist.dart';
 import 'controllers/auth_controller.dart';
+import 'controllers/getxcontrollers.dart';
 import 'controllers/page_controller.dart';
 import 'firebase_options.dart';
 import 'routers/home_route.dart';
@@ -30,8 +29,10 @@ Future<void> main() async {
   Get.put(ProfileController());
   Get.put(ServiceListController());
   Get.put(DamLinkController());
+  Get.put(MapIconsController());
 
   serviceListController.service = await NgoService.getServices();
+  await markerController.loadIcons();
   runApp(const MyApp());
 }
 

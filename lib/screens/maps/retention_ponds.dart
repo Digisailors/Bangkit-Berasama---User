@@ -7,14 +7,14 @@ import 'dart:async';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:bangkit/models/marker_info.dart' as model;
 
-class FloodProneArea extends StatefulWidget {
-  FloodProneArea({Key? key}) : super(key: key);
+class RetentionPonds extends StatefulWidget {
+  RetentionPonds({Key? key}) : super(key: key);
 
   @override
-  _FloodProneAreaState createState() => _FloodProneAreaState();
+  _RetentionPondsState createState() => _RetentionPondsState();
 }
 
-class _FloodProneAreaState extends State<FloodProneArea> {
+class _RetentionPondsState extends State<RetentionPonds> {
   late GoogleMapController mapController;
 
   void _onMapCreated(GoogleMapController controller) {
@@ -40,18 +40,18 @@ class _FloodProneAreaState extends State<FloodProneArea> {
           print("dx : $_height, dy : $_width");
         },
         child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-            stream: floodProneAreas.snapshots(),
+            stream: retentionPonds.snapshots(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.active && snapshot.hasData) {
                 markers.clear();
                 List<QueryDocumentSnapshot<Map<String, dynamic>>> documents = snapshot.data!.docs;
-                List<model.FloodProneArea> areas = documents.map((document) => model.FloodProneArea.fromJson(document.data())).toList();
+                List<RetentionPond> areas = documents.map((document) => RetentionPond.fromJson(document.data())).toList();
 
                 for (var area in areas) {
                   markers.add(Marker(
                     markerId: MarkerId(area.latlang.toString()),
                     position: area.latlang,
-                    icon: BitmapDescriptor.fromBytes(markerController.floodMarkerIcon!),
+                    icon: BitmapDescriptor.fromBytes(markerController.retentionPondIcon!),
                   ));
                 }
                 double latitude = 0;

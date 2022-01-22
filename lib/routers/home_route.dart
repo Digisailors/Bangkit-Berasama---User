@@ -3,6 +3,7 @@ import 'package:bangkit/models/ngo.dart';
 import 'package:bangkit/screens/adun_list.dart';
 import 'package:bangkit/screens/home.dart';
 import 'package:bangkit/screens/maps/flood_prone_area.dart';
+import 'package:bangkit/screens/maps/retention_ponds.dart';
 import 'package:bangkit/screens/page_view.dart';
 import 'package:bangkit/screens/rebuildList.dart';
 import 'package:bangkit/screens/repo_list.dart';
@@ -44,6 +45,8 @@ class _HomeRouteState extends State<HomeRoute> {
         return AdunList();
       case 5:
         return FloodProneArea();
+      case 6:
+        return RetentionPonds();
       case 7:
         return const WebViewer();
       default:

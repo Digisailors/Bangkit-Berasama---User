@@ -1,7 +1,11 @@
-import 'package:bangkit/models/response.dart';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'dart:async';
+import 'dart:ui' as ui;
+import 'package:bangkit/models/response.dart';
+
 import 'package:video_player/video_player.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class CustomTextFormField extends StatelessWidget {
   const CustomTextFormField({
@@ -199,14 +203,14 @@ class CustomDropDown extends StatelessWidget {
             fontWeight: FontWeight.normal,
           ),
           enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(
+            borderSide: const BorderSide(
               color: Color(0xFFDBE2E7),
               width: 2,
             ),
             borderRadius: BorderRadius.circular(8),
           ),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(
+            borderSide: const BorderSide(
               color: Color(0xFFDBE2E7),
               width: 2,
             ),
@@ -214,9 +218,9 @@ class CustomDropDown extends StatelessWidget {
           ),
           filled: true,
           fillColor: Colors.white,
-          contentPadding: EdgeInsetsDirectional.fromSTEB(20, 24, 0, 24),
+          contentPadding: const EdgeInsetsDirectional.fromSTEB(20, 24, 0, 24),
         ),
-        style: TextStyle(
+        style: const TextStyle(
           fontFamily: 'Lexend Deca',
           color: Colors.black,
           fontSize: 14,
@@ -397,4 +401,51 @@ showFutureDialog({required BuildContext context, required Future<dynamic> future
               );
             });
       });
+}
+
+class ForcePicRefresh extends StatefulWidget {
+  @override
+  _ForcePicRefreshState createState() => _ForcePicRefreshState();
+}
+
+class _ForcePicRefreshState extends State<ForcePicRefresh> {
+  String url = "https://api.met.gov.my/static/images/radar-latest.gif";
+  late Widget _pic;
+
+  @override
+  void initState() {
+    Timer.periodic(const Duration(seconds: 20), (timer) {
+      _updateImgWidget();
+      timer.cancel();
+    });
+    _pic = Image.network(url);
+    super.initState();
+  }
+
+  _updateImgWidget() async {
+    setState(() {
+      _pic = const CircularProgressIndicator();
+    });
+    Uint8List bytes = (await NetworkAssetBundle(Uri.parse(url)).load(url)).buffer.asUint8List();
+    setState(() {
+      _pic = Image.memory(bytes);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      child: _pic,
+      onTap: () {
+        _updateImgWidget();
+      },
+    );
+  }
+}
+
+Future<Uint8List> getBytesFromAsset(String path, int width) async {
+  ByteData data = await rootBundle.load(path);
+  ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
+  ui.FrameInfo fi = await codec.getNextFrame();
+  return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!.buffer.asUint8List();
 }
