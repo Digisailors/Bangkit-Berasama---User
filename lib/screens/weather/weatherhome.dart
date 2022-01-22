@@ -45,7 +45,8 @@ class _WeatherHomeState extends State<WeatherHome> {
             ),
 
             DailyCard(
-              day: 'sunday',
+
+
 
 
 
@@ -64,14 +65,14 @@ class _WeatherHomeState extends State<WeatherHome> {
 
 class DailyCard extends StatelessWidget {
    DailyCard({
-    Key? key, this.day,this.url,this.description,this.rain,this.temp,this.windspeed,
+    Key? key,  this
+         .weatherData,
   }) : super(key: key);
-  String? day;
-  String? url;
-  double? temp;
-  String? description;
-  double? windspeed;
-  double? rain;
+
+
+  Daily? weatherData;
+
+
 
 
   @override
@@ -84,22 +85,23 @@ class DailyCard extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.all(12.0),
-              child: Text(day!,style: TextStyle(fontSize: 15),),
+              child: Text(DateTime.fromMillisecondsSinceEpoch(weatherData!.dt).toIso8601String(),style: TextStyle
+                (fontSize: 15),),
             ),
 
             ExpansionTile(
-              leading:Image.network(url!),
-              title: Text(temp!.toString()),
-              subtitle:Text(description!) ,
+              leading:Image.network(weatherData!.weather.first.iconUrl),
+              title: Text(weatherData!.temp.day.toString()),
+              subtitle:Text(weatherData!.weather.first.description) ,
 
               children: [
                 ListTile(
                   leading: Icon(FontAwesomeIcons.wind),
-                  title: Text(windspeed!.toString()),
+                  title: Text(weatherData!.windSpeed.toString()),
                 ),
                 ListTile(
                   leading: Icon(FontAwesomeIcons.cloudSunRain),
-                  title: Text(rain!.toString()),
+                  title: Text('36%'),
                 ),
                 ListTile(
                   leading: Icon(FontAwesomeIcons.wind),

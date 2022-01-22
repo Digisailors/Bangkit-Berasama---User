@@ -156,6 +156,8 @@ class WeatherElement {
     icon: json["icon"],
   );
 
+  String get iconUrl => "https://openweathermap.org/img/wn/$icon@4x.png";
+
   Map<String, dynamic> toJson() => {
     "id": id,
     "main": main,
