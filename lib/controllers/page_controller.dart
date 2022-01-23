@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 
 class IndexController extends GetxController {
   static IndexController instance = Get.find();
-  int pageNumber = 0;
+  int pageNumber = 4;
   void Function(int)? load;
 }
 

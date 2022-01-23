@@ -2,8 +2,10 @@
 //
 //     final weather = weatherFromJson(jsonString);
 
+import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'dart:async';
 
 Weather weatherFromJson(String str) => Weather.fromJson(json.decode(str));
 
@@ -17,6 +19,7 @@ class Weather {
     required this.timezoneOffset,
     required this.current,
     required this.daily,
+    this.alerts,
   });
 
   double lat;
@@ -25,6 +28,7 @@ class Weather {
   int timezoneOffset;
   Current current;
   List<Daily> daily;
+  Map<String, dynamic>? alerts;
 
   factory Weather.fromJson(Map<String, dynamic> json) => Weather(
         lat: json["lat"].toDouble(),
@@ -33,6 +37,7 @@ class Weather {
         timezoneOffset: json["timezone_offset"],
         current: Current.fromJson(json["current"]),
         daily: List<Daily>.from(json["daily"].map((x) => Daily.fromJson(x))),
+        alerts: json["alerts"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -44,14 +49,15 @@ class Weather {
         "daily": List<dynamic>.from(daily.map((x) => x.toJson())),
       };
 
-  static Future<Weather> getWeatherData(double lat, double lang) {
-    var uri = Uri.parse(
-        "https://api.openweathermap.org/data/2.5/onecall?lat=33.44&lon=-94.04&exclude=hourly,minutely&appid=f131f5f3c12967cd395dba531d137cc0");
-    return http.get(uri).then((value) {
-      var response = value.body;
-      print(response);
-      return weatherFromJson(response);
-    });
+  static Future<Weather?> getWeather(double? lat, double? lang) async {
+    var weatheresponse = Uri.parse("https://api.openweathermap.org/data/2"
+        ".5/onecall?lat=$lat&lon=-$lang&units=metric&exclude=hourly,"
+        "minutely&appid=f131f5f3c12967cd395dba531d137cc0");
+    var response = await http.get(weatheresponse);
+    var body = jsonDecode(response.body);
+    var returns = Weather.fromJson(body);
+    print(returns.toJson());
+    return returns;
   }
 }
 
@@ -147,6 +153,9 @@ class WeatherElement {
         icon: json["icon"],
       );
 
+  String get iconUrl => "https://openweathermap.org/img/wn/$icon@4x.png";
+  String get iconMinUrl => "https://openweathermap.org/img/wn/$icon@2x.png";
+
   Map<String, dynamic> toJson() => {
         "id": id,
         "main": main,
@@ -191,7 +200,7 @@ class Daily {
   double dewPoint;
   double windSpeed;
   int windDeg;
-  double windGust;
+  double? windGust;
   List<WeatherElement> weather;
   int clouds;
   double pop;
@@ -199,26 +208,27 @@ class Daily {
   double? rain;
 
   factory Daily.fromJson(Map<String, dynamic> json) => Daily(
-        dt: json["dt"],
-        sunrise: json["sunrise"],
-        sunset: json["sunset"],
-        moonrise: json["moonrise"],
-        moonset: json["moonset"],
-        moonPhase: json["moon_phase"].toDouble(),
-        temp: Temp.fromJson(json["temp"]),
-        feelsLike: FeelsLike.fromJson(json["feels_like"]),
-        pressure: json["pressure"],
-        humidity: json["humidity"],
-        dewPoint: json["dew_point"].toDouble(),
-        windSpeed: json["wind_speed"].toDouble(),
-        windDeg: json["wind_deg"],
-        windGust: json["wind_gust"].toDouble(),
-        weather: List<WeatherElement>.from(json["weather"].map((x) => WeatherElement.fromJson(x))),
-        clouds: json["clouds"],
-        pop: json["pop"].toDouble(),
-        uvi: json["uvi"].toDouble(),
-        rain: json["rain"] != null ? json["rain"].toDouble() : null,
-      );
+      dt: json["dt"],
+      sunrise: json["sunrise"],
+      sunset: json["sunset"],
+      moonrise: json["moonrise"],
+      moonset: json["moonset"],
+      moonPhase: json["moon_phase"].toDouble(),
+      temp: Temp.fromJson(json["temp"]),
+      feelsLike: FeelsLike.fromJson(json["feels_like"]),
+      pressure: json["pressure"],
+      humidity: json["humidity"],
+      dewPoint: json["dew_point"].toDouble(),
+      windSpeed: json["wind_speed"].toDouble(),
+      windDeg: json["wind_deg"],
+      // ignore: prefer_null_aware_operators
+      windGust: json["wind_gust"] != null ? json["wind_gust"].toDouble() : null,
+      weather: List<WeatherElement>.from(json["weather"].map((x) => WeatherElement.fromJson(x))),
+      clouds: json["clouds"],
+      pop: json["pop"].toDouble(),
+      uvi: json["uvi"].toDouble(),
+      // ignore: prefer_null_aware_operators
+      rain: json["rain"] != null ? json["rain"].toDouble() : null);
 
   Map<String, dynamic> toJson() => {
         "dt": dt,
@@ -239,7 +249,7 @@ class Daily {
         "clouds": clouds,
         "pop": pop,
         "uvi": uvi,
-        "rain": rain == null ? null : rain,
+        "rain": rain,
       };
 }
 
@@ -304,5 +314,163 @@ class Temp {
         "night": night,
         "eve": eve,
         "morn": morn,
+      };
+}
+
+// To parse this JSON data, do
+//
+//     final rainWarning = rainWarningFromJson(jsonString);
+
+RainWarning rainWarningFromJson(String str) => RainWarning.fromJson(json.decode(str));
+
+String rainWarningToJson(RainWarning data) => json.encode(data.toJson());
+
+class RainWarning {
+  RainWarning({
+    required this.date,
+    required this.datatype,
+    required this.value,
+    this.latitude,
+    this.longitude,
+    required this.attributes,
+  });
+
+  DateTime date;
+  String datatype;
+  Value value;
+  dynamic latitude;
+  dynamic longitude;
+  Attributes attributes;
+
+  static Future<List<RainWarning>> getWarning() async {
+    var date = DateTime.now().toString().substring(0, 10);
+    var url = "https://api.met.gov.my/v2.1/data?datasetid=WARNING&datacategoryid=THUNDERSTORM&start_date=2022-01-23&end_date=2022-01-23";
+    var uri = Uri.parse(
+      url,
+    );
+    var response = await http.get(uri, headers: {"Authorization": "METToken 2504cdcf7cd349d47e1c8d67daf08938b9fcaec2"});
+    List<dynamic> body = jsonDecode(response.body)["results"];
+    return body.map((e) => RainWarning.fromJson(e)).toList();
+  }
+
+  static Future<List<RainWarning>> getRainWarning() async {
+    var date = DateTime.now().toString().substring(0, 10);
+    var url = "https://api.met.gov.my/v2.1/data?datasetid=WARNING&datacategoryid=RAIN&start_date=2022-01-23&end_date=2022-01-23";
+    var uri = Uri.parse(
+      url,
+    );
+    var response = await http.get(uri, headers: {"Authorization": "METToken 2504cdcf7cd349d47e1c8d67daf08938b9fcaec2"});
+    List<dynamic> body = jsonDecode(response.body)["results"];
+    return body.map((e) => RainWarning.fromJson(e)).toList();
+  }
+
+  factory RainWarning.fromJson(Map<String, dynamic> json) => RainWarning(
+        date: DateTime.parse(json["date"]),
+        datatype: json["datatype"],
+        value: Value.fromJson(json["value"]),
+        latitude: json["latitude"],
+        longitude: json["longitude"],
+        attributes: Attributes.fromJson(json["attributes"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "date": date.toIso8601String(),
+        "datatype": datatype,
+        "value": value.toJson(),
+        "latitude": latitude,
+        "longitude": longitude,
+        "attributes": attributes.toJson(),
+      };
+}
+
+class Attributes {
+  Attributes({
+    required this.title,
+    this.ref,
+    required this.timestamp,
+    required this.validFrom,
+    required this.validTo,
+  });
+
+  Title title;
+  dynamic ref;
+  DateTime timestamp;
+  DateTime validFrom;
+  DateTime validTo;
+
+  get englishTitle => title.en;
+
+  factory Attributes.fromJson(Map<String, dynamic> json) => Attributes(
+        title: Title.fromJson(json["title"]),
+        ref: json["ref"],
+        timestamp: DateTime.parse(json["timestamp"]),
+        validFrom: DateTime.parse(json["valid_from"]),
+        validTo: DateTime.parse(json["valid_to"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "title": title.toJson(),
+        "ref": ref,
+        "timestamp": timestamp.toIso8601String(),
+        "valid_from": validFrom.toIso8601String(),
+        "valid_to": validTo.toIso8601String(),
+      };
+}
+
+class Title {
+  Title({
+    this.en,
+    this.ms,
+  });
+
+  String? en;
+  String? ms;
+
+  get warningText => en!.substring(9, en!.length - 2);
+
+  factory Title.fromJson(Map<String, dynamic> json) => Title(
+        en: json["en"].toString(),
+        ms: json["ms"].toString(),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "en": en,
+        "ms": ms,
+      };
+}
+
+class Value {
+  Value({
+    required this.heading,
+    required this.text,
+  });
+
+  Title heading;
+  Title text;
+
+  factory Value.fromJson(Map<String, dynamic> json) => Value(
+        heading: Title.fromJson(json["heading"]),
+        text: Title.fromJson(json["text"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "heading": heading.toJson(),
+        "text": text.toJson(),
+      };
+}
+
+class En {
+  En({
+    required this.warning,
+  });
+
+  String warning;
+
+  factory En.fromJson(Map<String, dynamic> json) => En(
+        warning: json["warning"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "warning": warning,
       };
 }

@@ -98,3 +98,43 @@ class RetentionPond {
 
   LatLng get latlang => LatLng(coordinates.latitude, coordinates.longitude);
 }
+
+class ReservedAreas {
+  ReservedAreas({required this.name, required this.location, required this.description, required this.coordinates});
+
+  String name;
+  String location;
+  String description;
+
+  GeoPoint coordinates;
+
+  factory ReservedAreas.fromJson(Map<String, dynamic> json) => ReservedAreas(
+        name: json["name"],
+        location: json["location"],
+        description: json["depth"],
+        coordinates: json["coordinates"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "name": name,
+        "location": location,
+        "depth": description,
+        "coordinates": coordinates,
+      };
+
+  add() {
+    reservedAreas
+        .doc(docId)
+        .set(toJson())
+        .then((value) => Response.success("Location Added successfully"))
+        .onError((error, stackTrace) => Response.error(error));
+  }
+
+  get docId => latlang.toString();
+
+  delete() {
+    reservedAreas.doc(docId).delete().then((value) => Response.success("Deleted sccessfully")).onError((error, stackTrace) => Response.error(error));
+  }
+
+  LatLng get latlang => LatLng(coordinates.latitude, coordinates.longitude);
+}

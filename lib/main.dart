@@ -16,6 +16,8 @@ import 'controllers/getxcontrollers.dart';
 import 'controllers/page_controller.dart';
 import 'firebase_options.dart';
 import 'routers/home_route.dart';
+import 'screens/weatherhome.dart';
+import 'services/location.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,6 +35,16 @@ Future<void> main() async {
 
   serviceListController.service = await NgoService.getServices();
   await markerController.loadIcons();
+  LocationService.loadPosistion().then((value) {
+    print(value.toJson());
+    print(value);
+  }).onError((error, stackTrace) {
+    print(error);
+    print(error);
+  });
+
+  LocationService.local();
+
   runApp(const MyApp());
 }
 

@@ -29,6 +29,7 @@ CollectionReference<Map<String, dynamic>> services = firestore.collection('Servi
 CollectionReference<Map<String, dynamic>> feedbacks = firestore.collection('Feedbacks');
 CollectionReference<Map<String, dynamic>> floodProneAreas = firestore.collection('FloodProneAreas');
 CollectionReference<Map<String, dynamic>> retentionPonds = firestore.collection('RetentionPonds');
+CollectionReference<Map<String, dynamic>> reservedAreas = firestore.collection('ReservedAreas');
 
 DocumentReference<Map<String, dynamic>> counters = firestore.collection('globalData').doc('counters');
 DocumentReference<Map<String, dynamic>> damLinks = firestore.collection('globalData').doc('DamLinks');

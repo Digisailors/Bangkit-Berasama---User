@@ -5,16 +5,14 @@ import 'package:bangkit/constants/themeconstants.dart';
 import 'package:bangkit/models/profile.dart';
 import 'package:bangkit/models/weather.dart';
 import 'package:bangkit/screens/page_view.dart';
-import 'package:bangkit/widgets/widgets.dart';
 import 'package:get/get.dart';
 import 'package:photo_view/photo_view.dart';
-
 import 'package:url_launcher/url_launcher.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+  HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -133,8 +131,7 @@ class HomePage extends StatelessWidget {
                           assetPath: 'assets/weather.png',
                           label: 'Weather\nForecast',
                           onTap: () {
-                            // pageController.load!(4);
-                            Weather.getWeatherData(3, 101);
+                            pageController.load!(4);
                           }),
                       CategorySquareTile(
                           assetPath: 'assets/floodarea.png',
