@@ -8,3 +8,4 @@ getAppBar(context) => AppBar(
       centerTitle: true,
       title: SizedBox(height: getHeight(context) * 0.15, child: Image.asset('assets/bina.png')),
     );
+

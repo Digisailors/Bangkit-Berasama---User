@@ -26,67 +26,71 @@ class _WeatherHomeState extends State<WeatherHome> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: SizedBox(height: getHeight(context) * 0.20, child: Image.asset('assets/bina.png')),
-        bottom: PreferredSize(
-            child: CustomDropDownButtonformField(
-              value: _selectedTown.id,
-              item: Town.latLngDistricts
-                  .map((e) => DropdownMenuItem(
-                      value: e.id,
-                      child: Text(
-                        e.name,
-                        textAlign: TextAlign.center,
-                      )))
-                  .toList(),
-              onChanged: (id) {
-                setState(() {
-                  _selectedTown = Town.latLngDistricts.where((element) => element.id == id).first;
-                });
-              },
-            ),
-            preferredSize: Size(getWidth(context), getHeight(context) * 0.14)),
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          title: SizedBox(height: getHeight(context) * 0.15, child: Image.asset('assets/bina.png')),
+          bottom: const TabBar(tabs: [
+            Tab(text: "Forecast"),
+            Tab(text: "Warnings"),
+          ]),
+        ),
+        body: FutureBuilder<Weather?>(
+            future: Weather.getWeather(_selectedTown.latitude, _selectedTown.longitude),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.active || snapshot.connectionState == ConnectionState.done) {
+                var weather = snapshot.data;
+                return TabBarView(
+                  children: [
+                    ListView(
+                      shrinkWrap: true,
+                      children: [
+                        CustomDropDownButtonformField(
+                          value: _selectedTown.id,
+                          item: Town.latLngDistricts
+                              .map((e) => DropdownMenuItem(
+                                  value: e.id,
+                                  child: Text(
+                                    e.name,
+                                    textAlign: TextAlign.center,
+                                  )))
+                              .toList(),
+                          onChanged: (id) {
+                            setState(() {
+                              _selectedTown = Town.latLngDistricts.where((element) => element.id == id).first;
+                            });
+                          },
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(
+                            'Current Forecast',
+                            style: TextStyle(decoration: TextDecoration.underline, fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        WeatherCard(current: weather!.current),
+                        const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(
+                            'Daily Forecast',
+                            style: TextStyle(decoration: TextDecoration.underline, fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: weather.daily.map((e) => DailyCard(weatherData: e)).toList(),
+                        )
+                      ],
+                    ),
+                    Warnings(alerts: weather.alerts),
+                  ],
+                );
+              }
+              return const Center(child: CircularProgressIndicator());
+            }),
       ),
-      body: FutureBuilder<Weather?>(
-          future: Weather.getWeather(_selectedTown.latitude, _selectedTown.longitude),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.active || snapshot.connectionState == ConnectionState.done) {
-              var weather = snapshot.data;
-              return PageView(
-                controller: controller,
-                children: [
-                  Warnings(alerts: weather!.alerts),
-                  ListView(
-                    shrinkWrap: true,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text(
-                          'Current Forecast',
-                          style: TextStyle(decoration: TextDecoration.underline, fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      WeatherCard(current: weather.current),
-                      const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Text(
-                          'Daily Forecast',
-                          style: TextStyle(decoration: TextDecoration.underline, fontSize: 20, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: weather.daily.map((e) => DailyCard(weatherData: e)).toList(),
-                      )
-                    ],
-                  ),
-                ],
-              );
-            }
-            return const Center(child: CircularProgressIndicator());
-          }),
     );
   }
 }
@@ -228,7 +232,7 @@ class Warnings extends StatelessWidget {
           if (alerts == null)
             const Padding(
               padding: EdgeInsets.all(8.0),
-              child: Text("No Warnings Available"),
+              child: Text("No Local Warnings Available"),
             )
           else
             Table(
@@ -250,7 +254,7 @@ class Warnings extends StatelessWidget {
                       if (snapshot.connectionState == ConnectionState.active || snapshot.connectionState == ConnectionState.done) {
                         var warningList = snapshot.data;
                         if (warningList!.isEmpty) {
-                          return const Text("No Warnings available");
+                          return const Text("There are no continous rain warnings");
                         }
                         return ListBody(
                           children: warningList

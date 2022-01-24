@@ -3,7 +3,6 @@
 import 'package:bangkit/constants/controller_constants.dart';
 import 'package:bangkit/constants/themeconstants.dart';
 import 'package:bangkit/models/profile.dart';
-import 'package:bangkit/models/weather.dart';
 import 'package:bangkit/screens/page_view.dart';
 import 'package:get/get.dart';
 import 'package:photo_view/photo_view.dart';
@@ -144,6 +143,12 @@ class HomePage extends StatelessWidget {
                           label: 'Retention\nPonds',
                           onTap: () {
                             pageController.load!(6);
+                          }),
+                      CategorySquareTile(
+                          assetPath: 'assets/reserve.png',
+                          label: 'Reserved\nAreas',
+                          onTap: () {
+                            pageController.load!(8);
                           }),
                       CategorySquareTile(
                           assetPath: 'assets/dam.jpeg',

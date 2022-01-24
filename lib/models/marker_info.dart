@@ -99,8 +99,8 @@ class RetentionPond {
   LatLng get latlang => LatLng(coordinates.latitude, coordinates.longitude);
 }
 
-class ReservedAreas {
-  ReservedAreas({required this.name, required this.location, required this.description, required this.coordinates});
+class ReservedArea {
+  ReservedArea({required this.name, required this.location, required this.description, required this.coordinates});
 
   String name;
   String location;
@@ -108,7 +108,7 @@ class ReservedAreas {
 
   GeoPoint coordinates;
 
-  factory ReservedAreas.fromJson(Map<String, dynamic> json) => ReservedAreas(
+  factory ReservedArea.fromJson(Map<String, dynamic> json) => ReservedArea(
         name: json["name"],
         location: json["location"],
         description: json["depth"],

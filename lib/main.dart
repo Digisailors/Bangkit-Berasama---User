@@ -87,13 +87,13 @@ class MyApp extends StatelessWidget {
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(style: ButtonStyle(backgroundColor: MaterialStateProperty.all(const Color(0xFF00b3df)))),
       ),
-      home: LandingPage(),
+      home: const LandingPage(),
     );
   }
 }
 
 class AddApp extends StatefulWidget {
-  AddApp({Key? key}) : super(key: key);
+  const AddApp({Key? key}) : super(key: key);
 
   @override
   _AddAppState createState() => _AddAppState();
@@ -151,14 +151,6 @@ class _AddAppState extends State<AddApp> {
                     });
                   },
                 ),
-                // ListTile(
-                //   title: const Text("ADD REBUILD"),
-                //   onTap: () {
-                //     setState(() {
-                //       pageController.jumpToPage(2);
-                //     });
-                //   },
-                // ),
               ],
             ),
           ),

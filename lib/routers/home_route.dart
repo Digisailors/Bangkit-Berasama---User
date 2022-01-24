@@ -1,11 +1,12 @@
 import 'package:bangkit/constants/controller_constants.dart';
-import 'package:bangkit/models/ngo.dart';
+
 import 'package:bangkit/screens/adun_list.dart';
 import 'package:bangkit/screens/home.dart';
 import 'package:bangkit/screens/maps/flood_prone_area.dart';
+import 'package:bangkit/screens/maps/reserved_ares.dart';
 import 'package:bangkit/screens/maps/retention_ponds.dart';
 import 'package:bangkit/screens/page_view.dart';
-import 'package:bangkit/screens/rebuildList.dart';
+
 import 'package:bangkit/screens/repo_list.dart';
 import 'package:bangkit/screens/weatherhome.dart';
 import 'package:bangkit/services/firebase.dart';
@@ -32,7 +33,7 @@ class _HomeRouteState extends State<HomeRoute> {
     };
   }
 
-  int _selectedIndex = 4;
+  int _selectedIndex = 0;
 
   Widget getWidgets() {
     switch (_selectedIndex) {
@@ -51,6 +52,8 @@ class _HomeRouteState extends State<HomeRoute> {
         return FloodProneArea();
       case 6:
         return RetentionPonds();
+      case 8:
+        return ReservedAreas();
       case 7:
         return const WebViewer();
       default:

@@ -2,19 +2,17 @@ import 'package:bangkit/controllers/getxcontrollers.dart';
 import 'package:bangkit/models/marker_info.dart';
 import 'package:bangkit/services/firebase.dart';
 import 'package:flutter/material.dart';
-import 'dart:async';
-
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:bangkit/models/marker_info.dart' as model;
 
-class RetentionPonds extends StatefulWidget {
-  RetentionPonds({Key? key}) : super(key: key);
+class ReservedAreas extends StatefulWidget {
+  ReservedAreas({Key? key}) : super(key: key);
 
   @override
-  _RetentionPondsState createState() => _RetentionPondsState();
+  _ReservedAreasState createState() => _ReservedAreasState();
 }
 
-class _RetentionPondsState extends State<RetentionPonds> {
+class _ReservedAreasState extends State<ReservedAreas> {
   late GoogleMapController mapController;
 
   void _onMapCreated(GoogleMapController controller) {
@@ -40,19 +38,18 @@ class _RetentionPondsState extends State<RetentionPonds> {
           print("dx : $_height, dy : $_width");
         },
         child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-            stream: retentionPonds.snapshots(),
+            stream: reservedAreas.snapshots(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.active && snapshot.hasData) {
                 markers.clear();
                 List<QueryDocumentSnapshot<Map<String, dynamic>>> documents = snapshot.data!.docs;
-                List<RetentionPond> areas = documents.map((document) => RetentionPond.fromJson(document.data())).toList();
+                List<ReservedArea> areas = documents.map((document) => ReservedArea.fromJson(document.data())).toList();
 
                 for (var area in areas) {
                   markers.add(Marker(
                     markerId: MarkerId(area.latlang.toString()),
                     position: area.latlang,
-                    infoWindow: InfoWindow(title: area.name, snippet: "Depth :${area.depth} m\n" + "Max Rain : ${area.maxRain} mm"),
-                    icon: BitmapDescriptor.fromBytes(markerController.retentionPondIcon!),
+                    // icon: BitmapDescriptor.fromBytes(markerController.floodMarkerIcon!),
                   ));
                 }
                 double latitude = 0;
@@ -66,6 +63,9 @@ class _RetentionPondsState extends State<RetentionPonds> {
                   onMapCreated: _onMapCreated,
                   initialCameraPosition: CameraPosition(zoom: 8.0, target: average),
                   markers: markers.toSet(),
+                  onTap: (LatLng cordinates) {
+                    markers.add(Marker(markerId: const MarkerId("markerId"), position: cordinates));
+                  },
                 );
               }
               return const CircularProgressIndicator();

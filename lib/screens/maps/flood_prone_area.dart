@@ -17,6 +17,10 @@ class FloodProneArea extends StatefulWidget {
 class _FloodProneAreaState extends State<FloodProneArea> {
   late GoogleMapController mapController;
 
+  double _pinPillPosition = -100;
+
+  model.FloodProneArea? _currentPinData;
+
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
   }
@@ -49,10 +53,11 @@ class _FloodProneAreaState extends State<FloodProneArea> {
 
                 for (var area in areas) {
                   markers.add(Marker(
-                    markerId: MarkerId(area.latlang.toString()),
-                    position: area.latlang,
-                    icon: BitmapDescriptor.fromBytes(markerController.floodMarkerIcon!),
-                  ));
+                      markerId: MarkerId(area.latlang.toString()),
+                      position: area.latlang,
+                      icon: BitmapDescriptor.fromBytes(markerController.floodMarkerIcon!),
+                      infoWindow: InfoWindow(title: "Flood Level : ${area.maxFloodLevel}", snippet: area.area + ", " + area.street),
+                      onTap: () {}));
                 }
                 double latitude = 0;
                 double longitude = 0;
@@ -61,13 +66,49 @@ class _FloodProneAreaState extends State<FloodProneArea> {
                   longitude += marker.position.longitude;
                 }
                 var average = LatLng(latitude / markers.length, longitude / markers.length);
-                return GoogleMap(
-                  onMapCreated: _onMapCreated,
-                  initialCameraPosition: CameraPosition(zoom: 8.0, target: average),
-                  markers: markers.toSet(),
-                  onTap: (LatLng cordinates) {
-                    markers.add(Marker(markerId: const MarkerId("markerId"), position: cordinates));
-                  },
+                return Stack(
+                  children: [
+                    GoogleMap(
+                      onMapCreated: _onMapCreated,
+                      initialCameraPosition: CameraPosition(zoom: 8.0, target: average),
+                      markers: markers.toSet(),
+                      tiltGesturesEnabled: false,
+                      onTap: (LatLng location) {
+                        setState(() {
+                          _pinPillPosition = -100;
+                        });
+                      },
+                    ),
+                    AnimatedPositioned(
+                      bottom: _pinPillPosition,
+                      right: 0,
+                      left: 0,
+                      duration: const Duration(milliseconds: 200),
+                      child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Container(
+                          margin: const EdgeInsets.all(20),
+                          height: 70,
+                          decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.all(Radius.circular(50)), boxShadow: <BoxShadow>[
+                            BoxShadow(
+                              blurRadius: 20,
+                              offset: Offset.zero,
+                              color: Colors.grey.withOpacity(0.5),
+                            )
+                          ]),
+                          child: _currentPinData != null
+                              ? Column(
+                                  children: [
+                                    Text("Flood Level : " + _currentPinData!.maxFloodLevel.toString()),
+                                    Text("Street : " + _currentPinData!.street),
+                                    Text("State : " + _currentPinData!.state),
+                                  ],
+                                )
+                              : Container(),
+                        ),
+                      ),
+                    ),
+                  ],
                 );
               }
               return const CircularProgressIndicator();
