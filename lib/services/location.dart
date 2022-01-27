@@ -13,9 +13,9 @@ class LocationService {
     Location location = new Location();
 
     var locationData = await location.getLocation().then((value) => print(value.altitude)).onError((error, stackTrace) {
-      print(error);
+      // print(error);
     });
-    ;
+
     // print(locationData);
   }
 

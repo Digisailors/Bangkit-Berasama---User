@@ -1,6 +1,8 @@
 import 'package:bangkit/constants/themeconstants.dart';
+import 'package:bangkit/controllers/getxcontrollers.dart';
 import 'package:bangkit/models/town.dart';
 import 'package:bangkit/profile/profileregistration.dart';
+import 'package:bangkit/services/location.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:bangkit/models/weather.dart';
@@ -37,58 +39,84 @@ class _WeatherHomeState extends State<WeatherHome> {
             Tab(text: "Warnings"),
           ]),
         ),
-        body: FutureBuilder<Weather?>(
-            future: Weather.getWeather(_selectedTown.latitude, _selectedTown.longitude),
+        body: FutureBuilder<Object>(
+            future: LocationService.loadPosistion(),
             builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.active || snapshot.connectionState == ConnectionState.done) {
-                var weather = snapshot.data;
-                return TabBarView(
-                  children: [
-                    ListView(
-                      shrinkWrap: true,
-                      children: [
-                        CustomDropDownButtonformField(
-                          value: _selectedTown.id,
-                          item: Town.latLngDistricts
-                              .map((e) => DropdownMenuItem(
-                                  value: e.id,
-                                  child: Text(
-                                    e.name,
-                                    textAlign: TextAlign.center,
-                                  )))
-                              .toList(),
-                          onChanged: (id) {
-                            setState(() {
-                              _selectedTown = Town.latLngDistricts.where((element) => element.id == id).first;
-                            });
-                          },
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text(
-                            'Current Forecast',
-                            style: TextStyle(decoration: TextDecoration.underline, fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        WeatherCard(current: weather!.current),
-                        const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text(
-                            'Daily Forecast',
-                            style: TextStyle(decoration: TextDecoration.underline, fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: weather.daily.map((e) => DailyCard(weatherData: e)).toList(),
-                        )
-                      ],
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                    child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: const [
+                    Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text("Fetching Location, PLease Wait.."),
                     ),
-                    Warnings(alerts: weather.alerts),
+                    CircularProgressIndicator(),
                   ],
-                );
+                ));
               }
-              return const Center(child: CircularProgressIndicator());
+              if (snapshot.hasError) {
+                return const Text("Could not fetch Location");
+              }
+
+              return FutureBuilder<Weather?>(
+                  future: Weather.getWeather(markerController.myLocation!),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.active || snapshot.connectionState == ConnectionState.done) {
+                      var weather = snapshot.data;
+                      return TabBarView(
+                        children: [
+                          ListView(
+                            shrinkWrap: true,
+                            children: [
+                              // CustomDropDownButtonformField(
+                              //   value: _selectedTown.id,
+                              //   item: Town.latLngDistricts
+                              //       .map((e) => DropdownMenuItem(
+                              //           value: e.id,
+                              //           child: Text(
+                              //             e.name,
+                              //             textAlign: TextAlign.center,
+                              //           )))
+                              //       .toList(),
+                              //   onChanged: (id) {
+                              //     setState(() {
+                              //       _selectedTown = Town.latLngDistricts.where((element) => element.id == id).first;
+                              //     });
+                              //   },
+                              // ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text("Location : ${weather!.locataion.toString()}"),
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text(
+                                  'Current Forecast',
+                                  style: TextStyle(decoration: TextDecoration.underline, fontSize: 20, fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              WeatherCard(current: weather.current),
+                              const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text(
+                                  'Daily Forecast',
+                                  style: TextStyle(decoration: TextDecoration.underline, fontSize: 20, fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: weather.daily.map((e) => DailyCard(weatherData: e)).toList(),
+                              )
+                            ],
+                          ),
+                          Warnings(alerts: weather.alerts),
+                        ],
+                      );
+                    }
+                    return const Center(child: CircularProgressIndicator());
+                  });
             }),
       ),
     );

@@ -72,7 +72,7 @@ class _RegistrationState extends State<Registration> {
     secondaryCodeList = postalCodes[secondaryState]!.map((e) => e["postCode"].toString()).toList();
     primaryPostCode = primaryCodeList.first;
     secondaryPostCode = secondaryCodeList.first;
-    print("$primaryPostCode, $secondaryPostCode");
+    // print("$primaryPostCode, $secondaryPostCode");
   }
 
   setPrimaryPostalCodes() {

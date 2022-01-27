@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:bangkit/constants/controller_constants.dart';
+import 'package:bangkit/models/response.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 MyFeedback feedbackFromJson(String str) => MyFeedback.fromJson(json.decode(str));
@@ -37,14 +39,21 @@ class MyFeedback {
         "description": description,
         "raiseddDate": raiseddDate,
         "starRatings": starRatings,
+        "Raised By": profileController.profile!.name,
+        "IC number": profileController.profile!.icNumber,
       };
 
-  Future<void> addFeedback() async {
+  addFeedback() async {
     // Call the user's CollectionReference to add a new user
-    return feedback.doc(uid).set(toJson()).then((value) => print("Feedback Added")).catchError((error) => "Failed to add user: $error");
+    uid = authController.auth.currentUser!.uid;
+    return feedback
+        .doc(uid)
+        .set(toJson())
+        .then((value) => Response.success("Feedback Added Sccessfully"))
+        .catchError((error) => Response.error(error));
   }
 
-  Future<void> deleteFeedback() {
-    return feedback.doc(uid).delete().then((value) => print("Feedback Deleted")).catchError((error) => print("Failed to delete Feedback: $error"));
-  }
+  // Future<void> deleteFeedback() {
+  //   return feedback.doc(uid).delete().then((value) => print("Feedback Deleted")).catchError((error) => print("Failed to delete Feedback: $error"));
+  // }
 }

@@ -2,6 +2,7 @@ import 'package:bangkit/constants/controller_constants.dart';
 import 'package:bangkit/profile/profile.dart';
 import 'package:bangkit/routers/home_route.dart';
 import 'package:bangkit/screens/aid%20&grants/aidpost.dart';
+import 'package:bangkit/screens/feedback.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -24,12 +25,7 @@ class _BottomRouterState extends State<BottomRouter> {
       case 1:
         return const AidAndGrants();
       case 2:
-        return Container(
-          color: Colors.white,
-          child: const Center(
-            child: Text("This page is under construction"),
-          ),
-        );
+        return AddFeedback();
 
       case 3:
         return ProfileWidget(profileModel: profileController.profile!);
@@ -100,50 +96,62 @@ class _BottomRouterState extends State<BottomRouter> {
   // }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: getWidgets(_selectedIndex),
-      bottomNavigationBar: BottomNavigationBar(
-        showUnselectedLabels: true,
-        selectedItemColor: Colors.blue,
-        unselectedItemColor: Colors.grey,
-        elevation: 0,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-            tooltip: 'Home',
-
-            // backgroundColor: Colors.red,
-          ),
-          BottomNavigationBarItem(
-            icon: ImageIcon(AssetImage('assets/aid.png')),
-            label: 'Aid & Grants',
-            tooltip: 'Home',
-
-            // backgroundColor: Colors.red,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.feedback),
-            label: 'Feedback',
-            tooltip: 'Home',
-
-            // backgroundColor: Colors.red,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-            tooltip: 'Home',
-            // backgroundColor: Colors.red,
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        backgroundColor: Colors.white,
-        onTap: (int index) {
+    return WillPopScope(
+      onWillPop: () async {
+        if (_selectedIndex == 0) {
+          return true;
+        } else {
           setState(() {
-            pageController.pageNumber = 0;
-            _selectedIndex = index;
+            _selectedIndex = 0;
           });
-        },
+          return false;
+        }
+      },
+      child: Scaffold(
+        body: getWidgets(_selectedIndex),
+        bottomNavigationBar: BottomNavigationBar(
+          showUnselectedLabels: true,
+          selectedItemColor: Colors.blue,
+          unselectedItemColor: Colors.grey,
+          elevation: 0,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+              tooltip: 'Home',
+
+              // backgroundColor: Colors.red,
+            ),
+            BottomNavigationBarItem(
+              icon: ImageIcon(AssetImage('assets/aid.png')),
+              label: 'Aid & Grants',
+              tooltip: 'Home',
+
+              // backgroundColor: Colors.red,
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.feedback),
+              label: 'Feedback',
+              tooltip: 'Home',
+
+              // backgroundColor: Colors.red,
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: 'Profile',
+              tooltip: 'Home',
+              // backgroundColor: Colors.red,
+            ),
+          ],
+          currentIndex: _selectedIndex,
+          backgroundColor: Colors.white,
+          onTap: (int index) {
+            setState(() {
+              pageController.pageNumber = 0;
+              _selectedIndex = index;
+            });
+          },
+        ),
       ),
     );
   }

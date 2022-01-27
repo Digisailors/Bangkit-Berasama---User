@@ -15,6 +15,7 @@ class CustomTextFormField extends StatelessWidget {
     this.hintText,
     this.controller,
     this.suffixIcon,
+    this.validator,
   }) : super(key: key);
 
   final String? labelText;
@@ -22,12 +23,14 @@ class CustomTextFormField extends StatelessWidget {
   final String? hintText;
   final TextEditingController? controller;
   final Widget? suffixIcon;
+  final String? Function(String?)? validator;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
       obscureText: obscureText,
+      validator: validator,
       decoration: InputDecoration(
         suffixIcon: suffixIcon,
         labelText: labelText,
@@ -374,7 +377,7 @@ class _VideoAppState extends State<VideoApp> {
   }
 }
 
-showFutureDialog({required BuildContext context, required Future<dynamic> future}) {
+showFutureDialog({required BuildContext context, required Future<dynamic> future, void Function()? callback}) {
   print("I am in future dialog");
   showDialog(
       context: context,
@@ -389,9 +392,10 @@ showFutureDialog({required BuildContext context, required Future<dynamic> future
                   content: Text(response.message),
                   actions: [
                     ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
+                        onPressed: callback ??
+                            () {
+                              Navigator.of(context).pop();
+                            },
                         child: Text("Okay"))
                   ],
                 );

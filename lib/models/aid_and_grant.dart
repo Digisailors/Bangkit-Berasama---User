@@ -5,6 +5,7 @@
 import 'dart:convert';
 
 import 'package:bangkit/constants/controller_constants.dart';
+import 'package:bangkit/models/response.dart';
 import 'package:bangkit/services/firebase.dart';
 
 Post postFromJson(String str) => Post.fromJson(json.decode(str));
@@ -28,6 +29,8 @@ class Post {
     this.created,
     this.updated,
     this.ratings,
+    this.totalRating = 0,
+    this.totalRaters = 0,
   });
 
   int? id;
@@ -46,16 +49,19 @@ class Post {
   DateTime? created;
   DateTime? updated;
   List<Rating>? ratings;
+  Rating? rating;
+  int totalRating;
+  int totalRaters;
 
-  int get totalRaters => ratings!.length;
-  int get totalRating {
-    int result = 0;
-    ratings = ratings ?? [];
-    for (var element in ratings!) {
-      result += element.stars;
-    }
-    return result;
-  }
+  // int get totalRaters => ratings!.length;
+  // int get totalRating {
+  //   int result = 0;
+  //   ratings = ratings ?? [];
+  //   for (var element in ratings!) {
+  //     result += element.stars;
+  //   }
+  //   return result;
+  // }
 
   factory Post.fromJson(Map<String, dynamic> json) => Post(
       id: json["id"],
@@ -71,6 +77,8 @@ class Post {
       email: json["email"],
       created: json["created"].toDate(),
       updated: json["updated"].toDate(),
+      totalRaters: json["totalRaters"],
+      totalRating: json["totalRating"],
       name: json["name"]);
 
   Map<String, dynamic> toJson() => {
@@ -87,6 +95,8 @@ class Post {
         "phone": phone,
         "email": email,
         "ratings": ratings == null ? [] : List<dynamic>.from(ratings!.map((x) => x.toJson())),
+        "totalRating": totalRating,
+        "totalRaters": totalRaters,
         "created": created,
         "updated": updated,
       };
@@ -97,7 +107,7 @@ class Post {
   static Future<dynamic> addPost(Post post) async {
     post.created = DateTime.now();
     post.updated = DateTime.now();
-    print(post.toJson());
+    // print(post.toJson());
     return firestore.runTransaction((transaction) async {
       DocumentSnapshot snapshot = await transaction.get(counters);
       if (snapshot.exists) {
@@ -116,36 +126,57 @@ class Post {
     ratings = ratings ?? [];
     await posts.doc(id.toString()).collection("ratings").get().then((value) {
       ratings = value.docs.map((e) => Rating.fromJson(e.data())).toList();
-      print(ratings!.length);
+      // print(ratings!.length);
     });
   }
 
-  ratePost(int stars) async {
-    if (profileController.profile != null && canRate) {
-      print("I am inside rate");
-      ratings = ratings ?? [];
-      var rating = Rating(uid: profileController.profile!.uid!, name: profileController.profile!.name, stars: stars);
-      ratings!.add(rating);
-      await posts.doc(id.toString()).update({
-        "totalRating": FieldValue.increment(stars),
-        "totalRaters": FieldValue.increment(1),
+  loadMyRating() async {
+    rating = await posts.doc(id.toString()).collection("ratings").doc(authController.auth.currentUser!.uid).get().then((value) {
+      if (value.exists) {
+        return Rating.fromJson(value.data()!);
+      } else {
+        return null;
+      }
+    });
+  }
+
+  Future<Response?> ratePost(int stars) async {
+    if (profileController.profile != null) {
+      var starDifference = 0;
+      var raterIncrement;
+      await loadMyRating();
+      if (rating != null) {
+        starDifference = stars - rating!.stars;
+        raterIncrement = 0;
+      } else {
+        starDifference = stars;
+        raterIncrement = 1;
+      }
+
+      rating = Rating(uid: profileController.profile!.uid!, name: profileController.profile!.name, stars: stars);
+      return await posts.doc(id.toString()).update({
+        "totalRating": FieldValue.increment(starDifference),
+        "totalRaters": FieldValue.increment(raterIncrement),
       }).then((value) {
-        return posts.doc(id.toString()).collection("ratings").add(rating.toJson()).then((value) => {"code": "Failed", "message": "Added"});
+        return posts
+            .doc(id.toString())
+            .collection("ratings")
+            .doc(profileController.profile!.uid!)
+            .set(rating!.toJson())
+            .then((value) => Response.success("Your rating has been submitted."));
       }).catchError((error) {
         // print(error.toString());
-        return {"code": "Failed", "message": error.toString()};
+        return Response.error(error);
       });
     }
   }
 
   bool get canRate {
     bool result = true;
-
     if ((ratings ?? []).isNotEmpty) {
       List<dynamic> temp = ratings!.where((element) => element.uid == profileController.profile!.uid).toList();
       result = temp.isEmpty;
     }
-
     return result;
   }
 
@@ -161,6 +192,15 @@ class Post {
     }
 
     return result;
+  }
+
+  int get indexOfmyRating {
+    int index = -1;
+    ratings = ratings ?? [];
+    if (ratings!.isNotEmpty) {
+      ratings!.indexWhere((element) => element.uid == profileController.profile!.uid);
+    }
+    return index;
   }
 }
 

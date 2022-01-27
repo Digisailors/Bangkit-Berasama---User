@@ -10,13 +10,13 @@ import 'package:bangkit/web/add_service.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'controllers/auth_controller.dart';
 import 'controllers/getxcontrollers.dart';
 import 'controllers/page_controller.dart';
 import 'firebase_options.dart';
 import 'routers/home_route.dart';
-import 'screens/weatherhome.dart';
 import 'services/location.dart';
 
 Future<void> main() async {
@@ -36,14 +36,13 @@ Future<void> main() async {
   serviceListController.service = await NgoService.getServices();
   await markerController.loadIcons();
   LocationService.loadPosistion().then((value) {
-    print(value.toJson());
-    print(value);
+    print("Location Initialized");
+    markerController.myLocation = LatLng(value.latitude, value.longitude);
   }).onError((error, stackTrace) {
-    print(error);
     print(error);
   });
 
-  LocationService.local();
+  // LocationService.local();
 
   runApp(const MyApp());
 }

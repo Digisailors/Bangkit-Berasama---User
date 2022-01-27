@@ -37,7 +37,7 @@ class _RetentionPondsState extends State<RetentionPonds> {
         onTapUp: (details) {
           _height = details.localPosition.dx;
           _width = details.localPosition.dy;
-          print("dx : $_height, dy : $_width");
+          // print("dx : $_height, dy : $_width");
         },
         child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
             stream: retentionPonds.snapshots(),

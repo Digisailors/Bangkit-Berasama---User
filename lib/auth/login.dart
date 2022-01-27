@@ -56,8 +56,7 @@ class _SignInWidgetState extends State<SignInWidget> {
                       fit: BoxFit.contain,
                     ),
                     Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -73,8 +72,7 @@ class _SignInWidgetState extends State<SignInWidget> {
                       ),
                     ),
                     Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -109,29 +107,23 @@ class _SignInWidgetState extends State<SignInWidget> {
                       ),
                     ),
                     Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(0, 24, 0, 0),
+                      padding: const EdgeInsetsDirectional.fromSTEB(0, 24, 0, 0),
                       child: SizedBox(
                         height: MediaQuery.of(context).size.width * 0.12,
                         width: MediaQuery.of(context).size.width * 0.50,
                         child: ElevatedButton(
                             style: ButtonStyle(
                               elevation: MaterialStateProperty.all(10),
-                              shadowColor:
-                                  MaterialStateProperty.all(Colors.redAccent),
-                              shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
+                              shadowColor: MaterialStateProperty.all(Colors.redAccent),
+                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(18.0),
                               )),
                             ),
                             onPressed: () async {
                               String title = '', message = '';
-                              if (emailController.text.isEmpty ||
-                                  passwordController.text.isEmpty) {
+                              if (emailController.text.isEmpty || passwordController.text.isEmpty) {
                                 title = "Empty Email or Password";
-                                message =
-                                    "Please fill-out both email and password";
+                                message = "Please fill-out both email and password";
                                 showDialog(
                                     context: context,
                                     builder: (context) {
@@ -166,11 +158,7 @@ class _SignInWidgetState extends State<SignInWidget> {
                                       );
                                     });
                               } else {
-                                await authController.auth
-                                    .signInWithEmailAndPassword(
-                                        emailController.text,
-                                        passwordController.text)
-                                    .then((value) {
+                                await authController.auth.signInWithEmailAndPassword(emailController.text, passwordController.text).then((value) {
                                   Navigator.of(context).popAndPushNamed('/');
                                 }).catchError((error) {
                                   title = error.code ?? "Error";
@@ -199,7 +187,7 @@ class _SignInWidgetState extends State<SignInWidget> {
                     TextButton(
                       onPressed: () {
                         // ignore: avoid_print
-                        print("Pressed");
+                        // print("Pressed");
                         showModalBottomSheet(
                             isScrollControlled: true,
                             context: context,
@@ -223,7 +211,7 @@ class _SignInWidgetState extends State<SignInWidget> {
                     TextButton(
                       onPressed: () {
                         // ignore: avoid_print
-                        print("Pressed");
+                        // print("Pressed");
                       },
                       child: const Text(
                         'Log in with OTP ',
@@ -236,8 +224,7 @@ class _SignInWidgetState extends State<SignInWidget> {
                       ),
                     ),
                     Padding(
-                      padding:
-                          const EdgeInsetsDirectional.fromSTEB(0, 50, 0, 24),
+                      padding: const EdgeInsetsDirectional.fromSTEB(0, 50, 0, 24),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.center,

@@ -5,6 +5,7 @@ import 'package:bangkit/models/adun.dart';
 import 'package:bangkit/services/firebase.dart';
 import 'package:flutter/material.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AdunList extends StatefulWidget {
   AdunList({Key? key}) : super(key: key);
@@ -127,9 +128,9 @@ class _AdunListState extends State<AdunList> {
                       var adun = Adun.fromJson(data);
                       if (selectedFederals.isNotEmpty) {
                         var result = selectedFederals.contains(adun.federal);
-                        return result ? CustomExpansionTile(ngo: adun) : Container();
+                        return result ? CustomExpansionTile(adun: adun) : Container();
                       } else {
-                        return CustomExpansionTile(ngo: adun);
+                        return CustomExpansionTile(adun: adun);
                       }
                       // print("I am data $data");
                     }).toList(),
@@ -228,8 +229,8 @@ class _AdunListState extends State<AdunList> {
 // }
 
 class CustomExpansionTile extends StatefulWidget {
-  const CustomExpansionTile({Key? key, required this.ngo}) : super(key: key);
-  final Adun ngo;
+  const CustomExpansionTile({Key? key, required this.adun}) : super(key: key);
+  final Adun adun;
 
   @override
   State<CustomExpansionTile> createState() => _CustomExpansionTileState();
@@ -237,6 +238,29 @@ class CustomExpansionTile extends StatefulWidget {
 
 class _CustomExpansionTileState extends State<CustomExpansionTile> {
   bool showSubtitle = true;
+
+  void _launchMailURL() async {
+    final Uri params = Uri(
+      scheme: 'mailto',
+      path: widget.adun.emailAddress,
+    );
+    String url = params.toString();
+    await launch(url);
+  }
+
+  void _launchPhoneURL() async {
+    await launch("tel:${widget.adun.contactNumber}");
+  }
+
+  void _launchURL() async {
+    if (await canLaunch(widget.adun.weburl)) {
+      await launch(widget.adun.weburl);
+    }
+  }
+
+  void _launchMapURL() async {
+    await launch("https://www.google.com/maps/search/${widget.adun.officeAddress}");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -254,7 +278,7 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
             child: AspectRatio(
                 aspectRatio: 1,
                 child: Image.network(
-                  widget.ngo.image,
+                  widget.adun.image,
                   fit: BoxFit.cover,
                 )),
           ),
@@ -262,7 +286,7 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
         title: Padding(
           padding: EdgeInsets.symmetric(vertical: showSubtitle ? 4 : 32),
           child: Text(
-            widget.ngo.name,
+            widget.adun.name,
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
@@ -270,7 +294,7 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
             ? Padding(
                 padding: const EdgeInsets.symmetric(vertical: 4),
                 child: Text(
-                  widget.ngo.description,
+                  widget.adun.description,
                   maxLines: 2,
                   softWrap: true,
                   style: const TextStyle(overflow: TextOverflow.ellipsis),
@@ -283,28 +307,31 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              widget.ngo.description,
+              widget.adun.description,
               maxLines: 20,
               softWrap: true,
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              const Padding(
-                padding: EdgeInsets.all(8),
-                child: Icon(Icons.location_on, color: Colors.red),
-              ),
-              Flexible(
-                child: Text(
-                  "${widget.ngo.officeAddress}, ${widget.ngo.state}, ${widget.ngo.postCode}",
-                  maxLines: 3,
-                  softWrap: true,
-                  style: const TextStyle(overflow: TextOverflow.clip),
+          GestureDetector(
+            onTap: _launchMapURL,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.all(8),
+                  child: Icon(Icons.location_on, color: Colors.red),
                 ),
-              )
-            ],
-            mainAxisSize: MainAxisSize.max,
+                Flexible(
+                  child: Text(
+                    "${widget.adun.officeAddress}, ${widget.adun.state}, ${widget.adun.postCode}",
+                    maxLines: 3,
+                    softWrap: true,
+                    style: const TextStyle(overflow: TextOverflow.clip),
+                  ),
+                )
+              ],
+              mainAxisSize: MainAxisSize.max,
+            ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -313,42 +340,58 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
                 padding: EdgeInsets.all(8.0),
                 child: Icon(Icons.person_rounded, color: Colors.red),
               ),
-              Text(widget.ngo.name)
+              Text(widget.adun.name)
             ],
             mainAxisSize: MainAxisSize.max,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Icon(Icons.phone, color: Colors.red),
-              ),
-              Text(widget.ngo.contactNumber)
-            ],
-            mainAxisSize: MainAxisSize.max,
+          GestureDetector(
+            onTap: _launchPhoneURL,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Icon(Icons.phone, color: Colors.red),
+                ),
+                Text(widget.adun.contactNumber)
+              ],
+              mainAxisSize: MainAxisSize.max,
+            ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Icon(Icons.mail, color: Colors.red),
-              ),
-              Text(widget.ngo.emailAddress)
-            ],
-            mainAxisSize: MainAxisSize.max,
+          GestureDetector(
+            onTap: _launchMailURL,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Icon(Icons.mail, color: Colors.red),
+                ),
+                Text(widget.adun.emailAddress)
+              ],
+              mainAxisSize: MainAxisSize.max,
+            ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Icon(Icons.facebook, color: Colors.red),
-              ),
-              Text(widget.ngo.weburl)
-            ],
-            mainAxisSize: MainAxisSize.max,
+          GestureDetector(
+            onTap: _launchURL,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Icon(Icons.facebook, color: Colors.red),
+                ),
+                Flexible(
+                  child: Text(
+                    widget.adun.weburl,
+                    softWrap: true,
+                    maxLines: 3,
+                    style: const TextStyle(overflow: TextOverflow.clip),
+                  ),
+                )
+              ],
+              mainAxisSize: MainAxisSize.max,
+            ),
           ),
           const SizedBox(height: 8),
         ],

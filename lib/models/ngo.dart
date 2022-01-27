@@ -111,7 +111,7 @@ class Ngo {
     }).then((value) {
       return {"code": "Success", "message": "Added"};
     }).catchError((error) {
-      print(error);
+      // print(error);
       return {"code": "Failed", "message": error.toString()};
     });
   }

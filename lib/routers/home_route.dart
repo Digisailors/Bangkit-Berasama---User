@@ -1,10 +1,12 @@
 import 'package:bangkit/constants/controller_constants.dart';
+import 'package:bangkit/models/area.dart';
 
 import 'package:bangkit/screens/adun_list.dart';
 import 'package:bangkit/screens/home.dart';
 import 'package:bangkit/screens/maps/flood_prone_area.dart';
 import 'package:bangkit/screens/maps/reserved_ares.dart';
 import 'package:bangkit/screens/maps/retention_ponds.dart';
+import 'package:bangkit/screens/mapview.dart';
 import 'package:bangkit/screens/page_view.dart';
 
 import 'package:bangkit/screens/repo_list.dart';
@@ -45,15 +47,20 @@ class _HomeRouteState extends State<HomeRoute> {
         return NgoList(query: ngos.where("entityType", isEqualTo: 0), entityType: 'GOVERNMENT AGENCIES');
       case 3:
         return AdunList();
-
       case 4:
         return WeatherHome();
       case 5:
-        return FloodProneArea();
+        return const MapView(
+          type: AreaType.floodProne,
+        );
       case 6:
-        return RetentionPonds();
+        return const MapView(
+          type: AreaType.retentionPond,
+        );
       case 8:
-        return ReservedAreas();
+        return const MapView(
+          type: AreaType.reserved,
+        );
       case 7:
         return const WebViewer();
       default:

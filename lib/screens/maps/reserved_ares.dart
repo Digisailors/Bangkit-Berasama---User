@@ -35,7 +35,7 @@ class _ReservedAreasState extends State<ReservedAreas> {
         onTapUp: (details) {
           _height = details.localPosition.dx;
           _width = details.localPosition.dy;
-          print("dx : $_height, dy : $_width");
+          // print("dx : $_height, dy : $_width");
         },
         child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
             stream: reservedAreas.snapshots(),

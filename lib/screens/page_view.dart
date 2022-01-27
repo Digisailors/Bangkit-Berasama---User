@@ -24,8 +24,9 @@ class WebViewer extends StatefulWidget {
 class _WebViewerState extends State<WebViewer> {
   final Completer<WebViewController>? _webViewController = Completer<WebViewController>();
   WebViewController? _controller;
-
+  bool isloading = true;
   var _selectedState = links.links!.keys.last;
+  final _key = UniqueKey();
 
   @override
   void initState() {
@@ -52,6 +53,7 @@ class _WebViewerState extends State<WebViewer> {
                   setState(() {
                     _selectedState = p0!;
                     links.refresh();
+                    isloading = true;
                   });
                   if (_controller != null) {
                     _controller!.loadUrl(links.links![_selectedState]);
@@ -67,18 +69,29 @@ class _WebViewerState extends State<WebViewer> {
               ),
               Expanded(
                 child: Builder(builder: (BuildContext context) {
-                  return WebView(
-                    onPageFinished: (url) {
-                      print(url);
-                      // Navigator.of(context).pop();
-                    },
-                    initialUrl: widget.url ?? links.links![_selectedState] ?? "www.pagenotfound.com",
-                    backgroundColor: Colors.white,
-                    javascriptMode: JavascriptMode.unrestricted,
-                    onWebViewCreated: (controller) {
-                      _webViewController!.complete(controller);
-                      _controller = controller;
-                    },
+                  return Stack(
+                    children: [
+                      WebView(
+                        key: _key,
+                        onPageFinished: (url) {
+                          setState(() {
+                            isloading = false;
+                          });
+                        },
+                        initialUrl: widget.url ?? links.links![_selectedState] ?? "www.pagenotfound.com",
+                        backgroundColor: Colors.white,
+                        javascriptMode: JavascriptMode.unrestricted,
+                        onWebViewCreated: (controller) {
+                          _webViewController!.complete(controller);
+                          _controller = controller;
+                        },
+                      ),
+                      isloading
+                          ? const Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : Stack(),
+                    ],
                   );
                 }),
               ),

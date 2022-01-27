@@ -70,7 +70,7 @@ class _PostTileState extends State<PostTile> {
     if (widget.post.totalRaters == 0) {
       return 0.0;
     }
-    print("==============>     ${widget.post.totalRating}");
+    // print("==============>     ${widget.post.totalRating}");
     return (widget.post.totalRating * 1.0) / (widget.post.totalRaters * 1.0).toDouble();
   }
 
@@ -99,7 +99,7 @@ class _PostTileState extends State<PostTile> {
                         style: TextStyle(color: Colors.black.withOpacity(0.6)),
                       ),
                       trailing: FutureBuilder<dynamic>(
-                          future: widget.post.loadRatings(),
+                          future: widget.post.loadMyRating(),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState == ConnectionState.active || snapshot.connectionState == ConnectionState.done) {
                               return RatingBarIndicator(

@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:photo_view/photo_view_gallery.dart';
 
 class Story extends StatefulWidget {
   const Story({Key? key, required this.post}) : super(key: key);
@@ -18,6 +19,13 @@ class Story extends StatefulWidget {
 
 class _StoryState extends State<Story> {
   bool isUseful = false;
+  var _rating = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    _rating = widget.post.myRating.toDouble();
+  }
 
   Widget getAttachmentTile(url) {
     return GestureDetector(
@@ -160,23 +168,30 @@ class _StoryState extends State<Story> {
                     listOfDetails(widget.post.email, Icons.mail),
                     const Divider(),
                     Padding(
-                      padding: EdgeInsets.all(8),
-                      child: widget.post.canRate ? Text("Please rate below") : Text("Thanks for your rating"),
+                      padding: const EdgeInsets.all(8),
+                      child: widget.post.canRate ? const Text("Please rate below") : const Text("Thanks for your rating"),
                     ),
                     RatingBar.builder(
-                      ignoreGestures: !widget.post.canRate,
-                      initialRating: widget.post.myRating.toDouble(),
+                      // ignoreGestures: !widget.post.canRate,
+                      initialRating: _rating,
                       allowHalfRating: false,
                       itemBuilder: (context, _) => const Icon(
                         Icons.star,
                         color: Colors.amber,
                       ),
                       onRatingUpdate: (double value) {
-                        print(value);
-                        widget.post.ratePost(value.toInt());
-                        setState(() {});
+                        // print(value);
+
+                        setState(() {
+                          _rating = value;
+                        });
                       },
                     ),
+                    ElevatedButton(
+                        onPressed: () {
+                          showFutureDialog(context: context, future: widget.post.ratePost(_rating.toInt()));
+                        },
+                        child: const Text("Submit Rating")),
                     SizedBox(
                       height: getHeight(context) * 0.1,
                     )
@@ -198,6 +213,11 @@ class MediaLister extends StatelessWidget {
   final List<String> urls;
 
   static const _array = ["Images", "Videos", "Attachments"];
+
+  showMultiplePhotoView() {
+    return MultiplePhotoView(urls: urls);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -242,12 +262,13 @@ class MediaLister extends StatelessWidget {
   }
 
   Widget getImageTile(url, context) {
+    var index = urls.indexWhere((element) => element == url);
     return GestureDetector(
       onTap: () {
         showDialog(
             context: context,
             builder: (context) {
-              return PhotoView(imageProvider: NetworkImage(url));
+              return MultiplePhotoView(urls: urls, initalPage: index);
             });
       },
       child: Padding(
@@ -382,6 +403,57 @@ class _YouTubeState extends State<YouTube> {
         ),
       ),
     );
+  }
+}
+
+class MultiplePhotoView extends StatefulWidget {
+  MultiplePhotoView({Key? key, required this.urls, this.initalPage}) : super(key: key);
+
+  final List<String> urls;
+  final int? initalPage;
+
+  @override
+  State<MultiplePhotoView> createState() => _MultiplePhotoViewState();
+}
+
+class _MultiplePhotoViewState extends State<MultiplePhotoView> {
+  @override
+  void initState() {
+    super.initState();
+    pageController = PageController(initialPage: widget.initalPage ?? 0);
+  }
+
+  late PageController pageController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        child: PhotoViewGallery.builder(
+      scrollPhysics: const BouncingScrollPhysics(),
+      builder: (BuildContext context, int index) {
+        return PhotoViewGalleryPageOptions(
+          imageProvider: NetworkImage(widget.urls[index]),
+          initialScale: PhotoViewComputedScale.contained * 0.8,
+          // heroAttributes: PhotoViewHeroAttributes(tag: galleryItems[index].id),
+        );
+      },
+      itemCount: widget.urls.length,
+      loadingBuilder: (context, event) => Center(
+        child: Container(
+          color: Colors.white,
+          width: 20.0,
+          height: 20.0,
+          child: CircularProgressIndicator(
+            value: event == null ? 0 : event.cumulativeBytesLoaded / (event.expectedTotalBytes ?? 1),
+          ),
+        ),
+      ),
+      // backgroundDecoration: widget.backgroundDecoration,
+      pageController: pageController,
+      onPageChanged: (page) {
+        // pageController.jumpToPage(page);
+      },
+    ));
   }
 }
 

@@ -1,8 +1,6 @@
 import 'package:bangkit/controllers/getxcontrollers.dart';
-import 'package:bangkit/models/marker_info.dart';
 import 'package:bangkit/services/firebase.dart';
 import 'package:flutter/material.dart';
-import 'dart:async';
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:bangkit/models/marker_info.dart' as model;
@@ -25,6 +23,17 @@ class _FloodProneAreaState extends State<FloodProneArea> {
     mapController = controller;
   }
 
+  LatLng? getAveragePosistion() {
+    double latitude = 0;
+    double longitude = 0;
+    for (var marker in markers) {
+      latitude += marker.position.latitude;
+      longitude += marker.position.longitude;
+    }
+    var average = LatLng(latitude / markers.length, longitude / markers.length);
+    return average;
+  }
+
   List<Marker> markers = [];
   double _height = 0;
   double _width = 0;
@@ -41,7 +50,7 @@ class _FloodProneAreaState extends State<FloodProneArea> {
         onTapUp: (details) {
           _height = details.localPosition.dx;
           _width = details.localPosition.dy;
-          print("dx : $_height, dy : $_width");
+          // print("dx : $_height, dy : $_width");
         },
         child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
             stream: floodProneAreas.snapshots(),
@@ -89,7 +98,8 @@ class _FloodProneAreaState extends State<FloodProneArea> {
                         child: Container(
                           margin: const EdgeInsets.all(20),
                           height: 70,
-                          decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.all(Radius.circular(50)), boxShadow: <BoxShadow>[
+                          decoration:
+                              BoxDecoration(color: Colors.white, borderRadius: const BorderRadius.all(Radius.circular(50)), boxShadow: <BoxShadow>[
                             BoxShadow(
                               blurRadius: 20,
                               offset: Offset.zero,

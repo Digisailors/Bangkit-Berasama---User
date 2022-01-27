@@ -4,8 +4,11 @@
 
 import 'dart:async';
 import 'dart:convert';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
+
+import 'geocoding.dart';
 
 Weather weatherFromJson(String str) => Weather.fromJson(json.decode(str));
 
@@ -29,6 +32,7 @@ class Weather {
   Current current;
   List<Daily> daily;
   Map<String, dynamic>? alerts;
+  String? locataion;
 
   factory Weather.fromJson(Map<String, dynamic> json) => Weather(
         lat: json["lat"].toDouble(),
@@ -49,14 +53,33 @@ class Weather {
         "daily": List<dynamic>.from(daily.map((x) => x.toJson())),
       };
 
-  static Future<Weather?> getWeather(double? lat, double? lang) async {
+  static Future<Result?> getAddress(latitude, longitude) async {
+    var apiKey = "AIzaSyA68AkItTnbUcIo7FTn-lN1nOdeBmKEpds";
+    var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=$latitude,$longitude&key=$apiKey";
+    var uri = Uri.parse(url);
+    var response = await http.get(uri);
+    var body = jsonDecode(response.body);
+    var results = body["results"].map((e) => Result.fromJson(e)).toList();
+    print(results.first.toJson());
+    return results.first;
+  }
+
+  static Future<Weather?> getWeather(LatLng? latLng) async {
+    double lat = latLng!.latitude;
+    double lng = latLng.longitude;
+    var result = await getAddress(lat, lng).onError((error, stackTrace) => null);
+    if (result != null) {
+      var location = result.formattedAddress;
+    }
+
     var weatheresponse = Uri.parse("https://api.openweathermap.org/data/2"
-        ".5/onecall?lat=$lat&lon=-$lang&units=metric&exclude=hourly,"
+        ".5/onecall?lat=$lat&lon=-$lng&units=metric&exclude=hourly,"
         "minutely&appid=f131f5f3c12967cd395dba531d137cc0");
     var response = await http.get(weatheresponse);
     var body = jsonDecode(response.body);
     var returns = Weather.fromJson(body);
-    print(returns.toJson());
+    returns.locataion = result != null ? result.formattedAddress : "Could not find location";
+    // print(returns.toJson());
     return returns;
   }
 }

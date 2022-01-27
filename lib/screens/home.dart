@@ -13,6 +13,8 @@ import 'package:flutter/material.dart';
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
 
+  final _scrollController = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -32,12 +34,14 @@ class HomePage extends StatelessWidget {
                     CarouselTile(url: "https://api.met.gov.my/static/images/swirl-latest.gif"),
                   ],
                   options: CarouselOptions(
+                      enlargeCenterPage: true,
+                      initialPage: 1, // enlargeStrategy: CenterPageEnlargeStrategy.height,
                       enableInfiniteScroll: false,
                       reverse: false,
-                      height: getHeight(context) * 0.2,
+                      height: getHeight(context) * 0.3,
                       // enlargeCenterPage: true,
                       autoPlay: false,
-                      aspectRatio: 5 / 2),
+                      aspectRatio: 16 / 9),
                 ),
               ),
 
@@ -70,7 +74,7 @@ class HomePage extends StatelessWidget {
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CategorySquareTile(
                           assetPath: 'assets/ngologo.png',
@@ -86,7 +90,7 @@ class HomePage extends StatelessWidget {
                           }),
                       CategorySquareTile(
                           assetPath: 'assets/adun.png',
-                          label: 'ADUN',
+                          label: 'Ahli Parlimen \n & ADUN',
                           onTap: () {
                             pageController.load!(3);
                           }),
@@ -110,61 +114,68 @@ class HomePage extends StatelessWidget {
                     ),
                   ),
                   const Divider(),
-                  SizedBox(
-                    height: getHeight(context) * 0.02,
-                  ),
-                  Wrap(
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    alignment: WrapAlignment.start,
-                    runSpacing: 10,
-                    children: [
-                      CategorySquareTile(
-                          assetPath: 'assets/police.png',
-                          label: 'E-PDRM\nReporting',
-                          onTap: () {
-                            launch("https://ereporting.rmp.gov.my/index.aspx");
-                            // Get.to(() => const WebViewer(url: "https://ereporting.rmp.gov.my/index.aspx"));
-                            //  pageController.load!(0);
-                          }),
-                      CategorySquareTile(
-                          assetPath: 'assets/weather.png',
-                          label: 'Weather\nForecast',
-                          onTap: () {
-                            pageController.load!(4);
-                          }),
-                      CategorySquareTile(
-                          assetPath: 'assets/floodarea.png',
-                          label: 'Flood Prone\nArea',
-                          onTap: () {
-                            pageController.load!(5);
-                          }),
-                      CategorySquareTile(
-                          assetPath: 'assets/pond.png',
-                          label: 'Retention\nPonds',
-                          onTap: () {
-                            pageController.load!(6);
-                          }),
-                      CategorySquareTile(
-                          assetPath: 'assets/reserve.png',
-                          label: 'Reserved\nAreas',
-                          onTap: () {
-                            pageController.load!(8);
-                          }),
-                      CategorySquareTile(
-                          assetPath: 'assets/dam.jpeg',
-                          label: 'Hydraulic\nStructures',
-                          onTap: () {
-                            // pageController.pageNumber = 7;
-                            Get.to(() => const WebViewer(url: "https://ihydro.sarawak.gov.my/iHydro/en/map/maps.jsp"));
-                          }),
-                      // CategorySquareTile(
-                      //     assetPath: 'assets/Rebuild.png',
-                      //     label: 'Rebuild',
-                      //     onTap: () {
-                      //       pageController.pageNumber = 4;
-                      //       Navigator.of(context).popAndPushNamed('/bottomRoute');
-                      //     }),
-                    ],
+                  Scrollbar(
+                    controller: _scrollController,
+                    thickness: 8,
+                    radius: const Radius.circular(8),
+                    isAlwaysShown: true,
+                    child: SingleChildScrollView(
+                      controller: _scrollController,
+                      scrollDirection: Axis.horizontal,
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 16),
+                        child: Row(
+                          children: [
+                            CategorySquareTile(
+                                assetPath: 'assets/police.png',
+                                label: 'E-PDRM\nReporting',
+                                onTap: () {
+                                  launch("https://ereporting.rmp.gov.my/index.aspx");
+                                  // Get.to(() => const WebViewer(url: "https://ereporting.rmp.gov.my/index.aspx"));
+                                  //  pageController.load!(0);
+                                }),
+                            CategorySquareTile(
+                                assetPath: 'assets/weather.png',
+                                label: 'Weather\nForecast',
+                                onTap: () {
+                                  pageController.load!(4);
+                                }),
+                            CategorySquareTile(
+                                assetPath: 'assets/floodarea.png',
+                                label: 'Flood Prone\nArea',
+                                onTap: () {
+                                  pageController.load!(5);
+                                }),
+                            CategorySquareTile(
+                                assetPath: 'assets/pond.png',
+                                label: 'Retention\nPonds',
+                                onTap: () {
+                                  pageController.load!(6);
+                                }),
+                            CategorySquareTile(
+                                assetPath: 'assets/reserve.png',
+                                label: 'Reserved\nAreas',
+                                onTap: () {
+                                  pageController.load!(8);
+                                }),
+                            CategorySquareTile(
+                                assetPath: 'assets/dam.jpeg',
+                                label: 'Hydraulic\nStructures',
+                                onTap: () {
+                                  // pageController.pageNumber = 7;
+                                  Get.to(() => const WebViewer(url: "https://ihydro.sarawak.gov.my/iHydro/en/map/maps.jsp"));
+                                }),
+                            // CategorySquareTile(
+                            //     assetPath: 'assets/Rebuild.png',
+                            //     label: 'Rebuild',
+                            //     onTap: () {
+                            //       pageController.pageNumber = 4;
+                            //       Navigator.of(context).popAndPushNamed('/bottomRoute');
+                            //     }),
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 10),
                 ],
@@ -250,7 +261,7 @@ class CategorySquareTile extends StatelessWidget {
                           RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0), side: const BorderSide(color: Colors.white))))),
             ),
           ),
-          Text(label),
+          Text(label, textAlign: TextAlign.center),
         ],
       ),
     );
