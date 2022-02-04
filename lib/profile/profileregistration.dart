@@ -2,7 +2,6 @@ import 'package:bangkit/constants/controller_constants.dart';
 import 'package:bangkit/models/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../models/feedback.dart' as f;
 
 class Registration extends StatefulWidget {
   const Registration({Key? key}) : super(key: key);
@@ -109,7 +108,9 @@ class _RegistrationState extends State<Registration> {
         email: emailController.text,
         primaryAddress: primaryAddress,
         secondaryAddress: secondaryAddress,
-        icNumber: icnumberController.text);
+        icNumber: icnumberController.text,
+        documents: [],
+        services: []);
   }
 
   late List<String> colors;
@@ -513,7 +514,7 @@ class _RegistrationState extends State<Registration> {
                       ),
                     ),
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.redAccent,
+                      // primary: Colors.redAccent,
                       shadowColor: const Color(0xFF757575),
                       side: const BorderSide(
                         width: 1,

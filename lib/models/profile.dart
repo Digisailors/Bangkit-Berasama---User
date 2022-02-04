@@ -3,10 +3,12 @@
 //     final profile = profileFromJson(jsonString);
 
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:bangkit/constants/controller_constants.dart';
 import 'package:bangkit/models/response.dart';
 import 'package:bangkit/services/firebase.dart';
+import 'package:flutter/cupertino.dart';
 
 Profile profileFromJson(String str) => Profile.fromJson(json.decode(str));
 
@@ -21,7 +23,12 @@ class Profile {
       required this.email,
       required this.primaryAddress,
       required this.secondaryAddress,
-      required this.icNumber});
+      this.isVolunteer = false,
+      this.isApproved = false,
+      this.about = '',
+      required this.documents,
+      required this.icNumber,
+      required this.services});
 
   String? uid;
   String name;
@@ -29,49 +36,94 @@ class Profile {
   String secondaryPhone;
   String email;
   String icNumber;
-
+  bool isVolunteer;
+  bool isApproved;
   Address primaryAddress;
   Address secondaryAddress;
+  List<dynamic> documents;
+  String? about;
+  List<dynamic> services;
+
+  static List<String> emptyString = [];
+
+  get searchService {
+    Map<String, dynamic> json = {};
+    for (var element in services) {
+      json["$element"] = true;
+    }
+    return json;
+  }
 
   factory Profile.fromJson(Map<String, dynamic> json) => Profile(
-      uid: json["uid"],
-      name: json["name"],
-      phone: json["phone"],
-      secondaryPhone: json["secondaryPhone"],
-      email: json["email"],
-      primaryAddress: Address.fromJson(json["primaryAddress"]),
-      secondaryAddress: Address.fromJson(json["secondaryAddress"]),
-      icNumber: json["icNumber"] ?? '');
+        uid: json["uid"],
+        name: json["name"],
+        phone: json["phone"],
+        secondaryPhone: json["secondaryPhone"],
+        email: json["email"],
+        primaryAddress: Address.fromJson(json["primaryAddress"]),
+        isVolunteer: json["isVolunteer"] ?? false,
+        isApproved: json["isApproved"] ?? false,
+        secondaryAddress: Address.fromJson(json["secondaryAddress"]),
+        about: json["about"] ?? '',
+        icNumber: json["icNumber"] ?? '',
+        documents: json["documents"] ?? emptyString,
+        services: json["services"] ?? [],
+      );
 
   Map<String, dynamic> toJson() => {
         "uid": uid,
         "name": name,
         "phone": phone,
+        "icNumber": icNumber,
         "secondaryPhone": secondaryPhone,
+        "isVolunteer": isVolunteer,
+        "isApproved": isApproved,
         "email": email,
         "primaryAddress": primaryAddress.toJson(),
         "secondaryAddress": secondaryAddress.toJson(),
+        "about": about ?? '',
+        "documents": documents,
+        "services": services,
+        "searchService": searchService,
+        primaryAddress.state: true,
+        secondaryAddress.state: true,
+        primaryAddress.pincode: true,
+        secondaryAddress.pincode: true,
       };
 
-  addUser(String uid) {
+  Future<Response> addUser(String uid) async {
     this.uid = uid;
-    users
+    return await users
         .doc(uid)
         .set(toJson())
-        .then((value) => Response(code: "Sucess", message: "Your Profile has been registered Successfuly"))
+        .then((value) => Response(code: "Sucess", message: "Your Profile has been Submitted Successfuly"))
         .catchError((error) {
       return Response(code: "Failed", message: error.toString());
     });
   }
 
-  updateUser() {
-    users
+  Future<Response> updateUser() {
+    return users
         .doc(uid)
         .update(toJson())
         .then((value) => Response(code: "Success", message: "Your profile has been updated successfully"))
         .catchError((error) {
       return Response(code: "Failed", message: error.toString());
     });
+  }
+
+  becomeVolunteer() async {
+    isVolunteer = true;
+    isApproved = false;
+    documents = documents;
+    var files = await selectFiles().onError((error, stackTrace) => null);
+    if (files != null) {
+      for (File file in files) {
+        var tempURl = (await uploadFile(file));
+        documents.add(tempURl);
+      }
+      return updateUser();
+    }
   }
 
   static Stream<DocumentSnapshot<Map<String, dynamic>>> getUserProfileAsStream(String uid) {
@@ -102,6 +154,28 @@ class Address {
   String roofColor;
   String doorColor;
 
+  get fullAddress => line1 + ", " + line2 + ", " + state + ", " + pincode;
+
+  static get plainController => AdressEditingController(
+        line1: TextEditingController(),
+        line2: TextEditingController(),
+        state: TextEditingController(),
+        pincode: TextEditingController(),
+        description: TextEditingController(),
+        roofColor: TextEditingController(),
+        doorColor: TextEditingController(),
+      );
+
+  AdressEditingController get controller => AdressEditingController(
+        line1: TextEditingController(text: line1),
+        line2: TextEditingController(text: line2),
+        state: TextEditingController(text: state),
+        pincode: TextEditingController(text: pincode),
+        description: TextEditingController(text: description),
+        roofColor: TextEditingController(text: roofColor),
+        doorColor: TextEditingController(text: doorColor),
+      );
+
   factory Address.fromJson(Map<String, dynamic> json) => Address(
         line1: json["line1"],
         line2: json["line2"],
@@ -121,4 +195,34 @@ class Address {
         "state": state,
         "pincode": pincode,
       };
+}
+
+class AdressEditingController {
+  final TextEditingController line1;
+  final TextEditingController line2;
+  final TextEditingController state;
+  final TextEditingController pincode;
+  final TextEditingController description;
+  final TextEditingController roofColor;
+  final TextEditingController doorColor;
+
+  AdressEditingController({
+    required this.line1,
+    required this.line2,
+    required this.state,
+    required this.pincode,
+    required this.description,
+    required this.roofColor,
+    required this.doorColor,
+  });
+
+  Address get address => Address(
+        line1: line1.text,
+        line2: line2.text,
+        description: description.text,
+        roofColor: roofColor.text,
+        doorColor: doorColor.text,
+        state: state.text,
+        pincode: pincode.text,
+      );
 }

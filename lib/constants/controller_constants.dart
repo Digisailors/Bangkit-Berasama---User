@@ -1062,3 +1062,24 @@ const postalCodes = {
     {"postCode": "87033", "city": "Labuan", "region": "0"}
   ],
 };
+
+// getState(String pincode) {
+//   int code = int.parse(pincode);
+//   if ((code >= 40000 && code <= 48300) || (code >= 63000 && code <= 68100)) {
+//     return "Selangor";
+//   } else if ((code >= 20000 && code <= 24300)) {
+//     return "Terengganu";
+//   }
+// }
+
+String? getState(String pincode) {
+  String? state;
+  postalCodes.forEach((key, value) {
+    for (var element in value) {
+      if (element["postCode"] == pincode) {
+        state = key;
+      }
+    }
+  });
+  return state;
+}

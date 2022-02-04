@@ -70,7 +70,7 @@ class _RebuildListState extends State<RebuildList> {
         centerTitle: true,
         leading: GestureDetector(
           onTap: () {
-            pageController.pageNumber = 0;
+            pageController.homeIndex = 0;
             Navigator.popAndPushNamed(context, '/bottomRoute');
           },
           child: const Icon(Icons.arrow_back, color: Colors.blue),

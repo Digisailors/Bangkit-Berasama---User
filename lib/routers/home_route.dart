@@ -3,13 +3,13 @@ import 'package:bangkit/models/area.dart';
 
 import 'package:bangkit/screens/adun_list.dart';
 import 'package:bangkit/screens/home.dart';
-import 'package:bangkit/screens/maps/flood_prone_area.dart';
-import 'package:bangkit/screens/maps/reserved_ares.dart';
-import 'package:bangkit/screens/maps/retention_ponds.dart';
+
 import 'package:bangkit/screens/mapview.dart';
 import 'package:bangkit/screens/page_view.dart';
 
 import 'package:bangkit/screens/repo_list.dart';
+import 'package:bangkit/screens/volunteer/volunteer.dart';
+import 'package:bangkit/screens/volunteer/volunteers.dart';
 import 'package:bangkit/screens/weatherhome.dart';
 import 'package:bangkit/services/firebase.dart';
 import 'package:flutter/material.dart';
@@ -25,20 +25,18 @@ class HomeRoute extends StatefulWidget {
 
 class _HomeRouteState extends State<HomeRoute> {
   @override
+  @override
   void initState() {
     super.initState();
-    pageController.load = (index) {
+    pageController.load = (int index) {
       setState(() {
-        _selectedIndex = index;
+        pageController.homeIndex = index;
       });
-      print("I am invoked index = $index");
     };
   }
 
-  int _selectedIndex = 0;
-
   Widget getWidgets() {
-    switch (_selectedIndex) {
+    switch (pageController.homeIndex) {
       case 0:
         return HomePage();
       case 1:
@@ -48,20 +46,16 @@ class _HomeRouteState extends State<HomeRoute> {
       case 3:
         return AdunList();
       case 4:
-        return WeatherHome();
+        return const VolunteerList();
       case 5:
-        return const MapView(
-          type: AreaType.floodProne,
-        );
+        return WeatherHome();
       case 6:
-        return const MapView(
-          type: AreaType.retentionPond,
-        );
-      case 8:
-        return const MapView(
-          type: AreaType.reserved,
-        );
+        return const MapView(type: AreaType.floodProne);
       case 7:
+        return const MapView(type: AreaType.retentionPond);
+      case 8:
+        return const MapView(type: AreaType.reserved);
+      case 9:
         return const WebViewer();
       default:
         return const Center(child: Text("Page is under constrction"));
@@ -72,16 +66,16 @@ class _HomeRouteState extends State<HomeRoute> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        if (_selectedIndex == 0) {
+        if (pageController.homeIndex == 0) {
           return true;
         } else {
-          pageController.load!(0);
+          setState(() {
+            pageController.homeIndex = 0;
+          });
           return false;
         }
       },
-      child: Scaffold(
-        body: getWidgets(),
-      ),
+      child: Scaffold(body: getWidgets()),
     );
   }
 }

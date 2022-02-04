@@ -16,99 +16,44 @@ class BottomRouter extends StatefulWidget {
 }
 
 class _BottomRouterState extends State<BottomRouter> {
-  int _selectedIndex = 0;
+  @override
+  void initState() {
+    pageController.home.listen((event) {
+      print("event");
+    });
+    super.initState();
+  }
 
+  @override
   getWidgets(int index) {
     switch (index) {
       case 0:
-        return const HomeRoute();
+        // ignore: prefer_const_constructors
+        return HomeRoute();
       case 1:
         return const AidAndGrants();
       case 2:
         return AddFeedback();
-
       case 3:
         return ProfileWidget(profileModel: profileController.profile!);
     }
   }
 
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Scaffold(
-  //     body: getWidgets(_selectedIndex),
-  //     bottomNavigationBar: Padding(
-  //       padding: const EdgeInsets.only(bottom: 10.0, left: 10, right: 10, top: 10),
-  //       child: Card(
-  //         elevation: 5,
-  //         shadowColor: Colors.lightBlueAccent,
-  //         shape: RoundedRectangleBorder(
-  //           borderRadius: BorderRadius.circular(18.0),
-  //         ),
-  //         child: Padding(
-  //           padding: const EdgeInsets.all(8.0),
-  //           child: BottomNavigationBar(
-  //             // showUnselectedLabels: true,
-  //             selectedItemColor: Colors.blue,
-  //             unselectedItemColor: Colors.grey,
-  //             elevation: 0,
-  //             items: const [
-  //               BottomNavigationBarItem(
-  //                 icon: Icon(Icons.home),
-  //                 label: 'Home',
-  //                 tooltip: 'Home',
-
-  //                 // backgroundColor: Colors.red,
-  //               ),
-  //               BottomNavigationBarItem(
-  //                 icon: ImageIcon(AssetImage('assets/aid.png')),
-  //                 label: 'Aid & Grants',
-  //                 tooltip: 'Home',
-
-  //                 // backgroundColor: Colors.red,
-  //               ),
-  //               BottomNavigationBarItem(
-  //                 icon: Icon(Icons.feedback),
-  //                 label: 'Feedback',
-  //                 tooltip: 'Home',
-
-  //                 // backgroundColor: Colors.red,
-  //               ),
-  //               BottomNavigationBarItem(
-  //                 icon: Icon(Icons.person),
-  //                 label: 'Profile',
-  //                 tooltip: 'Home',
-  //                 // backgroundColor: Colors.red,
-  //               ),
-  //             ],
-  //             currentIndex: _selectedIndex,
-  //             backgroundColor: Colors.white,
-  //             onTap: (int index) {
-  //               setState(() {
-  //                 pageController.pageNumber = 0;
-  //                 _selectedIndex = index;
-  //               });
-  //             },
-  //           ),
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        if (_selectedIndex == 0) {
+        if (pageController.bottomIndex == 0) {
           return true;
         } else {
           setState(() {
-            _selectedIndex = 0;
+            pageController.bottomIndex = 0;
           });
           return false;
         }
       },
       child: Scaffold(
-        body: getWidgets(_selectedIndex),
+        body: getWidgets(pageController.bottomIndex),
         bottomNavigationBar: BottomNavigationBar(
           showUnselectedLabels: true,
           selectedItemColor: Colors.blue,
@@ -143,12 +88,13 @@ class _BottomRouterState extends State<BottomRouter> {
               // backgroundColor: Colors.red,
             ),
           ],
-          currentIndex: _selectedIndex,
+          currentIndex: pageController.bottomIndex,
           backgroundColor: Colors.white,
           onTap: (int index) {
             setState(() {
-              pageController.pageNumber = 0;
-              _selectedIndex = index;
+              pageController.homeIndex = 0;
+              pageController.bottomIndex = index;
+              // Navigator.of(context).popAndPushNamed('/');
             });
           },
         ),

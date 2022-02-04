@@ -57,6 +57,10 @@ dependencies:
   google_maps_flutter: ^2.1.1
   geolocator: ^8.0.3
   location: ^4.3.0
+  file_picker: ^4.3.3
+  flutter_rx_stream_builder: ^2.0.1
+  showcaseview: ^1.1.4
+  
 
 
 dev_dependencies:

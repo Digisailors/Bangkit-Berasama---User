@@ -23,6 +23,8 @@ class Result {
   String placeId;
   List<String> types;
 
+  String? get pincode => addressComponents.where((element) => element.postcode != null).first.postcode;
+
   factory Result.fromJson(Map<String, dynamic> json) => Result(
         addressComponents: List<AddressComponent>.from(json["address_components"].map((x) => AddressComponent.fromJson(x))),
         formattedAddress: json["formatted_address"],
@@ -51,11 +53,17 @@ class AddressComponent {
   String shortName;
   List<String> types;
 
-  factory AddressComponent.fromJson(Map<String, dynamic> json) => AddressComponent(
-        longName: json["long_name"],
-        shortName: json["short_name"],
-        types: List<String>.from(json["types"].map((x) => x)),
-      );
+  String? get postcode => types.where((element) => element == 'postal_code').isNotEmpty ? longName : null;
+
+  factory AddressComponent.fromJson(Map<String, dynamic> json) {
+    var res = AddressComponent(
+      longName: json["long_name"],
+      shortName: json["short_name"],
+      types: List<String>.from(json["types"].map((x) => x)),
+    );
+
+    return res;
+  }
 
   Map<String, dynamic> toJson() => {
         "long_name": longName,
@@ -72,20 +80,20 @@ class Geometry {
     required this.viewport,
   });
 
-  Bounds bounds;
+  Bounds? bounds;
   Location location;
   String locationType;
   Bounds viewport;
 
   factory Geometry.fromJson(Map<String, dynamic> json) => Geometry(
-        bounds: Bounds.fromJson(json["bounds"]),
+        bounds: json["bounds"] != null ? Bounds.fromJson(json["bounds"]) : null,
         location: Location.fromJson(json["location"]),
         locationType: json["location_type"],
         viewport: Bounds.fromJson(json["viewport"]),
       );
 
   Map<String, dynamic> toJson() => {
-        "bounds": bounds.toJson(),
+        "bounds": bounds?.toJson(),
         "location": location.toJson(),
         "location_type": locationType,
         "viewport": viewport.toJson(),

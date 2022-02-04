@@ -1,4 +1,5 @@
 import 'package:bangkit/constants/controller_constants.dart';
+import 'package:bangkit/controllers/location_controller.dart';
 import 'package:bangkit/models/service_category.dart';
 import 'package:bangkit/web/add_adun.dart';
 import 'package:bangkit/web/add_agency.dart';
@@ -28,18 +29,18 @@ Future<void> main() async {
 
   Get.put(AuthController());
   Get.put(IndexController());
-  Get.put(ProfileController());
   Get.put(ServiceListController());
   Get.put(DamLinkController());
   Get.put(MapIconsController());
+  Get.put(LocationController());
 
   serviceListController.service = await NgoService.getServices();
   await markerController.loadIcons();
   LocationService.loadPosistion().then((value) {
-    print("Location Initialized");
+    // print("Location Initialized");
     markerController.myLocation = LatLng(value.latitude, value.longitude);
   }).onError((error, stackTrace) {
-    print(error);
+    // print(error);
   });
 
   // LocationService.local();
@@ -54,10 +55,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Flutter Demo',
-      routes: {
-        '/bottomRoute': (context) => BottomRouter(),
-        '/homeRoute': (context) => const HomeRoute(),
-      },
+      getPages: [
+        GetPage(name: "/bottomRoute", page: () => BottomRouter()),
+        GetPage(name: "/homeRoute", page: () => const HomeRoute()),
+      ],
       theme: ThemeData(
         fontFamily: 'Roboto',
         iconTheme: const IconThemeData(color: Colors.black),

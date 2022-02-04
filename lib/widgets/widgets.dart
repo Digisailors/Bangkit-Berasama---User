@@ -1,4 +1,6 @@
 import 'dart:typed_data';
+import 'package:bangkit/constants/themeconstants.dart';
+import 'package:bangkit/controllers/getxcontrollers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:async';
@@ -8,6 +10,8 @@ import 'package:bangkit/models/response.dart';
 import 'package:video_player/video_player.dart';
 
 class CustomTextFormField extends StatelessWidget {
+  final TextInputType? keyboardType;
+
   const CustomTextFormField({
     Key? key,
     this.labelText,
@@ -16,6 +20,7 @@ class CustomTextFormField extends StatelessWidget {
     this.controller,
     this.suffixIcon,
     this.validator,
+    this.keyboardType,
   }) : super(key: key);
 
   final String? labelText;
@@ -31,6 +36,7 @@ class CustomTextFormField extends StatelessWidget {
       controller: controller,
       obscureText: obscureText,
       validator: validator,
+      keyboardType: keyboardType,
       decoration: InputDecoration(
         suffixIcon: suffixIcon,
         labelText: labelText,
@@ -40,13 +46,8 @@ class CustomTextFormField extends StatelessWidget {
           fontSize: 14,
           fontWeight: FontWeight.bold,
         ),
-        hintText: hintText,
-        hintStyle: const TextStyle(
-          fontFamily: 'Lexend Deca',
-          color: Colors.grey,
-          fontSize: 14,
-          fontWeight: FontWeight.bold,
-        ),
+        // hintText: hintText,
+        hintStyle: getText(context).bodyText1!.merge(const TextStyle(color: Color(0xFF040A10))),
         enabledBorder: OutlineInputBorder(
           borderSide: const BorderSide(
             color: Color(0xFFDBE2E7),
@@ -182,55 +183,52 @@ class CustomDropDown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsetsDirectional.fromSTEB(20, 0, leftPad!, 16),
-      child: DropdownButtonFormField(
-        isExpanded: false,
-        value: selectedValue,
-        onChanged: onChanged,
-        onTap: onTap,
-        decoration: InputDecoration(
-          constraints: const BoxConstraints.expand(height: 65),
-          labelText: labelText,
-          labelStyle: const TextStyle(
-            fontFamily: 'Lexend Deca',
-            color: Color(0xFFEF4C43),
-            fontSize: 14,
-            fontWeight: FontWeight.normal,
-          ),
-          hintText: hintText,
-          hintStyle: const TextStyle(
-            fontFamily: 'Lexend Deca',
-            color: Color(0xFF95A1AC),
-            fontSize: 14,
-            fontWeight: FontWeight.normal,
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderSide: const BorderSide(
-              color: Color(0xFFDBE2E7),
-              width: 2,
-            ),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: const BorderSide(
-              color: Color(0xFFDBE2E7),
-              width: 2,
-            ),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          filled: true,
-          fillColor: Colors.white,
-          contentPadding: const EdgeInsetsDirectional.fromSTEB(20, 24, 0, 24),
-        ),
-        style: const TextStyle(
+    return DropdownButtonFormField(
+      isExpanded: false,
+      value: selectedValue,
+      onChanged: onChanged,
+      onTap: onTap,
+      decoration: InputDecoration(
+        constraints: const BoxConstraints.expand(height: 65),
+        labelText: labelText,
+        labelStyle: const TextStyle(
           fontFamily: 'Lexend Deca',
-          color: Colors.black,
+          color: Color(0xFF138AEB),
           fontSize: 14,
           fontWeight: FontWeight.normal,
         ),
-        items: items,
+        hintText: hintText,
+        hintStyle: const TextStyle(
+          fontFamily: 'Lexend Deca',
+          color: Color(0xFF95A1AC),
+          fontSize: 14,
+          fontWeight: FontWeight.normal,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: const BorderSide(
+            color: Color(0xFFDBE2E7),
+            width: 2,
+          ),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: const BorderSide(
+            color: Color(0xFFDBE2E7),
+            width: 2,
+          ),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        filled: true,
+        fillColor: Colors.white,
+        contentPadding: const EdgeInsetsDirectional.fromSTEB(20, 24, 0, 24),
       ),
+      style: const TextStyle(
+        fontFamily: 'Lexend Deca',
+        color: Colors.black,
+        fontSize: 14,
+        fontWeight: FontWeight.normal,
+      ),
+      items: items,
     );
   }
 }
@@ -392,15 +390,19 @@ showFutureDialog({required BuildContext context, required Future<dynamic> future
                   content: Text(response.message),
                   actions: [
                     ElevatedButton(
-                        onPressed: callback ??
-                            () {
-                              Navigator.of(context).pop();
-                            },
-                        child: Text("Okay"))
+                        onPressed: response.code == "Error"
+                            ? () {
+                                Navigator.of(context).pop();
+                              }
+                            : callback ??
+                                () {
+                                  Navigator.of(context).pop();
+                                },
+                        child: const Text("Okay"))
                   ],
                 );
               }
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             });
@@ -408,6 +410,8 @@ showFutureDialog({required BuildContext context, required Future<dynamic> future
 }
 
 class ForcePicRefresh extends StatefulWidget {
+  const ForcePicRefresh({Key? key}) : super(key: key);
+
   @override
   _ForcePicRefreshState createState() => _ForcePicRefreshState();
 }

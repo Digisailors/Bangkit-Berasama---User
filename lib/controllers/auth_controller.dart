@@ -12,6 +12,8 @@ class AuthController extends GetxController {
 class ProfileController extends GetxController {
   static ProfileController instance = Get.find();
   Profile? profile;
+
+  bool get isVolunteer => profile!.isVolunteer;
 }
 
 class ServiceListController extends GetxController {

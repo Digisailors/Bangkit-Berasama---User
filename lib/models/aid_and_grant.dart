@@ -143,7 +143,7 @@ class Post {
   Future<Response?> ratePost(int stars) async {
     if (profileController.profile != null) {
       var starDifference = 0;
-      var raterIncrement;
+      int raterIncrement;
       await loadMyRating();
       if (rating != null) {
         starDifference = stars - rating!.stars;
@@ -182,13 +182,12 @@ class Post {
 
   int get myRating {
     int result = 0;
-
     if ((ratings ?? []).isNotEmpty) {
-      ratings!.forEach((element) {
+      for (var element in ratings!) {
         if (element.uid == profileController.profile!.uid) {
           result = element.stars;
         }
-      });
+      }
     }
 
     return result;

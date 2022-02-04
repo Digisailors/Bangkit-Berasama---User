@@ -64,20 +64,18 @@ class _EditProfileState extends State<EditProfile> {
     roofColorPrimary = widget.profile.primaryAddress.roofColor;
 
     primaryState = widget.profile.primaryAddress.state;
-    primaryPostCode =widget.profile.primaryAddress.pincode;
+    primaryPostCode = widget.profile.primaryAddress.pincode;
 
     doorColorSecondary = widget.profile.secondaryAddress.doorColor;
     roofColorSecondary = widget.profile.secondaryAddress.roofColor;
-    secondaryState =  widget.profile.secondaryAddress.state;
-    doorColorSecondary =  widget.profile.secondaryAddress.doorColor;
+    secondaryState = widget.profile.secondaryAddress.state;
+    doorColorSecondary = widget.profile.secondaryAddress.doorColor;
 
-
-    secondaryPostCode =  widget.profile.secondaryAddress.pincode;
+    secondaryPostCode = widget.profile.secondaryAddress.pincode;
 
     nameController.text = widget.profile.name;
     phoneController.text = widget.profile.phone;
     secondaryphoneController.text = widget.profile.secondaryPhone;
-
 
     emailController.text = authController.auth.currentUser!.email ?? '';
     // icnumberController.text=widget.profile.icNumber??'';
@@ -111,14 +109,15 @@ class _EditProfileState extends State<EditProfile> {
         state: secondaryState,
         pincode: primaryPostCode);
     return Profile(
-      name: nameController.text,
-      phone: phoneController.text,
-      secondaryPhone: secondaryaddressController.text,
-      email: emailController.text,
-      primaryAddress: primaryAddress,
-      secondaryAddress: secondaryAddress,
-      icNumber: icnumberController.text
-    );
+        name: nameController.text,
+        phone: phoneController.text,
+        secondaryPhone: secondaryaddressController.text,
+        email: emailController.text,
+        primaryAddress: primaryAddress,
+        secondaryAddress: secondaryAddress,
+        icNumber: icnumberController.text,
+        services: [],
+        documents: []);
   }
 
   late List<String> colors;

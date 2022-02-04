@@ -8,7 +8,7 @@ MyFeedback feedbackFromJson(String str) => MyFeedback.fromJson(json.decode(str))
 
 String feedbackToJson(MyFeedback data) => json.encode(data.toJson());
 
-CollectionReference feedback = FirebaseFirestore.instance.collection('Feedback');
+CollectionReference feedback = FirebaseFirestore.instance.collection('Users').doc(authController.auth.currentUser!.uid).collection("Feedback");
 
 class MyFeedback {
   MyFeedback({
@@ -34,7 +34,7 @@ class MyFeedback {
       );
 
   Map<String, dynamic> toJson() => {
-        "uid": uid,
+        "uid": authController.auth.currentUser!.uid,
         "title": title,
         "description": description,
         "raiseddDate": raiseddDate,
@@ -43,17 +43,15 @@ class MyFeedback {
         "IC number": profileController.profile!.icNumber,
       };
 
+  static Stream<QuerySnapshot> myFeedbacks() {
+    return feedback.where("uid", isEqualTo: authController.auth.currentUser!.uid).orderBy("raiseddDate", descending: true).snapshots();
+  }
+
   addFeedback() async {
-    // Call the user's CollectionReference to add a new user
-    uid = authController.auth.currentUser!.uid;
     return feedback
-        .doc(uid)
+        .doc(DateTime.now().millisecondsSinceEpoch.toString())
         .set(toJson())
         .then((value) => Response.success("Feedback Added Sccessfully"))
         .catchError((error) => Response.error(error));
   }
-
-  // Future<void> deleteFeedback() {
-  //   return feedback.doc(uid).delete().then((value) => print("Feedback Deleted")).catchError((error) => print("Failed to delete Feedback: $error"));
-  // }
 }

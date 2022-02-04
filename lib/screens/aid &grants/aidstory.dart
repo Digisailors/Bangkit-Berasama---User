@@ -24,7 +24,9 @@ class _StoryState extends State<Story> {
   @override
   void initState() {
     super.initState();
-    _rating = widget.post.myRating.toDouble();
+    if (widget.post.rating != null) {
+      _rating = widget.post.rating!.stars.toDouble();
+    }
   }
 
   Widget getAttachmentTile(url) {
@@ -78,7 +80,24 @@ class _StoryState extends State<Story> {
     );
   }
 
-  Widget listOfDetails(title, icon) {
+  void _launchMailURL() async {
+    final Uri params = Uri(
+      scheme: 'mailto',
+      path: widget.post.email,
+    );
+    String url = params.toString();
+    await launch(url);
+  }
+
+  void _launchPhoneURL() async {
+    await launch("tel:${widget.post.phone}");
+  }
+
+  void _launchMapURL() async {
+    await launch("https://www.google.com/maps/search/${widget.post.address}");
+  }
+
+  Widget listOfDetails(title, icon, void Function()? onTap) {
     return ListTile(
       leading: Icon(
         icon,
@@ -88,6 +107,7 @@ class _StoryState extends State<Story> {
         title,
         style: getText(context).subtitle2,
       ),
+      onTap: onTap,
     );
   }
 
@@ -162,10 +182,10 @@ class _StoryState extends State<Story> {
                     const SizedBox(
                       height: 20,
                     ),
-                    listOfDetails(widget.post.address, Icons.location_pin),
-                    listOfDetails(widget.post.name, Icons.person),
-                    listOfDetails(widget.post.phone, Icons.phone),
-                    listOfDetails(widget.post.email, Icons.mail),
+                    listOfDetails(widget.post.address, Icons.location_pin, _launchMapURL),
+                    listOfDetails(widget.post.name, Icons.person, null),
+                    listOfDetails(widget.post.phone, Icons.phone, _launchPhoneURL),
+                    listOfDetails(widget.post.email, Icons.mail, _launchMailURL),
                     const Divider(),
                     Padding(
                       padding: const EdgeInsets.all(8),

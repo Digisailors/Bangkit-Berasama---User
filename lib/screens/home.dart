@@ -6,6 +6,7 @@ import 'package:bangkit/models/profile.dart';
 import 'package:bangkit/screens/page_view.dart';
 import 'package:get/get.dart';
 import 'package:photo_view/photo_view.dart';
+
 import 'package:url_launcher/url_launcher.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,7 @@ class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
 
   final _scrollController = ScrollController();
+  final GlobalKey _one = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -72,29 +74,38 @@ class HomePage extends StatelessWidget {
                   SizedBox(
                     height: getHeight(context) * 0.012,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CategorySquareTile(
-                          assetPath: 'assets/ngologo.png',
-                          label: 'Database',
-                          onTap: () {
-                            pageController.load!(1);
-                          }),
-                      CategorySquareTile(
-                          assetPath: 'assets/aa.png',
-                          label: 'Gov Agencies',
-                          onTap: () {
-                            pageController.load!(2);
-                          }),
-                      CategorySquareTile(
-                          assetPath: 'assets/adun.png',
-                          label: 'Ahli Parlimen \n & ADUN',
-                          onTap: () {
-                            pageController.load!(3);
-                          }),
-                    ],
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CategorySquareTile(
+                            assetPath: 'assets/ngologo.png',
+                            label: 'Database',
+                            onTap: () {
+                              pageController.load!(1);
+                            }),
+                        CategorySquareTile(
+                            assetPath: 'assets/aa.png',
+                            label: 'Gov Agencies',
+                            onTap: () {
+                              pageController.load!(2);
+                            }),
+                        CategorySquareTile(
+                            assetPath: 'assets/adun.png',
+                            label: 'Ahli Parlimen \n & ADUN',
+                            onTap: () {
+                              pageController.load!(3);
+                            }),
+                        CategorySquareTile(
+                            assetPath: 'assets/volunteer.png',
+                            label: 'Volunteers',
+                            onTap: () {
+                              pageController.load!(4);
+                            }),
+                      ],
+                    ),
                   ),
                   const Align(
                     alignment: Alignment.centerLeft,
@@ -138,19 +149,19 @@ class HomePage extends StatelessWidget {
                                 assetPath: 'assets/weather.png',
                                 label: 'Weather\nForecast',
                                 onTap: () {
-                                  pageController.load!(4);
+                                  pageController.load!(5);
                                 }),
                             CategorySquareTile(
                                 assetPath: 'assets/floodarea.png',
                                 label: 'Flood Prone\nArea',
                                 onTap: () {
-                                  pageController.load!(5);
+                                  pageController.load!(6);
                                 }),
                             CategorySquareTile(
                                 assetPath: 'assets/pond.png',
                                 label: 'Retention\nPonds',
                                 onTap: () {
-                                  pageController.load!(6);
+                                  pageController.load!(7);
                                 }),
                             CategorySquareTile(
                                 assetPath: 'assets/reserve.png',
@@ -218,10 +229,7 @@ class CarouselTile extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
         ),
-        child: Image.network(
-          url,
-          fit: BoxFit.fill,
-        ),
+        child: NetworkImageLoader(url: url),
       ),
     );
   }
@@ -417,4 +425,25 @@ class CustomAppBar extends StatelessWidget {
       ),
     );
   }
+}
+
+class NetworkImageLoader extends StatelessWidget {
+  const NetworkImageLoader({
+    Key? key,
+    required this.url,
+  }) : super(key: key);
+  final String url;
+
+  @override
+  Widget build(BuildContext context) {
+    // File file = File(url);
+    return ClipRRect(
+        borderRadius: const BorderRadius.all(Radius.circular(18)),
+        child: Image.network(url, fit: BoxFit.fill, width: 1000.0, loadingBuilder: getLoadingBuilder));
+  }
+}
+
+Widget getLoadingBuilder(BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+  if (loadingProgress == null) return child;
+  return const Center(child: CircularProgressIndicator());
 }

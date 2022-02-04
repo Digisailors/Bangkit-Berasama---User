@@ -1,10 +1,8 @@
 import 'dart:ui';
 
 import 'package:bangkit/constants/controller_constants.dart';
-import 'package:bangkit/constants/themeconstants.dart';
 import 'package:bangkit/models/profile.dart';
-import 'package:bangkit/profile/editprofile.dart';
-import 'package:bangkit/services/auth.dart';
+import 'package:bangkit/screens/edit_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -66,20 +64,21 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                         padding: const EdgeInsets.all(8.0),
                         child: ElevatedButton(
                           onPressed: () {
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    title: const Text("This page is under development"),
-                                    actions: [
-                                      TextButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: const Text("OK"))
-                                    ],
-                                  );
-                                });
+                            // showDialog(
+                            //     context: context,
+                            //     builder: (context) {
+                            //       return AlertDialog(
+                            //         title: const Text("This page is under development"),
+                            //         actions: [
+                            //           TextButton(
+                            //               onPressed: () {
+                            //                 Navigator.of(context).pop();
+                            //               },
+                            //               child: const Text("OK"))
+                            //         ],
+                            //       );
+                            //     });
+                            Get.to(() => ProfileView());
                             // Get.to(() => EditProfile(
                             //       profile: widget.profileModel,
                             //     ));

@@ -3,8 +3,12 @@ import 'package:get/get.dart';
 
 class IndexController extends GetxController {
   static IndexController instance = Get.find();
-  int pageNumber = 4;
+  int homeIndex = 0;
+  int bottomIndex = 0;
+
   void Function(int)? load;
+
+  RxInt get home => instance.homeIndex.obs;
 }
 
 class DamLinkController extends GetxController {

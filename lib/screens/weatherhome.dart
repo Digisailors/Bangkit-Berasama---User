@@ -1,11 +1,10 @@
 import 'package:bangkit/constants/themeconstants.dart';
-import 'package:bangkit/controllers/getxcontrollers.dart';
+import 'package:bangkit/controllers/location_controller.dart';
 import 'package:bangkit/models/town.dart';
-import 'package:bangkit/profile/profileregistration.dart';
-import 'package:bangkit/services/location.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:bangkit/models/weather.dart';
+import 'package:get/get.dart';
 
 class WeatherHome extends StatefulWidget {
   WeatherHome({Key? key}) : super(key: key);
@@ -39,84 +38,56 @@ class _WeatherHomeState extends State<WeatherHome> {
             Tab(text: "Warnings"),
           ]),
         ),
-        body: FutureBuilder<Object>(
-            future: LocationService.loadPosistion(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
-                    child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: const [
-                    Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text("Fetching Location, PLease Wait.."),
-                    ),
-                    CircularProgressIndicator(),
-                  ],
-                ));
-              }
-              if (snapshot.hasError) {
-                return const Text("Could not fetch Location");
-              }
-
-              return FutureBuilder<Weather?>(
-                  future: Weather.getWeather(markerController.myLocation!),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.active || snapshot.connectionState == ConnectionState.done) {
-                      var weather = snapshot.data;
-                      return TabBarView(
-                        children: [
-                          ListView(
-                            shrinkWrap: true,
-                            children: [
-                              // CustomDropDownButtonformField(
-                              //   value: _selectedTown.id,
-                              //   item: Town.latLngDistricts
-                              //       .map((e) => DropdownMenuItem(
-                              //           value: e.id,
-                              //           child: Text(
-                              //             e.name,
-                              //             textAlign: TextAlign.center,
-                              //           )))
-                              //       .toList(),
-                              //   onChanged: (id) {
-                              //     setState(() {
-                              //       _selectedTown = Town.latLngDistricts.where((element) => element.id == id).first;
-                              //     });
-                              //   },
-                              // ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text("Location : ${weather!.locataion.toString()}"),
-                              ),
-                              const Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text(
-                                  'Current Forecast',
-                                  style: TextStyle(decoration: TextDecoration.underline, fontSize: 20, fontWeight: FontWeight.bold),
+        body: GetBuilder<LocationController>(
+            init: locationController,
+            builder: (_) {
+              if (locationController.location.latitude != 0 && locationController.location.longitude != 0) {
+                return FutureBuilder<Weather?>(
+                    future: Weather.getWeather(locationController.location),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.active || snapshot.connectionState == ConnectionState.done) {
+                        var weather = snapshot.data;
+                        return TabBarView(
+                          children: [
+                            ListView(
+                              shrinkWrap: true,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text("Location : ${weather!.locataion.toString()}"),
                                 ),
-                              ),
-                              WeatherCard(current: weather.current),
-                              const Padding(
-                                padding: EdgeInsets.all(8.0),
-                                child: Text(
-                                  'Daily Forecast',
-                                  style: TextStyle(decoration: TextDecoration.underline, fontSize: 20, fontWeight: FontWeight.bold),
+                                const Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Text(
+                                    'Current Forecast',
+                                    style: TextStyle(decoration: TextDecoration.underline, fontSize: 20, fontWeight: FontWeight.bold),
+                                  ),
                                 ),
-                              ),
-                              Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: weather.daily.map((e) => DailyCard(weatherData: e)).toList(),
-                              )
-                            ],
-                          ),
-                          Warnings(alerts: weather.alerts),
-                        ],
-                      );
-                    }
-                    return const Center(child: CircularProgressIndicator());
-                  });
+                                WeatherCard(current: weather.current),
+                                const Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Text(
+                                    'Daily Forecast',
+                                    style: TextStyle(decoration: TextDecoration.underline, fontSize: 20, fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: weather.daily.map((e) => DailyCard(weatherData: e)).toList(),
+                                )
+                              ],
+                            ),
+                            Warnings(alerts: weather.alerts),
+                          ],
+                        );
+                      }
+                      return const Center(child: CircularProgressIndicator());
+                    });
+              } else {
+                return const Center(
+                  child: Text("Location currently unavailable. Fetching Location..."),
+                );
+              }
             }),
       ),
     );
@@ -241,10 +212,16 @@ class WeatherCard extends StatelessWidget {
   }
 }
 
-class Warnings extends StatelessWidget {
+class Warnings extends StatefulWidget {
   const Warnings({Key? key, this.alerts}) : super(key: key);
-  final Map<String, dynamic>? alerts;
 
+  final alerts;
+
+  @override
+  State<Warnings> createState() => _WarningsState();
+}
+
+class _WarningsState extends State<Warnings> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -257,16 +234,16 @@ class Warnings extends StatelessWidget {
             child: Text("Local Warnings", style: Theme.of(context).textTheme.headline6),
           ),
           Divider(),
-          if (alerts == null)
+          if (widget.alerts == null)
             const Padding(
               padding: EdgeInsets.all(8.0),
               child: Text("No Local Warnings Available"),
             )
           else
             Table(
-              children: alerts!.keys.map((e) => TableRow(children: [Text(e), Text(alerts![e].toString())])).toList(),
+              children: widget.alerts!.keys.map((e) => TableRow(children: [Text(e), Text(widget.alerts![e].toString())])).toList(),
             ),
-          Divider(),
+          const Divider(),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text("MET Warnings", style: Theme.of(context).textTheme.headline6),
@@ -350,4 +327,8 @@ class Warnings extends StatelessWidget {
       ),
     ));
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

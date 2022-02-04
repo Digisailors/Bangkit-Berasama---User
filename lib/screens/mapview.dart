@@ -45,8 +45,11 @@ class _MapViewState extends State<MapView> {
   }
 
   getDetailsCard(Area area) {
+    List<TableRow> children = [];
+    children.addAll(area.property.keys.map((e) => TableRow(children: [Text(e), Text(area.property[e].toString())])).toList());
+    children.add(TableRow(children: [const Text("Location"), Text(area.location.toString())]));
     return Table(
-      children: area.property.keys.map((e) => TableRow(children: [Text(e), Text(area.property[e].toString())])).toList(),
+      children: children,
     );
   }
 
