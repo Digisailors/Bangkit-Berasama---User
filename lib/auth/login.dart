@@ -207,22 +207,22 @@ class _SignInWidgetState extends State<SignInWidget> {
                         ),
                       ),
                     ),
-                    const Text("OR"),
-                    TextButton(
-                      onPressed: () {
-                        // ignore: avoid_print
-                        // print("Pressed");
-                      },
-                      child: const Text(
-                        'Log in with OTP ',
-                        style: TextStyle(
-                          fontFamily: 'Lexend Deca',
-                          color: Colors.blue,
-                          fontSize: 14,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      ),
-                    ),
+                    // const Text("OR"),
+                    // TextButton(
+                    //   onPressed: () {
+                    //     // ignore: avoid_print
+                    //     // print("Pressed");
+                    //   },
+                    //   child: const Text(
+                    //     'Log in with OTP ',
+                    //     style: TextStyle(
+                    //       fontFamily: 'Lexend Deca',
+                    //       color: Colors.blue,
+                    //       fontSize: 14,
+                    //       fontWeight: FontWeight.normal,
+                    //     ),
+                    //   ),
+                    // ),
                     Padding(
                       padding: const EdgeInsetsDirectional.fromSTEB(0, 50, 0, 24),
                       child: Row(
