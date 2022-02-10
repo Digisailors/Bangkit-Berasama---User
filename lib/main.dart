@@ -8,8 +8,10 @@ import 'package:bangkit/web/add_post.dart';
 import 'package:bangkit/routers/bottom_route.dart';
 import 'package:bangkit/routers/landing_page.dart';
 import 'package:bangkit/web/add_service.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -34,7 +36,10 @@ Future<void> main() async {
   Get.put(MapIconsController());
   Get.put(LocationController());
 
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
   serviceListController.service = await NgoService.getServices();
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   await markerController.loadIcons();
   LocationService.loadPosistion().then((value) {
     // print("Location Initialized");
@@ -42,8 +47,6 @@ Future<void> main() async {
   }).onError((error, stackTrace) {
     // print(error);
   });
-
-  // LocationService.local();
 
   runApp(const MyApp());
 }
@@ -160,3 +163,5 @@ class _AddAppState extends State<AddApp> {
     );
   }
 }
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {}

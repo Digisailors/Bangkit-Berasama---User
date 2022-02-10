@@ -26,11 +26,13 @@ class Profile {
       this.isVolunteer = false,
       this.isApproved = false,
       this.about = '',
+      this.fcm,
       required this.documents,
       required this.icNumber,
       required this.services});
 
   String? uid;
+  String? fcm;
   String name;
   String phone;
   String secondaryPhone;
@@ -68,6 +70,7 @@ class Profile {
         icNumber: json["icNumber"] ?? '',
         documents: json["documents"] ?? emptyString,
         services: json["services"] ?? [],
+        fcm: json['fcm'],
       );
 
   Map<String, dynamic> toJson() => {
@@ -85,6 +88,7 @@ class Profile {
         "documents": documents,
         "services": services,
         "searchService": searchService,
+        "fcm": fcm,
         primaryAddress.state: true,
         secondaryAddress.state: true,
         primaryAddress.pincode: true,
@@ -100,6 +104,20 @@ class Profile {
         .catchError((error) {
       return Response(code: "Failed", message: error.toString());
     });
+  }
+
+  Future<Response> generateToken() async {
+    if (uid != null) {
+      return firebaseMessaging.getToken().then((token) => updateToken(token!)).then((value) => Response.success("Token updated")).catchError((error) {
+        return Response.error(error);
+      });
+    }
+    return Response.error("No User to generate token");
+  }
+
+  updateToken(String token) {
+    print("Token : $token");
+    users.doc(uid).update({"fcm": token}).then((value) => fcm = token);
   }
 
   Future<Response> updateUser() {
