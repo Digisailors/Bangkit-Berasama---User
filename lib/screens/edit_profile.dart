@@ -97,16 +97,14 @@ class _ProfileViewState extends State<ProfileView> {
 
   get _colorItems => colors
       .map((e) => DropdownMenuItem(
-            value: e,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(e),
-                const SizedBox(width: 15),
-                Container(height: 10, width: 10, color: Colors.primaries.elementAt(colors.indexWhere((element) => element == e))),
-              ],
-            ),
-          ))
+          value: e,
+          child: Row(
+            children: [
+              Text(e.split(RegExp('(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])')).map((e) => e.capitalize).join(" ")),
+              const SizedBox(width: 15),
+              Container(height: 10, width: 10, color: Colors.primaries.elementAt(colors.indexWhere((element) => element == e))),
+            ],
+          )))
       .toList();
 
   late String _primaryState;
