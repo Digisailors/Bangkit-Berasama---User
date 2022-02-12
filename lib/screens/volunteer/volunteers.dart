@@ -21,16 +21,17 @@ class _VolunteerListState extends State<VolunteerList> {
   @override
   void initState() {
     super.initState();
-    // _selectedState = postalCodes.keys.first;
-    // _selectedPincode = postalCodes[_selectedState]!.first["postCode"]!;
-    _selectedState = profileController.profile!.primaryAddress.state;
-    _selectedPincode = profileController.profile!.primaryAddress.pincode;
-    query = users.where("isVolunteer", isEqualTo: true).where("isApproved", isEqualTo: true).where(_selectedState, isEqualTo: true);
+    loadItems();
+    loadQuery();
   }
 
-  void reload() {
+  void loadQuery() {
     setState(() {
-      query = users.where("isVolunteer", isEqualTo: true).where("isApproved", isEqualTo: true).where(_selectedState, isEqualTo: true);
+      query = users.where("isVolunteer", isEqualTo: true).where("isApproved", isEqualTo: true);
+      _selectedState = _selectedState ?? 'All';
+      if (_selectedState != 'All' && _selectedState != null) {
+        query = query.where(_selectedState!, isEqualTo: true);
+      }
       if (selectedServices.isNotEmpty) {
         query = query.where("services", arrayContainsAny: selectedServices);
       }
@@ -39,13 +40,23 @@ class _VolunteerListState extends State<VolunteerList> {
 
   final states = postalCodes.keys.toList();
   late Query query;
-  late String _selectedState;
-  late String _selectedPincode;
+  String? _selectedState;
   List<String> selectedServices = [];
 
-  get items => postalCodes.keys.map((state) => DropdownMenuItem(value: state, child: Text(state))).toList();
-  Iterable get pincodes => postalCodes[_selectedState]!.map((e) => e["postCode"]);
-  get pincodeItems => pincodes.map((e) => DropdownMenuItem(value: e as String, child: Text(e))).toList();
+  DropdownMenuItem<String> nullItem = const DropdownMenuItem(
+    value: "All",
+    child: Text("All"),
+  );
+
+  final List<DropdownMenuItem<String>> _stateItems = [];
+  void loadItems() {
+    _stateItems.add(nullItem);
+    _stateItems.addAll(postalCodes.keys.map((state) => DropdownMenuItem(value: state, child: Text(state))));
+  }
+
+  // get items => nullItem.addAll(postalCodes.keys.map((state) => DropdownMenuItem(value: state, child: Text(state))).toList(growable: false));
+  // Iterable get pincodes => _selectedState != null ? postalCodes[_selectedState]!.map((e) => e["postCode"]) : [];
+  // get pincodeItems => pincodes.map((e) => DropdownMenuItem(value: e as String, child: Text(e))).toList();
 
   @override
   Widget build(BuildContext context) {
@@ -58,108 +69,104 @@ class _VolunteerListState extends State<VolunteerList> {
                 },
                 child: const Text("Become a volunteer")),
         appBar: getAppBar(context),
-        body: Column(children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              child: profileController.profile!.isVolunteer
-                  ? Text(profileController.profile!.isApproved ? "You are a volunteer" : "Your volunteer application is pending for approval")
-                  : Container(),
+        body: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                child: profileController.profile!.isVolunteer
+                    ? Text(profileController.profile!.isApproved ? "You are a volunteer" : "Your volunteer application is pending for approval")
+                    : Container(),
+              ),
             ),
-          ),
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: EdgeInsets.all(4.0),
-                child: Text(
-                  'VOLUNTEER LIST',
-                  style: TextStyle(
-                    shadows: [Shadow(color: Colors.black, offset: Offset(0, -5))],
-                    color: Colors.transparent,
-                    fontSize: 20,
-                    decoration: TextDecoration.underline,
-                    decorationColor: Colors.blue,
-                    decorationThickness: 4,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Padding(
+                    padding: EdgeInsets.all(4.0),
+                    child: Text(
+                      'VOLUNTEER LIST',
+                      style: TextStyle(
+                        shadows: [Shadow(color: Colors.black, offset: Offset(0, -5))],
+                        color: Colors.transparent,
+                        fontSize: 20,
+                        decoration: TextDecoration.underline,
+                        decorationColor: Colors.blue,
+                        decorationThickness: 4,
+                      ),
+                    ),
                   ),
                 ),
-              ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 16),
+                  child: SizedBox(
+                    width: getWidth(context) * 0.4,
+                    child: DropdownButtonFormField(
+                      decoration: const InputDecoration(border: InputBorder.none),
+                      value: _selectedState,
+                      items: _stateItems,
+                      onChanged: (state) {
+                        _selectedState = state as String? ?? _selectedState;
+                        loadQuery();
+                      },
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 16),
-            child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              SizedBox(
-                width: getWidth(context) * 0.4,
-                child: DropdownButtonFormField(
-                  decoration: const InputDecoration(border: InputBorder.none),
-                  value: _selectedState,
-                  items: items,
-                  onChanged: (state) {
-                    _selectedState = state as String? ?? _selectedState;
-                    _selectedPincode = postalCodes[_selectedState]!.first["postCode"]!;
-                    reload();
-                  },
-                ),
-              ),
-              SizedBox(
-                width: getWidth(context) * 0.4,
-                child: DropdownButtonFormField(
-                  decoration: const InputDecoration(border: InputBorder.none),
-                  value: _selectedPincode,
-                  items: pincodeItems,
-                  onChanged: (pincode) {
-                    _selectedPincode = pincode as String? ?? _selectedPincode;
-                    reload();
-                  },
-                ),
-              ),
-            ]),
-          ),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: serviceListController.service!
-                  .map((e) => Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: ChoiceChip(
-                            selected: getServiceChipStats(e),
-                            label: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                e.toUpperCase(),
-                                style: TextStyle(color: getServiceChipStats(e) ? Colors.white : Colors.black),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: serviceListController.service!
+                    .map((e) => Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: ChoiceChip(
+                              selected: getServiceChipStats(e),
+                              label: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  e.toUpperCase(),
+                                  style: TextStyle(color: getServiceChipStats(e) ? Colors.white : Colors.black),
+                                ),
                               ),
-                            ),
-                            onSelected: (bool value) {
-                              if (value == true) {
-                                selectedServices.add(e);
-                              } else {
-                                selectedServices.removeWhere((element) => element == e);
-                              }
-                              reload();
-                            }),
-                      ))
-                  .toList(),
+                              onSelected: (bool value) {
+                                if (value == true) {
+                                  selectedServices.add(e);
+                                } else {
+                                  selectedServices.removeWhere((element) => element == e);
+                                }
+                                loadQuery();
+                              }),
+                        ))
+                    .toList(),
+              ),
             ),
-          ),
-          const Divider(),
-          StreamBuilder(
-            stream: query.snapshots(),
-            builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-              if (snapshot.connectionState == ConnectionState.active || snapshot.hasData) {
-                var documents = snapshot.data!.docs;
-                List<Profile> profiles = documents.map((e) => Profile.fromJson(e.data() as Map<String, dynamic>)).toList();
-                return Column(children: profiles.map((e) => ProfileCard(profile: e)).toList());
-              }
-              if (snapshot.hasError) {
-                return const Center(child: Text("An error has occured"));
-              }
-              return const Center(child: CircularProgressIndicator());
-            },
-          ),
-        ]));
+            const Divider(),
+            Expanded(
+              child: StreamBuilder(
+                stream: query.snapshots(),
+                builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.active || snapshot.hasData) {
+                    var documents = snapshot.data!.docs;
+                    List<Profile> profiles = documents.map((e) => Profile.fromJson(e.data() as Map<String, dynamic>)).toList();
+                    return ListView(
+                      shrinkWrap: true,
+                      // mainAxisSize: MainAxisSize.min,
+                      children: profiles.map((e) => ProfileCard(profile: e)).toList(),
+                    );
+                  }
+                  if (snapshot.hasError) {
+                    return const Center(child: Text("An error has occured"));
+                  }
+                  return const Center(child: CircularProgressIndicator());
+                },
+              ),
+            ),
+          ],
+        ));
   }
 
   getServiceChipStats(String e) {
@@ -220,7 +227,7 @@ class ProfileCard extends StatelessWidget {
             // tileColor: Color(0x9885E9FF),
             minVerticalPadding: 0,
             leading: const Icon(FontAwesomeIcons.addressBook, color: Colors.red),
-            title: Text(profile.secondaryAddress.line1 + ', ' + profile.secondaryAddress.line2),
+            title: Text(profile.secondaryAddress.line1 + (profile.secondaryAddress.line2.isEmpty ? '' : ', ') + profile.secondaryAddress.line2),
             subtitle: Text(profile.secondaryAddress.state + ", " + profile.secondaryAddress.pincode),
             onTap: _launchSecondaryAdress,
           ),
@@ -235,7 +242,7 @@ class ProfileCard extends StatelessWidget {
                   ),
                   ListTile(
                     leading: const Icon(Icons.phone_android, color: Colors.red),
-                    title: Text(profile.secondaryPhone),
+                    title: Text(profile.secondaryPhone.isNotEmpty ? profile.secondaryPhone : "Nil"),
                     onTap: _launchSecondaryPhoneURL,
                   ),
                 ],

@@ -28,13 +28,24 @@ class _AddVolunteerState extends State<AddVolunteer> {
   final aboutController = TextEditingController();
   List<String?>? services = [];
 
-  List<MultiSelectItem<String?>> get multiItems => serviceListController.service!.map((e) => MultiSelectItem(e, e)).toList();
+  List<MultiSelectItem<String?>> get multiItems => serviceListController.service!.map((e) => MultiSelectItem(e.capitalize, e.capitalize!)).toList();
   Future chooseFile() async {
     var files = await ImagePicker().pickMultiImage();
     if (files != null) {
       setState(() {
         if (items.isNotEmpty) items.removeLast();
         items.addAll(files.map((e) => e.path));
+        items.add(null);
+      });
+    }
+  }
+
+  Future captureFile() async {
+    var file = await ImagePicker().pickImage(source: ImageSource.camera);
+    if (file != null) {
+      setState(() {
+        if (items.isNotEmpty) items.removeLast();
+        items.add(file.path);
         items.add(null);
       });
     }
@@ -60,110 +71,103 @@ class _AddVolunteerState extends State<AddVolunteer> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        items.clear();
-        widget.setIndex!(0);
-        return false;
-      },
-      child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () async {
-            showFutureDialog(
-                context: context,
-                future: saveDocumentsToProfile(),
-                callback: () {
-                  items.clear();
-                  Get.toNamed('/bottomRoute');
-                });
-          },
-          child: const Icon(Icons.upload),
-        ),
-        appBar: getAppBar(context),
-        backgroundColor: Colors.white,
-        body: SafeArea(
-          child: SingleChildScrollView(
-            child: Align(
-              alignment: const AlignmentDirectional(0, 0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: SizedBox(width: getWidth(context) / 3, child: Image.asset("assets/volunteer.png")),
-                    ),
-                  ),
-                  Align(
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          showFutureDialog(
+              context: context,
+              future: saveDocumentsToProfile(),
+              callback: () {
+                items.clear();
+                Get.toNamed('/bottomRoute');
+              });
+        },
+        child: const Icon(Icons.upload),
+      ),
+      appBar: getAppBar(context),
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Align(
+            alignment: const AlignmentDirectional(0, 0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Align(
                     alignment: Alignment.center,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        "Thank you for showing interest on becoming a volunteer",
-                        style: getText(context).subtitle2,
-                      ),
-                    ),
+                    child: SizedBox(width: getWidth(context) / 3, child: Image.asset("assets/volunteer.png")),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      "Tell us anything about yourself (optional)",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  Padding(
+                ),
+                Align(
+                  alignment: Alignment.center,
+                  child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: CustomTextFormfieldRed(
-                      controller: aboutController,
-                      maxLines: 3,
-                    ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.all(8.0),
                     child: Text(
-                      "Select any of the services below",
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      "Thank you for showing interest on becoming a volunteer",
+                      style: getText(context).subtitle2,
                     ),
                   ),
-                  MultiSelectDialogField(
-                    buttonText: const Text("Select Services"),
-                    title: const Text("Select Services"),
-                    searchable: true,
-                    searchHint: "Select services",
-                    onConfirm: (List<String?> value) {
-                      services = value;
-                    },
-                    items: multiItems,
+                ),
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                    "Tell us anything about yourself (optional)",
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  const Divider(),
-                  const Padding(
-                    padding: EdgeInsets.only(left: 24.0),
-                    child: Text(
-                      "Add Images to upload",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CustomTextFormfieldRed(
+                    controller: aboutController,
+                    maxLines: 3,
                   ),
-                  Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(8, 8, 8, 8),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width,
-                          child: Wrap(
-                            alignment: WrapAlignment.start,
-                            children: items.map((e) => getItem(e)).toList(),
-                          ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
+                    "Select any of the services below",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                MultiSelectDialogField(
+                  buttonText: const Text("Select Services"),
+                  title: const Text("Select Services"),
+                  searchable: true,
+                  searchHint: "Select services",
+                  onConfirm: (List<String?> value) {
+                    services = value;
+                  },
+                  items: multiItems,
+                ),
+                const Divider(),
+                const Padding(
+                  padding: EdgeInsets.only(left: 24.0),
+                  child: Text(
+                    "Please attach fromt and back side of your ID",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsetsDirectional.fromSTEB(8, 8, 8, 8),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: Wrap(
+                          alignment: WrapAlignment.start,
+                          children: items.map((e) => getItem(e)).toList(),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
@@ -206,7 +210,18 @@ class _AddVolunteerState extends State<AddVolunteer> {
     } else {
       return NullImage(
         onTap: () {
-          chooseFile();
+          showModalBottomSheet(
+              context: context,
+              builder: (context) {
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ListTile(onTap: captureFile, leading: const Icon(Icons.camera), title: const Text("Take a photo")),
+                    ListTile(onTap: chooseFile, leading: const Icon(Icons.photo_album), title: const Text("Pick Images from Gallery")),
+                  ],
+                );
+              });
+          // chooseFile();
         },
       );
     }

@@ -2,6 +2,7 @@ import 'package:bangkit/constants/controller_constants.dart';
 import 'package:bangkit/models/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({Key? key, required this.profile}) : super(key: key);
@@ -80,6 +81,18 @@ class _EditProfileState extends State<EditProfile> {
     emailController.text = authController.auth.currentUser!.email ?? '';
     // icnumberController.text=widget.profile.icNumber??'';
   }
+
+  get colorItems => colors
+      .map((e) => DropdownMenuItem(
+          value: e,
+          child: Row(
+            children: [
+              Text(e.split(RegExp('(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])')).map((e) => e.capitalize).join(" ")),
+              const SizedBox(width: 15),
+              Container(height: 10, width: 10, color: Colors.primaries.elementAt(colors.indexWhere((element) => element == e))),
+            ],
+          )))
+      .toList();
 
   setPrimaryPostalCodes() {
     primaryCodeList = postalCodes[primaryState]!.map((e) => e["postCode"].toString()).toList();
@@ -186,7 +199,7 @@ class _EditProfileState extends State<EditProfile> {
             CustomTextFormfieldRed(
               controller: icnumberController,
               hintText: 'Ex. F12345678I',
-              labelText: 'Enter your Ic Number',
+              labelText: 'Enter your IC Number',
               icon: const Icon(FontAwesomeIcons.passport),
             ),
             CustomTextFormfieldRed(
@@ -273,54 +286,28 @@ class _EditProfileState extends State<EditProfile> {
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.1,
                   child: CustomDropDownButtonformField(
-                    labelText: 'DoorColor',
-                    Icon: const Icon(Icons.door_back_door),
-                    value: doorColorPrimary,
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        doorColorPrimary = newValue!;
-                      });
-                    },
-                    item: colors.map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(value),
-                            const SizedBox(width: 15),
-                            Container(height: 10, width: 10, color: Colors.primaries.elementAt(colors.indexWhere((element) => element == value))),
-                          ],
-                        ),
-                      );
-                    }).toList(),
-                  ),
+                      labelText: 'Door Color',
+                      Icon: const Icon(Icons.door_back_door),
+                      value: doorColorPrimary,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          doorColorPrimary = newValue!;
+                        });
+                      },
+                      item: colorItems),
                 ),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.1,
                   child: CustomDropDownButtonformField(
-                    labelText: 'Roof Color',
-                    Icon: const Icon(Icons.roofing),
-                    value: roofColorPrimary,
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        roofColorPrimary = newValue!;
-                      });
-                    },
-                    item: colors.map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(value),
-                            const SizedBox(width: 15),
-                            Container(height: 10, width: 10, color: Colors.primaries.elementAt(colors.indexWhere((element) => element == value))),
-                          ],
-                        ),
-                      );
-                    }).toList(),
-                  ),
+                      labelText: 'Roof Color',
+                      Icon: const Icon(Icons.roofing),
+                      value: roofColorPrimary,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          roofColorPrimary = newValue!;
+                        });
+                      },
+                      item: colorItems),
                 ),
               ],
               onExpansionChanged: (bool expanded) {
@@ -403,54 +390,28 @@ class _EditProfileState extends State<EditProfile> {
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.1,
                   child: CustomDropDownButtonformField(
-                    labelText: 'DoorColor',
-                    Icon: const Icon(Icons.door_back_door),
-                    value: doorColorSecondary,
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        doorColorSecondary = newValue!;
-                      });
-                    },
-                    item: colors.map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(value),
-                            const SizedBox(width: 15),
-                            Container(height: 10, width: 10, color: Colors.primaries.elementAt(colors.indexWhere((element) => element == value))),
-                          ],
-                        ),
-                      );
-                    }).toList(),
-                  ),
+                      labelText: 'Door Color',
+                      Icon: const Icon(Icons.door_back_door),
+                      value: doorColorSecondary,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          doorColorSecondary = newValue!;
+                        });
+                      },
+                      item: colorItems),
                 ),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.1,
                   child: CustomDropDownButtonformField(
-                    labelText: 'Roof Color',
-                    Icon: const Icon(Icons.roofing),
-                    value: roofColorSecondary,
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        roofColorSecondary = newValue!;
-                      });
-                    },
-                    item: colors.map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(value),
-                            const SizedBox(width: 15),
-                            Container(height: 10, width: 10, color: Colors.primaries.elementAt(colors.indexWhere((element) => element == value))),
-                          ],
-                        ),
-                      );
-                    }).toList(),
-                  ),
+                      labelText: 'Roof Color',
+                      Icon: const Icon(Icons.roofing),
+                      value: roofColorSecondary,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          roofColorSecondary = newValue!;
+                        });
+                      },
+                      item: colorItems),
                 ),
               ],
             ),
