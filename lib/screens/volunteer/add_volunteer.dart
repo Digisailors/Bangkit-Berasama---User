@@ -28,7 +28,7 @@ class _AddVolunteerState extends State<AddVolunteer> {
   final aboutController = TextEditingController();
   List<String?>? services = [];
 
-  List<MultiSelectItem<String?>> get multiItems => serviceListController.service!.map((e) => MultiSelectItem(e, e)).toList();
+  List<MultiSelectItem<String?>> get multiItems => serviceListController.service!.map((e) => MultiSelectItem(e.capitalize, e.capitalize!)).toList();
   Future chooseFile() async {
     var files = await ImagePicker().pickMultiImage();
     if (files != null) {

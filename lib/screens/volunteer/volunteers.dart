@@ -227,7 +227,7 @@ class ProfileCard extends StatelessWidget {
             // tileColor: Color(0x9885E9FF),
             minVerticalPadding: 0,
             leading: const Icon(FontAwesomeIcons.addressBook, color: Colors.red),
-            title: Text(profile.secondaryAddress.line1 + ', ' + profile.secondaryAddress.line2),
+            title: Text(profile.secondaryAddress.line1 + (profile.secondaryAddress.line2.isEmpty ? '' : ', ') + profile.secondaryAddress.line2),
             subtitle: Text(profile.secondaryAddress.state + ", " + profile.secondaryAddress.pincode),
             onTap: _launchSecondaryAdress,
           ),
@@ -242,7 +242,7 @@ class ProfileCard extends StatelessWidget {
                   ),
                   ListTile(
                     leading: const Icon(Icons.phone_android, color: Colors.red),
-                    title: Text(profile.secondaryPhone),
+                    title: Text(profile.secondaryPhone.isNotEmpty ? profile.secondaryPhone : "Nil"),
                     onTap: _launchSecondaryPhoneURL,
                   ),
                 ],

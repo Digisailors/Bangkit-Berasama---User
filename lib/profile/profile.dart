@@ -96,7 +96,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                         child: ExpansionTile(
                           initiallyExpanded: true,
                           title: const Text(
-                            'Person Details',
+                            'Profile Details',
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                           iconColor: Colors.red,
@@ -123,7 +123,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                 Icons.phone,
                                 color: Colors.red,
                               ),
-                              title: const Text('Secondar Contact Number'),
+                              title: const Text('Secondary Contact Number'),
                               subtitle: Text(widget.profileModel.secondaryPhone),
                             ),
                             ListTile(
@@ -143,7 +143,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                       child: Card(
                         child: ExpansionTile(
                           title: const Text(
-                            'PrimaryAddress',
+                            'Primary Address',
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                           iconColor: Colors.red,
@@ -187,7 +187,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                 color: Colors.red,
                               ),
                               title: const Text('Door Color'),
-                              subtitle: Text(widget.profileModel.primaryAddress.doorColor),
+                              subtitle: Text(widget.profileModel.primaryAddress.doorColor.capitalize!),
                             ),
                             ListTile(
                               leading: const Icon(
@@ -195,7 +195,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                 color: Colors.red,
                               ),
                               title: const Text('Roof Color'),
-                              subtitle: Text(widget.profileModel.primaryAddress.roofColor),
+                              subtitle: Text(widget.profileModel.primaryAddress.roofColor.capitalize!),
                             ),
                           ],
                         ),
@@ -250,7 +250,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                 color: Colors.red,
                               ),
                               title: const Text('Door Color'),
-                              subtitle: Text(widget.profileModel.secondaryAddress.doorColor),
+                              subtitle: Text(widget.profileModel.secondaryAddress.doorColor.capitalize!),
                             ),
                             ListTile(
                               leading: const Icon(
@@ -258,7 +258,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                 color: Colors.red,
                               ),
                               title: const Text('Roof Color'),
-                              subtitle: Text(widget.profileModel.secondaryAddress.roofColor),
+                              subtitle: Text(widget.profileModel.secondaryAddress.roofColor.capitalize!),
                             ),
                           ],
                         ),

@@ -2,6 +2,7 @@ import 'package:bangkit/constants/controller_constants.dart';
 import 'package:bangkit/models/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 
 class Registration extends StatefulWidget {
   const Registration({Key? key}) : super(key: key);
@@ -84,6 +85,17 @@ class _RegistrationState extends State<Registration> {
     secondaryPostCode = secondaryCodeList.first;
   }
 
+  get colorItems => colors
+      .map((e) => DropdownMenuItem(
+          value: e,
+          child: Row(
+            children: [
+              Text(e.split(RegExp('(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])')).map((e) => e.capitalize).join(" ")),
+              const SizedBox(width: 15),
+              Container(height: 10, width: 10, color: Colors.primaries.elementAt(colors.indexWhere((element) => element == e))),
+            ],
+          )))
+      .toList();
   getsubmitData() {
     var primaryAddress = Address(
         line1: primaryAdresssLine1.text,
@@ -174,7 +186,7 @@ class _RegistrationState extends State<Registration> {
               CustomTextFormfieldRed(
                 controller: phoneController,
                 hintText: '+60 12-4103212',
-                labelText: 'Enter your phone Number',
+                labelText: 'Enter your Phone Number',
                 icon: const Icon(Icons.phone),
                 keyboardType: TextInputType.phone,
                 validator: (value) {
@@ -301,7 +313,7 @@ class _RegistrationState extends State<Registration> {
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.1,
                     child: CustomDropDownButtonformField(
-                      labelText: 'DoorColor',
+                      labelText: 'Door Color',
                       Icon: const Icon(Icons.door_back_door),
                       value: doorColorPrimary,
                       onChanged: (String? newValue) {
@@ -309,19 +321,7 @@ class _RegistrationState extends State<Registration> {
                           doorColorPrimary = newValue!;
                         });
                       },
-                      item: colors.map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(value),
-                              const SizedBox(width: 15),
-                              Container(height: 10, width: 10, color: Colors.primaries.elementAt(colors.indexWhere((element) => element == value))),
-                            ],
-                          ),
-                        );
-                      }).toList(),
+                      item: colorItems,
                     ),
                   ),
                   SizedBox(
@@ -335,19 +335,7 @@ class _RegistrationState extends State<Registration> {
                           roofColorPrimary = newValue!;
                         });
                       },
-                      item: colors.map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(value),
-                              const SizedBox(width: 15),
-                              Container(height: 10, width: 10, color: Colors.primaries.elementAt(colors.indexWhere((element) => element == value))),
-                            ],
-                          ),
-                        );
-                      }).toList(),
+                      item: colorItems,
                     ),
                   ),
                 ],
@@ -443,7 +431,7 @@ class _RegistrationState extends State<Registration> {
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.1,
                     child: CustomDropDownButtonformField(
-                      labelText: 'DoorColor',
+                      labelText: 'Door Color',
                       Icon: const Icon(Icons.door_back_door),
                       value: doorColorSecondary,
                       onChanged: (String? newValue) {
@@ -451,19 +439,7 @@ class _RegistrationState extends State<Registration> {
                           doorColorSecondary = newValue!;
                         });
                       },
-                      item: colors.map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(value),
-                              const SizedBox(width: 15),
-                              Container(height: 10, width: 10, color: Colors.primaries.elementAt(colors.indexWhere((element) => element == value))),
-                            ],
-                          ),
-                        );
-                      }).toList(),
+                      item: colorItems,
                     ),
                   ),
                   SizedBox(
@@ -477,19 +453,7 @@ class _RegistrationState extends State<Registration> {
                           roofColorSecondary = newValue!;
                         });
                       },
-                      item: colors.map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(value),
-                              const SizedBox(width: 15),
-                              Container(height: 10, width: 10, color: Colors.primaries.elementAt(colors.indexWhere((element) => element == value))),
-                            ],
-                          ),
-                        );
-                      }).toList(),
+                      item: colorItems,
                     ),
                   ),
                 ],
