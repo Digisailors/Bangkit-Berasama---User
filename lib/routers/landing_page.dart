@@ -26,25 +26,21 @@ class LandingPage extends StatelessWidget {
             var user = snapshot.data;
             if (user!.emailVerified) {
               return StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                stream: Profile.getUserProfileAsStream(
-                    authController.auth.currentUser!.uid),
+                stream: Profile.getUserProfileAsStream(authController.auth.currentUser!.uid),
                 builder: (BuildContext context, AsyncSnapshot profileSnapshot) {
-                  if (profileSnapshot.connectionState ==
-                      ConnectionState.active) {
+                  if (profileSnapshot.connectionState == ConnectionState.active) {
                     if (profileSnapshot.hasData & profileSnapshot.data.exists) {
                       Get.put(ProfileController());
-                      var profile =
-                          Profile.fromJson(profileSnapshot.data!.data());
+                      var profile = Profile.fromJson(profileSnapshot.data!.data());
                       profileController.profile = profile;
-                      profile.generateToken();
-
+                      // profile.generateToken();
+                      pageController.bottomIndex = 0;
                       return BottomRouter();
                     } else {
                       return const Registration();
                     }
                   } else {
-                    return const Scaffold(
-                        body: Center(child: CircularProgressIndicator()));
+                    return const Scaffold(body: Center(child: CircularProgressIndicator()));
                   }
                 },
               );

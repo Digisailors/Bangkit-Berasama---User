@@ -19,6 +19,7 @@ class BottomRouter extends StatefulWidget {
 class _BottomRouterState extends State<BottomRouter> {
   @override
   void initState() {
+    profileController.profile!.generateToken();
     initFCMpermissions();
     pageController.home.listen((event) {
       print("event");

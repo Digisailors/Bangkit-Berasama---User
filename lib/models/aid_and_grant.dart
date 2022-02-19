@@ -77,8 +77,8 @@ class Post {
       email: json["email"],
       created: json["created"].toDate(),
       updated: json["updated"].toDate(),
-      totalRaters: json["totalRaters"],
-      totalRating: json["totalRating"],
+      totalRaters: json["totalRaters"] ?? 0,
+      totalRating: json["totalRating"] ?? 0,
       name: json["name"]);
 
   Map<String, dynamic> toJson() => {

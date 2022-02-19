@@ -148,7 +148,7 @@ class _AddVolunteerState extends State<AddVolunteer> {
                 const Padding(
                   padding: EdgeInsets.all(8.0),
                   child: Text(
-                    "Tell us anything about yourself..",
+                    "Tell us something about yourself..",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),

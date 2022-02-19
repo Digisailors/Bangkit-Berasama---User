@@ -6,7 +6,7 @@ class ColorPalette {
     "White": Colors.white,
     "Red": Colors.red,
     "Yellow": Colors.yellow,
-    "Blue": Colors.green,
+    "Blue": Colors.blue,
     "Orange": Colors.orange,
     "Brown": Colors.brown,
     "Grey": Colors.grey,

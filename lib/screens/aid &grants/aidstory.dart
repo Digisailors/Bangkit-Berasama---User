@@ -1,7 +1,7 @@
 import 'package:bangkit/constants/themeconstants.dart';
+import 'package:bangkit/controllers/post_controller.dart';
 import 'package:bangkit/models/aid_and_grant.dart';
 import 'package:bangkit/widgets/widgets.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
@@ -19,15 +19,15 @@ class Story extends StatefulWidget {
 
 class _StoryState extends State<Story> {
   bool isUseful = false;
-  var _rating = 0.0;
+  // var _rating = 0.0;
 
   @override
   void initState() {
     super.initState();
-    if (widget.post.rating != null) {
-      _rating = widget.post.rating!.stars.toDouble();
-    }
+    controller = Get.put(PostController(widget.post));
   }
+
+  late PostController controller;
 
   Widget getAttachmentTile(url) {
     return GestureDetector(
@@ -126,101 +126,105 @@ class _StoryState extends State<Story> {
           centerTitle: true,
           title: SizedBox(height: getHeight(context) * 0.15, child: Image.asset('assets/bina.png')),
         ),
-        body: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsetsDirectional.fromSTEB(24, 20, 24, 0),
-                      child: Text(
-                        widget.post.title,
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.left,
-                        maxLines: 3,
-                        softWrap: true,
-                        style: const TextStyle(
-                          overflow: TextOverflow.ellipsis,
-                          fontFamily: 'Lexend Deca',
-                          color: Color(0xFF090F13),
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsetsDirectional.fromSTEB(24, 4, 24, 0),
-                      child: Row(
+        body: GetBuilder(
+            init: controller,
+            builder: (_) {
+              return Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Expanded(
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      child: Column(
                         mainAxisSize: MainAxisSize.max,
                         children: [
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 24),
-                              child: Text(
-                                widget.post.description,
-                                style: const TextStyle(
-                                  fontFamily: 'Lexend Deca',
-                                  color: Color(0xFF8B97A2),
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.normal,
-                                ),
-                                softWrap: true,
+                          Padding(
+                            padding: const EdgeInsetsDirectional.fromSTEB(24, 20, 24, 0),
+                            child: Text(
+                              widget.post.title,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.left,
+                              maxLines: 3,
+                              softWrap: true,
+                              style: const TextStyle(
+                                overflow: TextOverflow.ellipsis,
+                                fontFamily: 'Lexend Deca',
+                                color: Color(0xFF090F13),
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
+                          Padding(
+                            padding: const EdgeInsetsDirectional.fromSTEB(24, 4, 24, 0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 24),
+                                    child: Text(
+                                      widget.post.description,
+                                      style: const TextStyle(
+                                        fontFamily: 'Lexend Deca',
+                                        color: Color(0xFF8B97A2),
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.normal,
+                                      ),
+                                      softWrap: true,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const Divider(),
+                          media.isEmpty ? Container() : MediaLister(type: FileType.image, urls: widget.post.media ?? []),
+                          videos.isEmpty ? Container() : MediaLister(type: FileType.video, urls: widget.post.videos ?? []),
+                          attachments.isEmpty ? Container() : MediaLister(type: FileType.attachment, urls: widget.post.attachments ?? []),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          listOfDetails(widget.post.address, Icons.location_pin, _launchMapURL),
+                          listOfDetails(widget.post.name, Icons.person, null),
+                          listOfDetails(widget.post.phone, Icons.phone, _launchPhoneURL),
+                          listOfDetails(widget.post.email, Icons.mail, _launchMailURL),
+                          const Divider(),
+                          Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: widget.post.canRate ? const Text("Please rate below") : const Text("Thanks for your rating"),
+                          ),
+                          RatingBar.builder(
+                            // ignoreGestures: !widget.post.canRate,
+                            initialRating: controller.myRating,
+                            allowHalfRating: false,
+                            itemBuilder: (context, _) => const Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                            ),
+                            onRatingUpdate: (double value) {
+                              // print(value);
+
+                              setState(() {
+                                controller.myRating = value;
+                              });
+                            },
+                          ),
+                          ElevatedButton(
+                              onPressed: () {
+                                showFutureDialog(context: context, future: widget.post.ratePost(controller.myRating.toInt()));
+                              },
+                              child: const Text("Submit Rating")),
+                          SizedBox(
+                            height: getHeight(context) * 0.1,
+                          )
                         ],
                       ),
                     ),
-                    const Divider(),
-                    media.isEmpty ? Container() : MediaLister(type: FileType.image, urls: widget.post.media ?? []),
-                    videos.isEmpty ? Container() : MediaLister(type: FileType.video, urls: widget.post.videos ?? []),
-                    attachments.isEmpty ? Container() : MediaLister(type: FileType.attachment, urls: widget.post.attachments ?? []),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    listOfDetails(widget.post.address, Icons.location_pin, _launchMapURL),
-                    listOfDetails(widget.post.name, Icons.person, null),
-                    listOfDetails(widget.post.phone, Icons.phone, _launchPhoneURL),
-                    listOfDetails(widget.post.email, Icons.mail, _launchMailURL),
-                    const Divider(),
-                    Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: widget.post.canRate ? const Text("Please rate below") : const Text("Thanks for your rating"),
-                    ),
-                    RatingBar.builder(
-                      // ignoreGestures: !widget.post.canRate,
-                      initialRating: _rating,
-                      allowHalfRating: false,
-                      itemBuilder: (context, _) => const Icon(
-                        Icons.star,
-                        color: Colors.amber,
-                      ),
-                      onRatingUpdate: (double value) {
-                        // print(value);
-
-                        setState(() {
-                          _rating = value;
-                        });
-                      },
-                    ),
-                    ElevatedButton(
-                        onPressed: () {
-                          showFutureDialog(context: context, future: widget.post.ratePost(_rating.toInt()));
-                        },
-                        child: const Text("Submit Rating")),
-                    SizedBox(
-                      height: getHeight(context) * 0.1,
-                    )
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
+                  ),
+                ],
+              );
+            }),
       ),
     );
   }

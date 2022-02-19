@@ -1,6 +1,8 @@
 import 'package:bangkit/constants/colors.dart';
 import 'package:bangkit/constants/controller_constants.dart';
 import 'package:bangkit/models/profile.dart';
+import 'package:bangkit/widgets/widgets.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -33,32 +35,12 @@ class _RegistrationState extends State<Registration> {
   final TextEditingController doorcolor2Controller = TextEditingController();
   final TextEditingController landmark2Controller = TextEditingController();
 
+  bool _secondaryExpansion = false;
+
   @override
   void initState() {
     super.initState();
-    colors = [
-      "white",
-      "black",
-      "red",
-      "pink",
-      "purple",
-      "deepPurple",
-      "indigo",
-      "blue",
-      "lightBlue",
-      "cyan",
-      "teal",
-      "green",
-      "lightGreen",
-      "lime",
-      "yellow",
-      "amber",
-      "orange",
-      "deepOrange",
-      "brown",
-      "blueGrey"
-    ];
-
+    colors = ["Black", "White", "Red", "Yellow", "Blue", "Orange", "Brown", "Grey", "Purple", "Pink"];
     states = postalCodes.keys.toList();
     doorColorPrimary = colors.first;
     doorColorSecondary = colors.first;
@@ -89,22 +71,6 @@ class _RegistrationState extends State<Registration> {
   }
 
   get colorItems => ColorPalette.coloritems;
-  // get colorItems => colors
-  //     .map((e) => DropdownMenuItem(
-  //         value: e,
-  //         child: Row(
-  //           children: [
-  //             Text(e.split(RegExp('(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])')).map((e) => e.capitalize).join(" ")),
-  //             const SizedBox(width: 15),
-  //             e == "white"
-  //                 ? Container(height: 10, width: 10, color: Colors.white)
-  //                 : e == "black"
-  //                     ? Container(height: 10, width: 10, color: Colors.black)
-  //                     : Container(height: 10, width: 10, color: Colors.primaries.elementAt(colors.indexWhere((element) => element == e))),
-  //           ],
-  //         )))
-  //     .toList();
-
   getsubmitData() {
     var primaryAddress = Address(
         line1: primaryAdresssLine1.text,
@@ -125,7 +91,7 @@ class _RegistrationState extends State<Registration> {
     return Profile(
         name: nameController.text,
         phone: phoneController.text,
-        secondaryPhone: secondaryaddressController.text,
+        secondaryPhone: secondaryphoneController.text,
         email: emailController.text,
         primaryAddress: primaryAddress,
         secondaryAddress: secondaryAddress,
@@ -150,6 +116,31 @@ class _RegistrationState extends State<Registration> {
   bool _customTileExpanded = false;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  String? requiredValidator(String? text) {
+    text = text ?? '';
+    if (text.isEmpty) {
+      return "This is a required field";
+    }
+    return null;
+  }
+
+  String? requiredEmail(String? text) {
+    text = text ?? '';
+    if (text.isEmpty) {
+      return "This is a required field";
+    } else if (text.isEmail) {
+      return "Please enter a valid email address";
+    }
+    return null;
+  }
+
+  String? requiredValidatorSnackbar(String? value) {
+    value = value ?? '';
+    if (value.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Please fill-out all fields in adress")));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -186,11 +177,7 @@ class _RegistrationState extends State<Registration> {
                 labelText: 'Enter your name',
                 icon: const Icon(Icons.person),
                 keyboardType: TextInputType.name,
-                validator: (value) {
-                  value = value ?? '';
-                  var s = value.isEmpty ? "Name is required field" : null;
-                  return s;
-                },
+                validator: requiredValidator,
               ),
               CustomTextFormfieldRed(
                 controller: phoneController,
@@ -198,11 +185,7 @@ class _RegistrationState extends State<Registration> {
                 labelText: 'Enter your Phone Number',
                 icon: const Icon(Icons.phone),
                 keyboardType: TextInputType.phone,
-                validator: (value) {
-                  value = value ?? '';
-                  var s = value.isEmpty ? "Phone Number is required field" : null;
-                  return s;
-                },
+                validator: requiredValidator,
               ),
               CustomTextFormfieldRed(
                 controller: secondaryphoneController,
@@ -210,22 +193,14 @@ class _RegistrationState extends State<Registration> {
                 labelText: 'Enter Secondary Phone Number',
                 icon: const Icon(Icons.phone),
                 keyboardType: TextInputType.phone,
-                validator: (value) {
-                  value = value ?? '';
-                  var s = value.isEmpty ? "Phone Number is required field" : null;
-                  return s;
-                },
+                validator: requiredValidator,
               ),
               CustomTextFormfieldRed(
                 controller: icnumberController,
                 hintText: 'Ex. F12345678I',
                 labelText: 'Enter your Ic Number',
                 icon: const Icon(FontAwesomeIcons.passport),
-                validator: (value) {
-                  value = value ?? '';
-                  var s = value.isEmpty ? "This is required field" : null;
-                  return s;
-                },
+                validator: requiredValidator,
               ),
               CustomTextFormfieldRed(
                 controller: emailController,
@@ -234,19 +209,11 @@ class _RegistrationState extends State<Registration> {
                 icon: const Icon(Icons.email),
                 enabled: false,
                 keyboardType: TextInputType.emailAddress,
-                validator: (value) {
-                  value = value ?? '';
-                  var s = value.isEmpty
-                      ? "This required field"
-                      : value.isEmail
-                          ? "Plase enter valid email"
-                          : null;
-                  return s;
-                },
               ),
               ExpansionTile(
                 leading: const Icon(Icons.home),
                 title: const Text('House address'),
+                // initiallyExpanded: _secondaryExpansion,
                 trailing: Icon(
                   _customTileExpanded ? Icons.arrow_drop_down_circle : Icons.arrow_drop_down,
                 ),
@@ -265,11 +232,7 @@ class _RegistrationState extends State<Registration> {
                     labelText: 'Address line 1',
                     icon: const Icon(Icons.home),
                     keyboardType: TextInputType.streetAddress,
-                    validator: (value) {
-                      value = value ?? '';
-                      var s = value.isEmpty ? "This is required field" : null;
-                      return s;
-                    },
+                    validator: requiredValidatorSnackbar,
                   ),
                   CustomTextFormfieldRed(
                     controller: primaryAdressline2,
@@ -322,6 +285,7 @@ class _RegistrationState extends State<Registration> {
                     hintText: 'Type Your Text Here',
                     labelText: 'Description',
                     icon: const Icon(Icons.list),
+                    validator: requiredValidatorSnackbar,
                   ),
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.1,
@@ -362,6 +326,7 @@ class _RegistrationState extends State<Registration> {
                 trailing: Icon(
                   _customTileExpanded ? Icons.arrow_drop_down_circle : Icons.arrow_drop_down,
                 ),
+                maintainState: true,
                 children: [
                   const Divider(),
                   const Padding(
@@ -377,11 +342,7 @@ class _RegistrationState extends State<Registration> {
                     labelText: 'Address line 1',
                     icon: const Icon(FontAwesomeIcons.home),
                     keyboardType: TextInputType.emailAddress,
-                    validator: (value) {
-                      value = value ?? '';
-                      var s = value.isEmpty ? "This is a required field" : null;
-                      return s;
-                    },
+                    validator: requiredValidatorSnackbar,
                   ),
                   CustomTextFormfieldRed(
                     controller: secondaryAdressLIne2,
@@ -429,12 +390,7 @@ class _RegistrationState extends State<Registration> {
                     ),
                   ),
                   CustomTextFormfieldRed(
-                    validator: (value) {
-                      value = value ?? '';
-                      if (value.isEmpty) {
-                        return "Description is a required field";
-                      }
-                    },
+                    validator: requiredValidatorSnackbar,
                     maxLines: 4,
                     controller: descriptionController2,
                     hintText: 'Type Your Text Here',
@@ -475,10 +431,13 @@ class _RegistrationState extends State<Registration> {
                 padding: const EdgeInsets.all(30.0),
                 child: ElevatedButton(
                     onPressed: () {
+                      if (kDebugMode) {
+                        print("Hello");
+                      }
                       if (_formKey.currentState?.validate() ?? false) {
                         _formKey.currentState?.save();
                         Profile submitProfile = getsubmitData();
-                        submitProfile.addUser(authController.auth.currentUser!.uid);
+                        showFutureDialog(context: context, future: submitProfile.addUser(authController.auth.currentUser!.uid));
                       }
                     },
                     child: const Text(
