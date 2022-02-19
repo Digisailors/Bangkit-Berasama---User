@@ -1,3 +1,4 @@
+import 'package:bangkit/constants/colors.dart';
 import 'package:bangkit/constants/controller_constants.dart';
 import 'package:bangkit/models/profile.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +37,8 @@ class _RegistrationState extends State<Registration> {
   void initState() {
     super.initState();
     colors = [
+      "white",
+      "black",
       "red",
       "pink",
       "purple",
@@ -85,17 +88,23 @@ class _RegistrationState extends State<Registration> {
     secondaryPostCode = secondaryCodeList.first;
   }
 
-  get colorItems => colors
-      .map((e) => DropdownMenuItem(
-          value: e,
-          child: Row(
-            children: [
-              Text(e.split(RegExp('(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])')).map((e) => e.capitalize).join(" ")),
-              const SizedBox(width: 15),
-              Container(height: 10, width: 10, color: Colors.primaries.elementAt(colors.indexWhere((element) => element == e))),
-            ],
-          )))
-      .toList();
+  get colorItems => ColorPalette.coloritems;
+  // get colorItems => colors
+  //     .map((e) => DropdownMenuItem(
+  //         value: e,
+  //         child: Row(
+  //           children: [
+  //             Text(e.split(RegExp('(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])')).map((e) => e.capitalize).join(" ")),
+  //             const SizedBox(width: 15),
+  //             e == "white"
+  //                 ? Container(height: 10, width: 10, color: Colors.white)
+  //                 : e == "black"
+  //                     ? Container(height: 10, width: 10, color: Colors.black)
+  //                     : Container(height: 10, width: 10, color: Colors.primaries.elementAt(colors.indexWhere((element) => element == e))),
+  //           ],
+  //         )))
+  //     .toList();
+
   getsubmitData() {
     var primaryAddress = Address(
         line1: primaryAdresssLine1.text,
@@ -214,7 +223,7 @@ class _RegistrationState extends State<Registration> {
                 icon: const Icon(FontAwesomeIcons.passport),
                 validator: (value) {
                   value = value ?? '';
-                  var s = value.isEmpty ? "ICNumber is required field" : null;
+                  var s = value.isEmpty ? "This is required field" : null;
                   return s;
                 },
               ),
@@ -227,7 +236,11 @@ class _RegistrationState extends State<Registration> {
                 keyboardType: TextInputType.emailAddress,
                 validator: (value) {
                   value = value ?? '';
-                  var s = value.isEmpty ? "ICNumber is required field" : null;
+                  var s = value.isEmpty
+                      ? "This required field"
+                      : value.isEmail
+                          ? "Plase enter valid email"
+                          : null;
                   return s;
                 },
               ),
@@ -251,10 +264,10 @@ class _RegistrationState extends State<Registration> {
                     hintText: '123 Street',
                     labelText: 'Address line 1',
                     icon: const Icon(Icons.home),
-                    keyboardType: TextInputType.emailAddress,
+                    keyboardType: TextInputType.streetAddress,
                     validator: (value) {
                       value = value ?? '';
-                      var s = value.isEmpty ? "ICNumber is required field" : null;
+                      var s = value.isEmpty ? "This is required field" : null;
                       return s;
                     },
                   ),
@@ -366,7 +379,7 @@ class _RegistrationState extends State<Registration> {
                     keyboardType: TextInputType.emailAddress,
                     validator: (value) {
                       value = value ?? '';
-                      var s = value.isEmpty ? "ICNumber is required field" : null;
+                      var s = value.isEmpty ? "This is a required field" : null;
                       return s;
                     },
                   ),

@@ -1,3 +1,4 @@
+import 'package:bangkit/constants/colors.dart';
 import 'package:bangkit/constants/controller_constants.dart';
 import 'package:bangkit/models/profile.dart';
 import 'package:flutter/material.dart';
@@ -37,6 +38,8 @@ class _EditProfileState extends State<EditProfile> {
   void initState() {
     super.initState();
     colors = [
+      "white",
+      "black",
       "red",
       "pink",
       "purple",
@@ -82,17 +85,23 @@ class _EditProfileState extends State<EditProfile> {
     // icnumberController.text=widget.profile.icNumber??'';
   }
 
-  get colorItems => colors
-      .map((e) => DropdownMenuItem(
-          value: e,
-          child: Row(
-            children: [
-              Text(e.split(RegExp('(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])')).map((e) => e.capitalize).join(" ")),
-              const SizedBox(width: 15),
-              Container(height: 10, width: 10, color: Colors.primaries.elementAt(colors.indexWhere((element) => element == e))),
-            ],
-          )))
-      .toList();
+  get colorItems => ColorPalette.coloritems;
+
+  // get colorItems => colors
+  //     .map((e) => DropdownMenuItem(
+  //         value: e,
+  //         child: Row(
+  //           children: [
+  //             // Text(e.split(RegExp('(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])')).map((e) => e.capitalize).join(" ")),
+  //             const SizedBox(width: 15),
+  //             e == "white"
+  //                 ? Container(height: 10, width: 10, color: Colors.white)
+  //                 : e == "black"
+  //                     ? Container(height: 10, width: 10, color: Colors.black)
+  //                     : Container(height: 10, width: 10, color: Colors.primaries.elementAt(colors.indexWhere((element) => element == e))),
+  //           ],
+  //         )))
+  //     .toList();
 
   setPrimaryPostalCodes() {
     primaryCodeList = postalCodes[primaryState]!.map((e) => e["postCode"].toString()).toList();

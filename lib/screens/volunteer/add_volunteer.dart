@@ -74,13 +74,47 @@ class _AddVolunteerState extends State<AddVolunteer> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          showFutureDialog(
-              context: context,
-              future: saveDocumentsToProfile(),
-              callback: () {
-                items.clear();
-                Get.toNamed('/bottomRoute');
-              });
+          if (items.length <= 2) {
+            showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: const Text("Error"),
+                    content: const Text("Please attach both front and back side of your IC"),
+                    actions: [
+                      TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text("Okay"))
+                    ],
+                  );
+                });
+          } else if (aboutController.text.isEmpty && services!.isEmpty) {
+            showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: const Text("Error"),
+                    content: const Text("Please fill all the fields"),
+                    actions: [
+                      TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text("Okay"))
+                    ],
+                  );
+                });
+          } else {
+            showFutureDialog(
+                context: context,
+                future: saveDocumentsToProfile(),
+                callback: () {
+                  items.clear();
+                  Get.toNamed('/bottomRoute');
+                });
+          }
         },
         child: const Icon(Icons.upload),
       ),
@@ -114,7 +148,7 @@ class _AddVolunteerState extends State<AddVolunteer> {
                 const Padding(
                   padding: EdgeInsets.all(8.0),
                   child: Text(
-                    "Tell us anything about yourself (optional)",
+                    "Tell us anything about yourself..",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -146,7 +180,7 @@ class _AddVolunteerState extends State<AddVolunteer> {
                 const Padding(
                   padding: EdgeInsets.only(left: 24.0),
                   child: Text(
-                    "Please attach fromt and back side of your ID",
+                    "Please attach front and back side of your Identification Card (IC)",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),

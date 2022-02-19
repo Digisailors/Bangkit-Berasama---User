@@ -1,3 +1,4 @@
+import 'package:bangkit/constants/colors.dart';
 import 'package:bangkit/constants/controller_constants.dart';
 import 'package:bangkit/constants/themeconstants.dart';
 import 'package:bangkit/models/profile.dart';
@@ -78,8 +79,8 @@ class _ProfileViewState extends State<ProfileView> {
     "indigo",
     "blue",
     "lightBlue",
-    "cyan",
-    "teal",
+    "",
+    "",
     "green",
     "lightGreen",
     "lime",
@@ -88,24 +89,33 @@ class _ProfileViewState extends State<ProfileView> {
     "orange",
     "deepOrange",
     "brown",
-    "blueGrey"
+    "blueGrey",
+    "white",
+    "black",
   ];
 
   get _stateItems => states.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList();
   get _primaryCodeItems => primaryCodeList.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList();
   get _secondaryCodeItems => secondaryCodeList.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList();
 
-  get _colorItems => colors
-      .map((e) => DropdownMenuItem(
-          value: e,
-          child: Row(
-            children: [
-              Text(e.split(RegExp('(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])')).map((e) => e.capitalize).join(" ")),
-              const SizedBox(width: 15),
-              Container(height: 10, width: 10, color: Colors.primaries.elementAt(colors.indexWhere((element) => element == e))),
-            ],
-          )))
-      .toList();
+  get _colorItems => ColorPalette.coloritems;
+  // .map((e) => DropdownMenuItem(
+  //     value: e,
+  //     child: e == ""
+  //         ? Container()
+  //         : Row(
+  //             children: [
+  //               Text(e.split(RegExp('(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])')).map((e) => e.capitalize).join(" ")),
+  //               const SizedBox(width: 15),
+  //               e == "white"
+  //                   ? Container(height: 10, width: 10, color: Colors.white)
+  //                   : e == "black"
+  //                       ? Container(height: 10, width: 10, color: Colors.black)
+  //                       : Container(height: 10, width: 10, color: Colors.primaries.elementAt(colors.indexWhere((element) => element == e))),
+  //             ],
+  //           )))
+  // .where((element) => element.value != "")
+  // .toList();
 
   late String _primaryState;
   late String _primaryPostcode;
@@ -299,7 +309,7 @@ class _ProfileViewState extends State<ProfileView> {
                               padding: const EdgeInsets.all(8.0),
                               child: CustomDropDown(
                                 hintText: '',
-                                items: _colorItems,
+                                items: ColorPalette.coloritems,
                                 labelText: 'Roof Color',
                                 selectedValue: _primaryRoofColor,
                                 onChanged: (color) {
@@ -449,3 +459,5 @@ class _ProfileViewState extends State<ProfileView> {
     );
   }
 }
+
+doNothing() {}

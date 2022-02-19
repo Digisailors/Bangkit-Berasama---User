@@ -6,7 +6,6 @@ import 'package:bangkit/models/profile.dart';
 import 'package:bangkit/screens/page_view.dart';
 import 'package:get/get.dart';
 import 'package:photo_view/photo_view.dart';
-
 import 'package:url_launcher/url_launcher.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -31,13 +30,20 @@ class HomePage extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 20, bottom: 16),
                 child: CarouselSlider(
                   items: const [
-                    CarouselTile(url: "https://api.met.gov.my/static/images/radar-latest.gif"),
-                    CarouselTile(url: "https://api.met.gov.my/static/images/satelit-latest.gif"),
-                    CarouselTile(url: "https://api.met.gov.my/static/images/swirl-latest.gif"),
+                    CarouselTile(
+                        url:
+                            "https://api.met.gov.my/static/images/radar-latest.gif"),
+                    CarouselTile(
+                        url:
+                            "https://api.met.gov.my/static/images/satelit-latest.gif"),
+                    CarouselTile(
+                        url:
+                            "https://api.met.gov.my/static/images/swirl-latest.gif"),
                   ],
                   options: CarouselOptions(
                       enlargeCenterPage: true,
-                      initialPage: 1, // enlargeStrategy: CenterPageEnlargeStrategy.height,
+                      initialPage:
+                          1, // enlargeStrategy: CenterPageEnlargeStrategy.height,
                       enableInfiniteScroll: false,
                       reverse: false,
                       height: getHeight(context) * 0.3,
@@ -55,7 +61,8 @@ class HomePage extends StatelessWidget {
                   const Align(
                     alignment: Alignment.centerLeft,
                     child: Padding(
-                      padding: EdgeInsets.only(bottom: 4, left: 8, right: 8, top: 8),
+                      padding:
+                          EdgeInsets.only(bottom: 4, left: 8, right: 8, top: 8),
                       child: Text(
                         "Categories",
                         style: TextStyle(
@@ -141,7 +148,8 @@ class HomePage extends StatelessWidget {
                                 assetPath: 'assets/police.png',
                                 label: 'E-PDRM\nReporting',
                                 onTap: () {
-                                  launch("https://ereporting.rmp.gov.my/index.aspx");
+                                  launch(
+                                      "https://ereporting.rmp.gov.my/index.aspx");
                                   // Get.to(() => const WebViewer(url: "https://ereporting.rmp.gov.my/index.aspx"));
                                   //  pageController.load!(0);
                                 }),
@@ -174,7 +182,9 @@ class HomePage extends StatelessWidget {
                                 label: 'Hydraulic\nStructures',
                                 onTap: () {
                                   // pageController.pageNumber = 7;
-                                  Get.to(() => const WebViewer(url: "https://ihydro.sarawak.gov.my/iHydro/en/map/maps.jsp"));
+                                  Get.to(() => const WebViewer(
+                                      url:
+                                          "https://ihydro.sarawak.gov.my/iHydro/en/map/maps.jsp"));
                                 }),
                             // CategorySquareTile(
                             //     assetPath: 'assets/Rebuild.png',
@@ -266,7 +276,9 @@ class CategorySquareTile extends StatelessWidget {
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(Colors.white),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0), side: const BorderSide(color: Colors.white))))),
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18.0),
+                              side: const BorderSide(color: Colors.white))))),
             ),
           ),
           Text(label, textAlign: TextAlign.center),
@@ -439,11 +451,15 @@ class NetworkImageLoader extends StatelessWidget {
     // File file = File(url);
     return ClipRRect(
         borderRadius: const BorderRadius.all(Radius.circular(18)),
-        child: Image.network(url, fit: BoxFit.fill, width: 1000.0, loadingBuilder: getLoadingBuilder));
+        child: Image.network(url,
+            fit: BoxFit.fill,
+            width: 1000.0,
+            loadingBuilder: getLoadingBuilder));
   }
 }
 
-Widget getLoadingBuilder(BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+Widget getLoadingBuilder(
+    BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
   if (loadingProgress == null) return child;
   return const Center(child: CircularProgressIndicator());
 }

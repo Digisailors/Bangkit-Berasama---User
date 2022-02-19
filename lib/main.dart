@@ -61,6 +61,7 @@ class MyApp extends StatelessWidget {
       getPages: [
         GetPage(name: "/bottomRoute", page: () => BottomRouter()),
         GetPage(name: "/homeRoute", page: () => const HomeRoute()),
+        // GetPage(name: "/", page: ()=> )
       ],
       theme: ThemeData(
         fontFamily: 'Roboto',
@@ -75,7 +76,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: const Color(0xFFF5F5F5),
         bottomAppBarTheme: const BottomAppBarTheme(),
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(elevation: 5, backgroundColor: Colors.blue),
-        appBarTheme: const AppBarTheme(backgroundColor: Colors.white),
+        appBarTheme: const AppBarTheme(backgroundColor: Colors.white, iconTheme: IconThemeData(color: Color(0xFF00b3df))),
         chipTheme: const ChipThemeData(
           elevation: 4,
           backgroundColor: Colors.white,
