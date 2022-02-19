@@ -155,7 +155,13 @@ class _ProfileViewState extends State<ProfileView> {
                   documents: [],
                   services: []).updateUser();
 
-              showFutureDialog(context: context, future: future);
+              showFutureDialog(
+                  context: context,
+                  future: future,
+                  callback: () {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).pop();
+                  });
             }
           } else {
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Please check the fields")));
@@ -289,7 +295,7 @@ class _ProfileViewState extends State<ProfileView> {
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: CustomDropDown(
-                                labelText: "Pincode",
+                                labelText: "Post-code",
                                 hintText: '',
                                 items: _primaryCodeItems,
                                 selectedValue: _primaryPostcode,
@@ -391,7 +397,7 @@ class _ProfileViewState extends State<ProfileView> {
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: CustomDropDown(
-                                labelText: "Pincode",
+                                labelText: "Post-code",
                                 hintText: '',
                                 items: _secondaryCodeItems,
                                 selectedValue: _secondaryPostcode,

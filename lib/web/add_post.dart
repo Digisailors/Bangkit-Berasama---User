@@ -146,7 +146,7 @@ class _AddPostState extends State<AddPost> {
                 ),
                 CustomTextFormfieldRed(
                   controller: pincode,
-                  labelText: "pincode",
+                  labelText: "Post-code",
                   keyboardType: TextInputType.number,
                   validator: (value) {
                     value = value ?? '';

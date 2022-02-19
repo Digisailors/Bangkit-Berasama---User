@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:bangkit/constants/controller_constants.dart';
 import 'package:bangkit/models/profile.dart';
-import 'package:bangkit/screens/edit_profile.dart';
+import 'package:bangkit/profile/edit_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
