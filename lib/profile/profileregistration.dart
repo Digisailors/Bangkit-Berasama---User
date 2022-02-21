@@ -139,6 +139,7 @@ class _RegistrationState extends State<Registration> {
     value = value ?? '';
     if (value.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Please fill-out all fields in adress")));
+      return "This is  a required field";
     }
   }
 
@@ -213,7 +214,7 @@ class _RegistrationState extends State<Registration> {
               ExpansionTile(
                 leading: const Icon(Icons.home),
                 title: const Text('House address'),
-                // initiallyExpanded: _secondaryExpansion,
+                initiallyExpanded: true,
                 trailing: Icon(
                   _customTileExpanded ? Icons.arrow_drop_down_circle : Icons.arrow_drop_down,
                 ),

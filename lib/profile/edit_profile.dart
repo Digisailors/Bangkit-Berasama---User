@@ -5,6 +5,7 @@ import 'package:bangkit/models/profile.dart';
 import 'package:bangkit/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 import 'package:get/get_utils/src/extensions/string_extensions.dart';
 
 class ProfileView extends StatefulWidget {
@@ -154,13 +155,27 @@ class _ProfileViewState extends State<ProfileView> {
                   about: profileController.profile!.about,
                   documents: [],
                   services: []).updateUser();
+              //     .then((response) {
+              //   if (response.code == "Success") {
+              //     ScaffoldMessenger.of(context).showSnackBar(
+              //       SnackBar(
+              //         content: Text(response.message),
+              //         action: SnackBarAction(
+              //             label: "Okay",
+              //             onPressed: () {
+              //               G
+              //             }),
+              //       ),
+              //     );
+              //   }
+              // });
 
               showFutureDialog(
                   context: context,
                   future: future,
                   callback: () {
-                    Navigator.of(context).pop();
-                    Navigator.of(context).pop();
+                    Get.offNamedUntil('/bottomRoute', (route) => false);
+                    pageController.bottomIndex = 3;
                   });
             }
           } else {
