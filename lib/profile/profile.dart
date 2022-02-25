@@ -8,9 +8,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
 class ProfileWidget extends StatefulWidget {
-  const ProfileWidget({Key? key, required this.profileModel}) : super(key: key);
+   ProfileWidget({Key? key, required this.profileModel}) : super(key: key);
 
-  final Profile profileModel;
+   Profile profileModel;
 
   @override
   _ProfileWidgetState createState() => _ProfileWidgetState();
@@ -26,7 +26,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.connectionState == ConnectionState.active && snapshot.hasData) {
                 if (snapshot.data.data() != null) {
-                  var user = Profile.fromJson(snapshot.data.data());
+                  widget.profileModel = Profile.fromJson(snapshot.data.data());
                 }
               }
               return SingleChildScrollView(

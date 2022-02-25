@@ -73,13 +73,13 @@ class Weather {
     }
 
     var weatheresponse = Uri.parse("https://api.openweathermap.org/data/2"
-        ".5/onecall?lat=$lat&lon=-$lng&units=metric&exclude=hourly,"
+        ".5/onecall?lat=$lat&lon=$lng&units=metric&exclude=hourly,"
         "minutely&appid=f131f5f3c12967cd395dba531d137cc0");
     var response = await http.get(weatheresponse);
     var body = jsonDecode(response.body);
     var returns = Weather.fromJson(body);
-    returns.locataion = result != null ? result.formattedAddress : "Could not find location";
-    // print(returns.toJson());
+    returns.locataion = result != null ? result.formattedAddress : returns.timezone;
+    print(returns.toJson());
     return returns;
   }
 }
