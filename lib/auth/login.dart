@@ -139,7 +139,7 @@ class _SignInWidgetState extends State<SignInWidget> {
                                         ],
                                       );
                                     });
-                              } else if (!emailController.text.isEmail) {
+                              } else if (!emailController.text.removeAllWhitespace.isEmail) {
                                 title = "Invalid Email";
                                 message = "Please enter a valid email";
                                 showDialog(
