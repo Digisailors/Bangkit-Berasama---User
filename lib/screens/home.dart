@@ -14,7 +14,6 @@ class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
 
   final _scrollController = ScrollController();
-  final GlobalKey _one = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -30,20 +29,28 @@ class HomePage extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 20, bottom: 16),
                 child: CarouselSlider(
                   items: const [
-                    CarouselTile(
-                        url:
-                            "https://api.met.gov.my/static/images/radar-latest.gif"),
-                    CarouselTile(
-                        url:
-                            "https://api.met.gov.my/static/images/satelit-latest.gif"),
-                    CarouselTile(
-                        url:
-                            "https://api.met.gov.my/static/images/swirl-latest.gif"),
+                    Hero(
+                        tag: '1',
+                        child: CarouselTile(
+                          url: "https://api.met.gov.my/static/images/radar-latest.gif",
+                          tag: "1",
+                        )),
+                    Hero(
+                        tag: '2',
+                        child: CarouselTile(
+                          url: "https://api.met.gov.my/static/images/satelit-latest.gif",
+                          tag: "2",
+                        )),
+                    Hero(
+                        tag: '3',
+                        child: CarouselTile(
+                          url: "https://api.met.gov.my/static/images/swirl-latest.gif",
+                          tag: "3",
+                        )),
                   ],
                   options: CarouselOptions(
                       enlargeCenterPage: true,
-                      initialPage:
-                          1, // enlargeStrategy: CenterPageEnlargeStrategy.height,
+                      initialPage: 1, // enlargeStrategy: CenterPageEnlargeStrategy.height,
                       enableInfiniteScroll: false,
                       reverse: false,
                       height: getHeight(context) * 0.3,
@@ -61,17 +68,13 @@ class HomePage extends StatelessWidget {
                   const Align(
                     alignment: Alignment.centerLeft,
                     child: Padding(
-                      padding:
-                          EdgeInsets.only(bottom: 4, left: 8, right: 8, top: 8),
+                      padding: EdgeInsets.only(bottom: 4, left: 8, right: 8, top: 8),
                       child: Text(
                         "Categories",
                         style: TextStyle(
                           // shadows: [Shadow(color: Colors.black, offset: Offset(0, -5))],
                           color: Colors.black,
                           fontSize: 20,
-
-                          // decoration: TextDecoration.underline,
-                          // decorationColor: Colors.blue,
                           decorationThickness: 4,
                         ),
                       ),
@@ -120,14 +123,7 @@ class HomePage extends StatelessWidget {
                       padding: EdgeInsets.only(left: 8, top: 10, right: 8),
                       child: Text(
                         "Disaster Information",
-                        style: TextStyle(
-                          // shadows: [Shadow(color: Colors.black, offset: Offset(0, -5))],
-                          color: Colors.black,
-                          fontSize: 20,
-                          // decoration: TextDecoration.underline,
-                          // decorationColor: Colors.blue,
-                          // decorationThickness: 4,
-                        ),
+                        style: TextStyle(color: Colors.black, fontSize: 20),
                       ),
                     ),
                   ),
@@ -148,10 +144,7 @@ class HomePage extends StatelessWidget {
                                 assetPath: 'assets/police.png',
                                 label: 'E-PDRM\nReporting',
                                 onTap: () {
-                                  launch(
-                                      "https://ereporting.rmp.gov.my/index.aspx");
-                                  // Get.to(() => const WebViewer(url: "https://ereporting.rmp.gov.my/index.aspx"));
-                                  //  pageController.load!(0);
+                                  launch("https://ereporting.rmp.gov.my/index.aspx");
                                 }),
                             CategorySquareTile(
                                 assetPath: 'assets/weather.png',
@@ -182,17 +175,8 @@ class HomePage extends StatelessWidget {
                                 label: 'Hydraulic\nStructures',
                                 onTap: () {
                                   // pageController.pageNumber = 7;
-                                  Get.to(() => const WebViewer(
-                                      url:
-                                          "https://ihydro.sarawak.gov.my/iHydro/en/map/maps.jsp"));
+                                  Get.to(() => const WebViewer(url: "https://ihydro.sarawak.gov.my/iHydro/en/map/maps.jsp"));
                                 }),
-                            // CategorySquareTile(
-                            //     assetPath: 'assets/Rebuild.png',
-                            //     label: 'Rebuild',
-                            //     onTap: () {
-                            //       pageController.pageNumber = 4;
-                            //       Navigator.of(context).popAndPushNamed('/bottomRoute');
-                            //     }),
                           ],
                         ),
                       ),
@@ -218,19 +202,37 @@ class CarouselTile extends StatelessWidget {
   const CarouselTile({
     Key? key,
     required this.url,
+    required this.tag,
   }) : super(key: key);
 
   final String url;
+  final String tag;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        showDialog(
-            context: context,
-            builder: (context) {
-              return PhotoView(imageProvider: NetworkImage(url));
-            });
+        Get.to(() => Material(
+              child: Stack(
+                children: [
+                  PhotoView(
+                    imageProvider: NetworkImage(url),
+                    heroAttributes: PhotoViewHeroAttributes(tag: tag.toString()),
+                  ),
+                  Positioned(
+                    child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
+                        child: IconButton(
+                          icon: const Icon(Icons.arrow_back),
+                          color: Colors.white,
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        )),
+                  ),
+                ],
+              ),
+            ));
       },
       child: Card(
         clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -276,9 +278,7 @@ class CategorySquareTile extends StatelessWidget {
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(Colors.white),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(18.0),
-                              side: const BorderSide(color: Colors.white))))),
+                          RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0), side: const BorderSide(color: Colors.white))))),
             ),
           ),
           Text(label, textAlign: TextAlign.center),
@@ -451,15 +451,11 @@ class NetworkImageLoader extends StatelessWidget {
     // File file = File(url);
     return ClipRRect(
         borderRadius: const BorderRadius.all(Radius.circular(18)),
-        child: Image.network(url,
-            fit: BoxFit.fill,
-            width: 1000.0,
-            loadingBuilder: getLoadingBuilder));
+        child: Image.network(url, fit: BoxFit.fill, width: 1000.0, loadingBuilder: getLoadingBuilder));
   }
 }
 
-Widget getLoadingBuilder(
-    BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+Widget getLoadingBuilder(BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
   if (loadingProgress == null) return child;
   return const Center(child: CircularProgressIndicator());
 }

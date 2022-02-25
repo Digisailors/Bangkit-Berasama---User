@@ -121,6 +121,7 @@ class Profile {
   }
 
   Future<Response> updateUser() {
+    print(toJson());
     return users
         .doc(uid)
         .update(toJson())

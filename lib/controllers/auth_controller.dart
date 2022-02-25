@@ -1,7 +1,6 @@
 import 'package:bangkit/models/profile.dart';
 import 'package:bangkit/models/service_category.dart';
 import 'package:bangkit/services/firebase.dart';
-import 'package:get/state_manager.dart';
 import 'package:get/get.dart';
 
 class AuthController extends GetxController {

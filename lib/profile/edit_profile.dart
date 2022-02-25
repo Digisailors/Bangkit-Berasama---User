@@ -142,19 +142,20 @@ class _ProfileViewState extends State<ProfileView> {
             var secondaryAddress = secondaryAdressController.address;
             if (authController.auth.currentUser != null) {
               var future = Profile(
-                  name: nameController.text,
-                  uid: authController.auth.currentUser!.uid,
-                  phone: phoneController.text,
-                  secondaryPhone: secondaryphoneController.text,
-                  email: emailController.text,
-                  primaryAddress: primaryAddress,
-                  secondaryAddress: secondaryAddress,
-                  icNumber: icnumberController.text,
-                  isVolunteer: profileController.profile!.isVolunteer,
-                  isApproved: profileController.profile!.isApproved,
-                  about: profileController.profile!.about,
-                  documents: [],
-                  services: []).updateUser();
+                      name: nameController.text,
+                      uid: authController.auth.currentUser!.uid,
+                      phone: phoneController.text,
+                      secondaryPhone: secondaryphoneController.text,
+                      email: emailController.text,
+                      primaryAddress: primaryAddress,
+                      secondaryAddress: secondaryAddress,
+                      icNumber: icnumberController.text,
+                      isVolunteer: profileController.profile!.isVolunteer,
+                      isApproved: profileController.profile!.isApproved,
+                      about: profileController.profile!.about,
+                      documents: profileController.profile?.documents ?? [],
+                      services: profileController.profile?.services ?? [])
+                  .updateUser();
               //     .then((response) {
               //   if (response.code == "Success") {
               //     ScaffoldMessenger.of(context).showSnackBar(
