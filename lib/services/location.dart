@@ -10,7 +10,7 @@ class LocationService {
   static Position? posistion;
 
   static local() async {
-    Location location = new Location();
+    Location location = Location();
 
     var locationData = await location.getLocation().then((value) => print(value.altitude)).onError((error, stackTrace) {
       // print(error);
@@ -18,6 +18,8 @@ class LocationService {
 
     // print(locationData);
   }
+
+  static Stream<LocationData> get locationStream => Location().getLocation().asStream();
 
   get latlng => posistion != null ? LatLng(posistion!.latitude, posistion!.longitude) : null;
 

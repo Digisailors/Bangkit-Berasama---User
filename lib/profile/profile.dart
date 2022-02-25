@@ -8,16 +8,21 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
 class ProfileWidget extends StatefulWidget {
+<<<<<<< HEAD
    ProfileWidget({Key? key, required this.profileModel}) : super(key: key);
 
    Profile profileModel;
+=======
+  ProfileWidget({Key? key, required this.profileModel}) : super(key: key);
+
+  Profile profileModel;
+>>>>>>> Temp-Branch
 
   @override
   _ProfileWidgetState createState() => _ProfileWidgetState();
 }
 
 class _ProfileWidgetState extends State<ProfileWidget> {
-  bool _customTileExpanded = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,24 +69,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                         padding: const EdgeInsets.all(8.0),
                         child: ElevatedButton(
                           onPressed: () {
-                            // showDialog(
-                            //     context: context,
-                            //     builder: (context) {
-                            //       return AlertDialog(
-                            //         title: const Text("This page is under development"),
-                            //         actions: [
-                            //           TextButton(
-                            //               onPressed: () {
-                            //                 Navigator.of(context).pop();
-                            //               },
-                            //               child: const Text("OK"))
-                            //         ],
-                            //       );
-                            //     });
-                            Get.to(() => ProfileView());
-                            // Get.to(() => EditProfile(
-                            //       profile: widget.profileModel,
-                            //     ));
+                            Get.to(() => const ProfileView());
                           },
                           child: const Padding(
                             padding: EdgeInsets.all(8.0),

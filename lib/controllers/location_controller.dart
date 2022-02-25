@@ -1,6 +1,6 @@
-import 'dart:async';
-
+import 'package:bangkit/controllers/getxcontrollers.dart';
 import 'package:bangkit/services/location.dart';
+import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -10,19 +10,24 @@ class LocationController extends GetxController {
   LatLng location = const LatLng(0, 0);
 
   static LocationSettings locationSettings = const LocationSettings(
-    accuracy: LocationAccuracy.high,
+    accuracy: LocationAccuracy.medium,
     distanceFilter: 100,
   );
-  loadLocation() async {
-    location = await LocationService.loadPosistion().then((value) => LatLng(value.latitude, value.longitude)) ?? location;
-    print("Location fetched ${location.latitude}, ${location.longitude}");
 
+  listenLocation() async {
+    LocationService.locationStream.listen((value) {
+      location = LatLng(value.latitude ?? location.latitude, value.longitude ?? location.longitude);
+      markerController.myLocation = LatLng(value.latitude ?? location.latitude, value.longitude ?? location.longitude);
+    });
     update();
   }
 
   @override
   void onInit() {
-    loadLocation();
+    if (kDebugMode) {
+      print("Listening to location");
+    }
+    listenLocation();
     super.onInit();
   }
 }

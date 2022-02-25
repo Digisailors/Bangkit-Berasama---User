@@ -54,7 +54,7 @@ class Weather {
       };
 
   static Future<Result?> getAddress(latitude, longitude) async {
-    var apiKey = "AIzaSyA68AkItTnbUcIo7FTn-lN1nOdeBmKEpds";
+    var apiKey = "AIzaSyCtlUot-efGU2j7iLu4pYXVxnF89IXdbrQ";
     var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=$latitude,$longitude&key=$apiKey";
     var uri = Uri.parse(url);
     var response = await http.get(uri);
@@ -76,6 +76,7 @@ class Weather {
         ".5/onecall?lat=$lat&lon=$lng&units=metric&exclude=hourly,"
         "minutely&appid=f131f5f3c12967cd395dba531d137cc0");
     var response = await http.get(weatheresponse);
+    print(weatheresponse);
     var body = jsonDecode(response.body);
     var returns = Weather.fromJson(body);
     returns.locataion = result != null ? result.formattedAddress : returns.timezone;
