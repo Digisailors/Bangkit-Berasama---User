@@ -36,7 +36,9 @@ class _AdunListState extends State<AdunList> {
             selectedStates = values.map((e) => e.toString()).toList();
             setState(() {
               query = aduns;
-              query = query.where("state", whereIn: selectedStates);
+              if (selectedStates.isNotEmpty) {
+                query = query.where("state", whereIn: selectedStates);
+              }
             });
           },
         );
