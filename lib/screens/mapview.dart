@@ -47,10 +47,37 @@ class _MapViewState extends State<MapView> {
   getDetailsCard(Area area) {
     List<TableRow> children = [];
     children.addAll(area.property.keys.map((e) => TableRow(children: [Text(e), Text(area.property[e].toString())])).toList());
-    children.add(TableRow(children: [const Text("Location"), Text(area.location.toString())]));
-    return Table(
-      children: children,
-    );
+    children.add(TableRow(children: [
+      const Padding(
+        padding: EdgeInsets.all(8.0),
+        child: Text("Location"),
+      ),
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(area.location.toString()),
+      ),
+    ]));
+    // return Table(
+    //   border: const TableBorder(
+    //     bottom: BorderSide(width: 1, style: BorderStyle.solid),
+    //     horizontalInside: BorderSide(width: 1, style: BorderStyle.solid),
+    //   ),
+    //   children: children,
+    // );
+    List<DataColumn> columns = ["KEY", "VALUE"].map((e) => DataColumn(label: Text(e))).toList();
+    List<DataRow> rows = [];
+    area.property.forEach((key, value) {
+      var row = DataRow(cells: [
+        DataCell(
+          Text(key),
+        ),
+        DataCell(
+          Text(value),
+        )
+      ]);
+      rows.add(row);
+    });
+    return DataTable(columns: columns, rows: rows);
   }
 
   @override
