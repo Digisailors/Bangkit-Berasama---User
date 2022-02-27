@@ -2,8 +2,6 @@
 //
 //     final post = postFromJson(jsonString);
 
-import 'dart:convert';
-
 import 'package:bangkit/constants/controller_constants.dart';
 import 'package:bangkit/models/response.dart';
 import 'package:bangkit/services/firebase.dart';

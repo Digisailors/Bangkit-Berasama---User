@@ -8,15 +8,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
 class ProfileWidget extends StatefulWidget {
-<<<<<<< HEAD
-   ProfileWidget({Key? key, required this.profileModel}) : super(key: key);
-
-   Profile profileModel;
-=======
   ProfileWidget({Key? key, required this.profileModel}) : super(key: key);
 
   Profile profileModel;
->>>>>>> Temp-Branch
 
   @override
   _ProfileWidgetState createState() => _ProfileWidgetState();

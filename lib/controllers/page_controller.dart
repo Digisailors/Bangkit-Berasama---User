@@ -21,6 +21,7 @@ class DamLinkController extends GetxController {
 
   @override
   void refresh() {
+    // ignore: todo
     // TODO: implement refresh
     super.refresh();
     loadlinks();
@@ -28,6 +29,7 @@ class DamLinkController extends GetxController {
 
   @override
   void onInit() {
+    // ignore: todo
     // TODO: implement onInit
     super.onInit();
     loadlinks();

@@ -19,7 +19,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
 
   @override
   void initState() {
-    Timer.periodic(Duration(seconds: 5), (timer) {
+    Timer.periodic(const Duration(seconds: 5), (timer) {
       authController.auth.currentUser!.reload();
 
       if (authController.auth.currentUser!.emailVerified) {

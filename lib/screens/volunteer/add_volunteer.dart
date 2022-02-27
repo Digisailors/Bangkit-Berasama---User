@@ -28,7 +28,7 @@ class _AddVolunteerState extends State<AddVolunteer> {
   final aboutController = TextEditingController();
   List<String?>? services = [];
 
-  List<MultiSelectItem<String?>> get multiItems => serviceListController.service!.map((e) => MultiSelectItem(e.capitalize, e.capitalize!)).toList();
+  List<MultiSelectItem<String?>> get multiItems => serviceListController.service!.map((e) => MultiSelectItem(e, e.capitalize!)).toList();
   Future chooseFile() async {
     var files = await ImagePicker().pickMultiImage();
     if (files != null) {
@@ -63,7 +63,7 @@ class _AddVolunteerState extends State<AddVolunteer> {
       profileController.profile!.isApproved = false;
       profileController.profile!.documents = urls;
       profileController.profile!.about = aboutController.text;
-      profileController.profile!.services = services!.map((e) => e.toString()).toList();
+      profileController.profile!.services.addAll((services ?? []).map((e) => e.toString()));
       return profileController.profile!.updateUser();
     }).then(
         (value) => response.Response.success("Your profile has been submitted to pending volunteer list. You'll receive notification on approval"));

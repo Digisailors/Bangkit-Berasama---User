@@ -6,7 +6,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
-import 'dart:async';
 
 import 'geocoding.dart';
 
@@ -60,7 +59,7 @@ class Weather {
     var response = await http.get(uri);
     var body = jsonDecode(response.body);
     var results = body["results"].map((e) => Result.fromJson(e)).toList();
-    print(results.first.toJson());
+    // print(results.first.toJson());
     return results.first;
   }
 

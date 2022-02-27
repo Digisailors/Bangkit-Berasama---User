@@ -182,11 +182,7 @@ class _RegistrationState extends State<Registration> {
               ),
               CustomTextFormfieldRed(
                 controller: phoneController,
-<<<<<<< HEAD
-                hintText: '+60 12-3456789',
-=======
                 hintText: '+60 12345678',
->>>>>>> Temp-Branch
                 labelText: 'Enter your Phone Number',
                 icon: const Icon(Icons.phone),
                 keyboardType: TextInputType.phone,

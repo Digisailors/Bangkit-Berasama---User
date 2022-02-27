@@ -2,7 +2,6 @@
 //
 //     final profile = profileFromJson(jsonString);
 
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:bangkit/constants/controller_constants.dart';
@@ -116,7 +115,7 @@ class Profile {
   }
 
   updateToken(String token) {
-    print("Token : $token");
+    // print("Token : $token");
     users.doc(uid).update({"fcm": token}).then((value) => fcm = token);
   }
 
