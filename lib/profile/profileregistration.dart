@@ -138,7 +138,7 @@ class _RegistrationState extends State<Registration> {
   String? requiredValidatorSnackbar(String? value) {
     value = value ?? '';
     if (value.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Please fill-out all fields in adress")));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Please fill-out all fields in address")));
       return "This is  a required field";
     }
   }
@@ -146,11 +146,13 @@ class _RegistrationState extends State<Registration> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(child: const Icon(Icons.logout), onPressed: authController.auth.signOut),
+      // floatingActionButton: FloatingActionButton(child: const Icon(Icons.logout), onPressed: authController.auth.signOut),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            authController.auth.signOut();
+          },
           icon: const Icon(Icons.arrow_back_rounded),
           color: Colors.black,
         ),
@@ -182,7 +184,7 @@ class _RegistrationState extends State<Registration> {
               ),
               CustomTextFormfieldRed(
                 controller: phoneController,
-                hintText: '+60 12-4103212',
+                hintText: '+60 12-345 6789',
                 labelText: 'Enter your Phone Number',
                 icon: const Icon(Icons.phone),
                 keyboardType: TextInputType.phone,
@@ -190,7 +192,7 @@ class _RegistrationState extends State<Registration> {
               ),
               CustomTextFormfieldRed(
                 controller: secondaryphoneController,
-                hintText: '+60 23456788',
+                hintText: '+60 12-345 6789',
                 labelText: 'Enter Secondary Phone Number',
                 icon: const Icon(Icons.phone),
                 keyboardType: TextInputType.phone,
@@ -199,7 +201,7 @@ class _RegistrationState extends State<Registration> {
               CustomTextFormfieldRed(
                 controller: icnumberController,
                 hintText: 'Ex. F12345678I',
-                labelText: 'Enter your Ic Number',
+                labelText: 'Enter your Ic Number/Passport Number',
                 icon: const Icon(FontAwesomeIcons.passport),
                 validator: requiredValidator,
               ),
@@ -264,7 +266,7 @@ class _RegistrationState extends State<Registration> {
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.1,
                     child: CustomDropDownButtonformField(
-                      labelText: 'Choose PinCode',
+                      labelText: 'Choose PostCode',
                       Icon: const Icon(FontAwesomeIcons.hotel),
                       value: primaryPostCode,
                       onChanged: (String? newValue) {
@@ -291,7 +293,7 @@ class _RegistrationState extends State<Registration> {
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.1,
                     child: CustomDropDownButtonformField(
-                      labelText: 'Door Color',
+                      labelText: 'Door Colour For Emergency Assistance',
                       Icon: const Icon(Icons.door_back_door),
                       value: doorColorPrimary,
                       onChanged: (String? newValue) {
@@ -374,7 +376,7 @@ class _RegistrationState extends State<Registration> {
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.1,
                     child: CustomDropDownButtonformField(
-                      labelText: 'Choose PinCode',
+                      labelText: 'Choose PostCode',
                       Icon: const Icon(FontAwesomeIcons.hotel),
                       value: secondaryPostCode,
                       onChanged: (String? newValue) {
@@ -401,7 +403,7 @@ class _RegistrationState extends State<Registration> {
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.1,
                     child: CustomDropDownButtonformField(
-                      labelText: 'Door Color',
+                      labelText: 'Door Colour For Emergency Assistance',
                       Icon: const Icon(Icons.door_back_door),
                       value: doorColorSecondary,
                       onChanged: (String? newValue) {

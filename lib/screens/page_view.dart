@@ -33,6 +33,8 @@ class _WebViewerState extends State<WebViewer> {
     super.initState();
     if (Platform.isAndroid) {
       WebView.platform = SurfaceAndroidWebView();
+    } else if (Platform.isIOS) {
+      WebView.platform = CupertinoWebView();
     }
   }
 
