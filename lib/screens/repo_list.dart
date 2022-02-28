@@ -72,7 +72,16 @@ class _NgoListState extends State<NgoList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: getAppBar(context),
+      appBar: AppBar(
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              pageController.homeIndex = 0;
+              Navigator.of(context).popAndPushNamed('/');
+            }),
+        centerTitle: true,
+        title: SizedBox(height: getHeight(context) * 0.15, child: Image.asset('assets/bina.png')),
+      ),
       body: Column(
         children: [
           Padding(

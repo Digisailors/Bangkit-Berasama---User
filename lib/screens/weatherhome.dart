@@ -10,6 +10,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:bangkit/models/weather.dart';
 import 'package:get/get.dart';
 
+import '../constants/controller_constants.dart';
+
 class WeatherHome extends StatefulWidget {
   WeatherHome({Key? key}) : super(key: key);
 
@@ -35,6 +37,12 @@ class _WeatherHomeState extends State<WeatherHome> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () {
+                pageController.homeIndex = 0;
+                Navigator.of(context).popAndPushNamed('/');
+              }),
           // leading: IconButton(
           //   onPressed: () {
           //     // Get.to(HomePage());
