@@ -184,11 +184,7 @@ class _RegistrationState extends State<Registration> {
               ),
               CustomTextFormfieldRed(
                 controller: phoneController,
-<<<<<<< HEAD
-                hintText: '+60 12345678',
-=======
                 hintText: '+60 12-345 6789',
->>>>>>> origin/pitchu_Bina
                 labelText: 'Enter your Phone Number',
                 icon: const Icon(Icons.phone),
                 keyboardType: TextInputType.phone,
@@ -196,11 +192,7 @@ class _RegistrationState extends State<Registration> {
               ),
               CustomTextFormfieldRed(
                 controller: secondaryphoneController,
-<<<<<<< HEAD
-                hintText: '+60 12345678',
-=======
                 hintText: '+60 12-345 6789',
->>>>>>> origin/pitchu_Bina
                 labelText: 'Enter Secondary Phone Number',
                 icon: const Icon(Icons.phone),
                 keyboardType: TextInputType.phone,
