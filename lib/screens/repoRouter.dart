@@ -5,6 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+
+import 'package:url_launcher_platform_interface/url_launcher_platform_interface.dart';
+
+
 class CustomExpansionTile extends StatefulWidget {
   const CustomExpansionTile({Key? key, required this.ngo}) : super(key: key);
   final Ngo ngo;
@@ -161,11 +165,30 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
       path: widget.ngo.email,
     );
     String url = params.toString();
-    await launch(url);
-  }
+    if (await canLaunch(url)) {
+      await launch(
+        url,
+
+      );
+    } else {
+      throw 'Could not launch $url';
+    }
+ }
 
   void _launchPhoneURL() async {
-    await launch("tel:${widget.ngo.phoneNumber}");
+    final uri = Uri(
+      scheme: 'tel',
+      path: widget.ngo.phoneNumber,
+    );
+    var url = uri.toString();
+    if (await canLaunch(url)) {
+      await launch(
+        url,
+
+      );
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   void _launchURL() async {
@@ -173,9 +196,22 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
       await launch(widget.ngo.urlWeb);
     }
   }
+ void _launchMapURL() async {
 
-  void _launchMapURL() async {
-    await launch("https://www.google.com/maps/search/${widget.ngo.address}");
+      final url = Uri.encodeFull("http://maps.apple.com/?q=${widget.ngo.address}");
+      if (await canLaunch(url)) {
+        await launch(
+          url,
+          enableJavaScript: false,
+          enableDomStorage: false,
+          universalLinksOnly: false,
+          headers: <String, String>{'my_header_key': 'my_header_value'},
+        );
+      } else {
+        throw 'Could not launch $url';
+      }
+
+   // await launch("http://maps.apple.com/?address${widget.ngo.address}");
     // forceSafariVC: false,
     // forceWebView: true);
   }

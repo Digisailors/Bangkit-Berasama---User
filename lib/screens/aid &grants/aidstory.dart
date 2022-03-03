@@ -86,16 +86,49 @@ class _StoryState extends State<Story> {
       path: widget.post.email,
     );
     String url = params.toString();
-    await launch(url);
+    if (await canLaunch(url)) {
+      await launch(
+        url,
+
+      );
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   void _launchPhoneURL() async {
-    await launch("tel:${widget.post.phone}");
-  }
+    final uri = Uri(
+      scheme: 'tel',
+      path: widget.post.phone,
+    );
+    var url = uri.toString();
+    if (await canLaunch(url)) {
+      await launch(
+        url,
 
-  void _launchMapURL() async {
-    await launch("https://www.google.com/maps/search/${widget.post.address}");
+      );
+    } else {
+      throw 'Could not launch $url';
+    }
   }
+  void _launchMapURL() async {
+    final url = Uri.encodeFull(
+        "http://maps.apple.com/?q=${widget.post.address}");
+    if (await canLaunch(url)) {
+      await launch(
+        url,
+        enableJavaScript: false,
+        enableDomStorage: false,
+        universalLinksOnly: false,
+        headers: <String, String>{'my_header_key': 'my_header_value'},
+      );
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+  // void _launchMapURL() async {
+  //   await launch("https://maps.apple.com/?q=${widget.post.address}");
+  // }
 
   Widget listOfDetails(title, icon, void Function()? onTap) {
     return ListTile(

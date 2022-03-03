@@ -7,7 +7,7 @@
         android:label="Bina Bersama"
         android:icon="@mipmap/launcher_icon">
          <meta-data android:name="com.google.android.geo.API_KEY"
-               android:value="AIzaSyCJfcu6BVfn0wsRIZheOdIE7R0MbV2ODcA"/>
+               android:value="AIzaSyCtlUot-efGU2j7iLu4pYXVxnF89IXdbrQ"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
