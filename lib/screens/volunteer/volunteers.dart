@@ -68,7 +68,16 @@ class _VolunteerListState extends State<VolunteerList> {
                   Get.to(() => const AddVolunteer());
                 },
                 child: const Text("Become a volunteer")),
-        appBar: getAppBar(context),
+        appBar: AppBar(
+          leading: IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () {
+                pageController.homeIndex = 0;
+                Navigator.of(context).popAndPushNamed('/');
+              }),
+          centerTitle: true,
+          title: SizedBox(height: getHeight(context) * 0.15, child: Image.asset('assets/bina.png')),
+        ),
         body: Column(
           mainAxisSize: MainAxisSize.min,
           children: [

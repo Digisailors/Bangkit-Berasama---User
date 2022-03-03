@@ -5,6 +5,8 @@ import 'package:bangkit/services/firebase.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../constants/controller_constants.dart';
+
 class MapView extends StatefulWidget {
   const MapView({Key? key, required this.type}) : super(key: key);
   final AreaType type;
@@ -83,7 +85,16 @@ class _MapViewState extends State<MapView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: getAppBar(context),
+      appBar: AppBar(
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              pageController.homeIndex = 0;
+              Navigator.of(context).popAndPushNamed('/');
+            }),
+        centerTitle: true,
+        title: SizedBox(height: getHeight(context) * 0.15, child: Image.asset('assets/bina.png')),
+      ),
       body: StreamBuilder<QuerySnapshot>(
         stream: query.snapshots(),
         builder: (context, snapshot) {

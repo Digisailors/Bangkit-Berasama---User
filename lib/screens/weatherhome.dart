@@ -1,10 +1,16 @@
 import 'package:bangkit/constants/themeconstants.dart';
 import 'package:bangkit/controllers/location_controller.dart';
 import 'package:bangkit/models/town.dart';
+import 'package:bangkit/routers/home_route.dart';
+import 'package:bangkit/routers/landing_page.dart';
+import 'package:bangkit/screens/home.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:bangkit/models/weather.dart';
 import 'package:get/get.dart';
+
+import '../constants/controller_constants.dart';
 
 class WeatherHome extends StatefulWidget {
   WeatherHome({Key? key}) : super(key: key);
@@ -31,6 +37,21 @@ class _WeatherHomeState extends State<WeatherHome> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () {
+                pageController.homeIndex = 0;
+                Navigator.of(context).popAndPushNamed('/');
+              }),
+          // leading: IconButton(
+          //   onPressed: () {
+          //     // Get.to(HomePage());
+          //
+          //   },
+          //   icon: const Icon(Icons.arrow_back_rounded),
+          //   color: Colors.black,
+          // ),
+          // automaticallyImplyLeading: true,
           centerTitle: true,
           title: SizedBox(height: getHeight(context) * 0.15, child: Image.asset('assets/bina.png')),
           bottom: const TabBar(tabs: [

@@ -94,6 +94,14 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                             ),
                             ListTile(
                               leading: const Icon(
+                                FontAwesomeIcons.idBadge,
+                                color: Colors.red,
+                              ),
+                              title: const Text('IC Number'),
+                              subtitle: Text(widget.profileModel.icNumber),
+                            ),
+                            ListTile(
+                              leading: const Icon(
                                 Icons.phone,
                                 color: Colors.red,
                               ),

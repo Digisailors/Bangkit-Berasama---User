@@ -205,7 +205,7 @@ class _ProfileViewState extends State<ProfileView> {
               ListTile(
                 title: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text("IC Number", style: getText(context).subtitle2),
+                  child: Text("IC Number/Passport Number", style: getText(context).subtitle2),
                 ),
                 subtitle: CustomTextFormField(
                   suffixIcon: const Icon(FontAwesomeIcons.idCard),
