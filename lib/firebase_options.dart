@@ -59,13 +59,13 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyCDG01NYDIhLixBNk32ytHJYIKXt0caOME',
-    appId: '1:88548732056:ios:07ef2953a7aa340953f4ed',
+    appId: '1:88548732056:ios:fd047ca45480d64a53f4ed',
     messagingSenderId: '88548732056',
     projectId: 'bangkit-83a09',
     databaseURL: 'https://bangkit-83a09-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'bangkit-83a09.appspot.com',
     androidClientId: '88548732056-bljbapq4o74li7j2cbv67mqrq86tqjhm.apps.googleusercontent.com',
-    iosClientId: '88548732056-gg2152gamlki75udevrsms716rvetejq.apps.googleusercontent.com',
-    iosBundleId: 'com.techinsight.bina',
+    iosClientId: '88548732056-tvip0dmfegg13io1m4dnkjgjukk4ebjk.apps.googleusercontent.com',
+    iosBundleId: 'com.digisailor.binabersama',
   );
 }
