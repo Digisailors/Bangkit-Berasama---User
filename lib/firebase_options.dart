@@ -43,6 +43,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '88548732056',
     projectId: 'bangkit-83a09',
     authDomain: 'bangkit-83a09.firebaseapp.com',
+    databaseURL: 'https://bangkit-83a09-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'bangkit-83a09.appspot.com',
     measurementId: 'G-W31Z122M43',
   );
@@ -52,17 +53,19 @@ class DefaultFirebaseOptions {
     appId: '1:88548732056:android:5d56c8e6c1365c5353f4ed',
     messagingSenderId: '88548732056',
     projectId: 'bangkit-83a09',
+    databaseURL: 'https://bangkit-83a09-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'bangkit-83a09.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyCDG01NYDIhLixBNk32ytHJYIKXt0caOME',
-    appId: '1:88548732056:ios:068cea41d97db30653f4ed',
+    appId: '1:88548732056:ios:07ef2953a7aa340953f4ed',
     messagingSenderId: '88548732056',
     projectId: 'bangkit-83a09',
+    databaseURL: 'https://bangkit-83a09-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'bangkit-83a09.appspot.com',
     androidClientId: '88548732056-bljbapq4o74li7j2cbv67mqrq86tqjhm.apps.googleusercontent.com',
-    iosClientId: '88548732056-f6hhavv6sfa91pidevbaiepg6fgo9psk.apps.googleusercontent.com',
-    iosBundleId: 'com.techinsight.bangkit',
+    iosClientId: '88548732056-gg2152gamlki75udevrsms716rvetejq.apps.googleusercontent.com',
+    iosBundleId: 'com.techinsight.bina',
   );
 }
