@@ -22,7 +22,8 @@ class WebViewer extends StatefulWidget {
 }
 
 class _WebViewerState extends State<WebViewer> {
-  final Completer<WebViewController>? _webViewController = Completer<WebViewController>();
+  final Completer<WebViewController>? _webViewController =
+      Completer<WebViewController>();
   WebViewController? _controller;
   bool isloading = true;
   var _selectedState = links.links!.keys.last;
@@ -30,12 +31,11 @@ class _WebViewerState extends State<WebViewer> {
 
   @override
   void initState() {
-    super.initState();
+    // super.initState();
     if (Platform.isAndroid) {
       WebView.platform = SurfaceAndroidWebView();
-    } else if (Platform.isIOS) {
-      WebView.platform = CupertinoWebView();
     }
+    super.initState();
   }
 
   @override
@@ -44,7 +44,9 @@ class _WebViewerState extends State<WebViewer> {
       child: Scaffold(
           appBar: AppBar(
             centerTitle: true,
-            title: SizedBox(height: getHeight(context) * 0.15, child: Image.asset('assets/bina.png')),
+            title: SizedBox(
+                height: getHeight(context) * 0.15,
+                child: Image.asset('assets/bina.png')),
           ),
           // backgroundColor: Colors.green,
           body: Column(
@@ -80,7 +82,9 @@ class _WebViewerState extends State<WebViewer> {
                             isloading = false;
                           });
                         },
-                        initialUrl: widget.url ?? links.links![_selectedState] ?? "www.pagenotfound.com",
+                        initialUrl: widget.url ??
+                            links.links![_selectedState] ??
+                            "www.pagenotfound.com",
                         backgroundColor: Colors.white,
                         javascriptMode: JavascriptMode.unrestricted,
                         onWebViewCreated: (controller) {
