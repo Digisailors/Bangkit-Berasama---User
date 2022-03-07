@@ -60,7 +60,22 @@ class _StoryState extends State<Story> {
         showDialog(
             context: context,
             builder: (context) {
-              return PhotoView(imageProvider: NetworkImage(url));
+              return Material(
+                child: Stack(children: [
+                  PhotoView(imageProvider: NetworkImage(url)),
+                  Positioned(
+                    child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
+                        child: IconButton(
+                          icon: const Icon(Icons.arrow_back),
+                          color: Colors.white,
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        )),
+                  ),
+                ]),
+              );
             });
       },
       child: Padding(
@@ -89,7 +104,6 @@ class _StoryState extends State<Story> {
     if (await canLaunch(url)) {
       await launch(
         url,
-
       );
     } else {
       throw 'Could not launch $url';
@@ -105,15 +119,14 @@ class _StoryState extends State<Story> {
     if (await canLaunch(url)) {
       await launch(
         url,
-
       );
     } else {
       throw 'Could not launch $url';
     }
   }
+
   void _launchMapURL() async {
-    final url = Uri.encodeFull(
-        "http://maps.apple.com/?q=${widget.post.address}");
+    final url = Uri.encodeFull("http://maps.apple.com/?q=${widget.post.address}");
     if (await canLaunch(url)) {
       await launch(
         url,

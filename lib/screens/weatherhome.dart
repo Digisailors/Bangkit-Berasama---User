@@ -75,7 +75,7 @@ class _WeatherHomeState extends State<WeatherHome> {
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
-                                  child: Text("Location : ${weather!.locataion.toString()}"),
+                                  child: Text("Location : ${locationController.address}"),
                                 ),
                                 const Padding(
                                   padding: EdgeInsets.all(8.0),
@@ -84,7 +84,7 @@ class _WeatherHomeState extends State<WeatherHome> {
                                     style: TextStyle(decoration: TextDecoration.underline, fontSize: 20, fontWeight: FontWeight.bold),
                                   ),
                                 ),
-                                WeatherCard(current: weather.current),
+                                WeatherCard(current: weather!.current),
                                 const Padding(
                                   padding: EdgeInsets.all(8.0),
                                   child: Text(
@@ -105,6 +105,7 @@ class _WeatherHomeState extends State<WeatherHome> {
                       return const Center(child: CircularProgressIndicator());
                     });
               } else {
+                locationController.loadLocation();
                 return const Center(
                   child: Text("Location currently unavailable. Fetching Location..."),
                 );
