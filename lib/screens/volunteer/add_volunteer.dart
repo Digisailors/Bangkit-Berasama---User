@@ -24,11 +24,15 @@ class AddVolunteer extends StatefulWidget {
 class _AddVolunteerState extends State<AddVolunteer> {
   @override
   late List<String?> items = [null];
-  List<File?> get files => items.map((e) => e != null ? File(e) : null).toList();
+  List<File?> get files =>
+      items.map((e) => e != null ? File(e) : null).toList();
   final aboutController = TextEditingController();
   List<String?>? services = [];
 
-  List<MultiSelectItem<String?>> get multiItems => serviceListController.service!.map((e) => MultiSelectItem(e, e.capitalize!)).toList();
+  List<MultiSelectItem<String?>> get multiItems =>
+      serviceListController.service!
+          .map((e) => MultiSelectItem(e, e.capitalize!))
+          .toList();
   Future chooseFile() async {
     var files = await ImagePicker().pickMultiImage();
     if (files != null) {
@@ -52,7 +56,8 @@ class _AddVolunteerState extends State<AddVolunteer> {
   }
 
   saveDocumentsToProfile() async {
-    var ref = storage.ref("supportingDocuments/${authController.auth.currentUser!.uid}");
+    var ref = storage
+        .ref("supportingDocuments/${authController.auth.currentUser!.uid}");
     if (services!.isEmpty) {
       return response.Response.error("Please select any services");
     } else if (files.isEmpty) {
@@ -63,10 +68,11 @@ class _AddVolunteerState extends State<AddVolunteer> {
       profileController.profile!.isApproved = false;
       profileController.profile!.documents = urls;
       profileController.profile!.about = aboutController.text;
-      profileController.profile!.services.addAll((services ?? []).map((e) => e.toString()));
+      profileController.profile!.services
+          .addAll((services ?? []).map((e) => e.toString()));
       return profileController.profile!.updateUser();
-    }).then(
-        (value) => response.Response.success("Your profile has been submitted to pending volunteer list. You'll receive notification on approval"));
+    }).then((value) => response.Response.success(
+        "Your profile has been submitted to pending volunteer list. You'll receive notification on approval"));
   }
 
   @override
@@ -80,7 +86,8 @@ class _AddVolunteerState extends State<AddVolunteer> {
                 builder: (context) {
                   return AlertDialog(
                     title: const Text("Error"),
-                    content: const Text("Please attach both front and back side of your IC"),
+                    content: const Text(
+                        "Please attach both front and back side of your IC"),
                     actions: [
                       TextButton(
                           onPressed: () {
@@ -132,7 +139,9 @@ class _AddVolunteerState extends State<AddVolunteer> {
                   padding: const EdgeInsets.all(16.0),
                   child: Align(
                     alignment: Alignment.center,
-                    child: SizedBox(width: getWidth(context) / 3, child: Image.asset("assets/volunteer.png")),
+                    child: SizedBox(
+                        width: getWidth(context) / 3,
+                        child: Image.asset("assets/volunteer.png")),
                   ),
                 ),
                 Align(
@@ -227,7 +236,8 @@ class _AddVolunteerState extends State<AddVolunteer> {
         context: context,
         builder: (context) {
           return const AlertDialog(
-            title: Text("Successfully Compliant Created", style: TextStyle(color: Colors.black)),
+            title: Text("Submitted Successfully",
+                style: TextStyle(color: Colors.black)),
           );
         });
   }
@@ -250,8 +260,14 @@ class _AddVolunteerState extends State<AddVolunteer> {
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    ListTile(onTap: captureFile, leading: const Icon(Icons.camera), title: const Text("Take a photo")),
-                    ListTile(onTap: chooseFile, leading: const Icon(Icons.photo_album), title: const Text("Pick Images from Gallery")),
+                    ListTile(
+                        onTap: captureFile,
+                        leading: const Icon(Icons.camera),
+                        title: const Text("Take a photo")),
+                    ListTile(
+                        onTap: chooseFile,
+                        leading: const Icon(Icons.photo_album),
+                        title: const Text("Pick Images from Gallery")),
                   ],
                 );
               });
@@ -322,7 +338,8 @@ class FileImage extends StatelessWidget {
             Positioned(
               top: 1,
               right: 1,
-              child: GestureDetector(onTap: onTap, child: const Icon(Icons.cancel)),
+              child: GestureDetector(
+                  onTap: onTap, child: const Icon(Icons.cancel)),
             )
           ],
         ),
@@ -331,7 +348,8 @@ class FileImage extends StatelessWidget {
   }
 }
 
-Widget getLoadingBuilder(BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+Widget getLoadingBuilder(
+    BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
   if (loadingProgress == null) return child;
   return const Center(child: CircularProgressIndicator());
 }
@@ -358,7 +376,10 @@ class NetworkImage extends StatelessWidget {
           child: ClipRRect(
               borderRadius: const BorderRadius.all(Radius.circular(18)),
               child: Image.network(url,
-                  fit: BoxFit.fill, height: getWidth(context) * 0.25, width: getWidth(context) * 0.25, loadingBuilder: getLoadingBuilder)),
+                  fit: BoxFit.fill,
+                  height: getWidth(context) * 0.25,
+                  width: getWidth(context) * 0.25,
+                  loadingBuilder: getLoadingBuilder)),
         ),
       ),
     );

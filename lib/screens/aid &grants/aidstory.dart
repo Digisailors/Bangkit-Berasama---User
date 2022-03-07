@@ -89,7 +89,6 @@ class _StoryState extends State<Story> {
     if (await canLaunch(url)) {
       await launch(
         url,
-
       );
     } else {
       throw 'Could not launch $url';
@@ -105,15 +104,15 @@ class _StoryState extends State<Story> {
     if (await canLaunch(url)) {
       await launch(
         url,
-
       );
     } else {
       throw 'Could not launch $url';
     }
   }
+
   void _launchMapURL() async {
-    final url = Uri.encodeFull(
-        "http://maps.apple.com/?q=${widget.post.address}");
+    final url =
+        Uri.encodeFull("http://maps.apple.com/?q=${widget.post.address}");
     if (await canLaunch(url)) {
       await launch(
         url,
@@ -157,7 +156,9 @@ class _StoryState extends State<Story> {
           iconTheme: const IconThemeData(color: Colors.black),
           automaticallyImplyLeading: true,
           centerTitle: true,
-          title: SizedBox(height: getHeight(context) * 0.15, child: Image.asset('assets/bina.png')),
+          title: SizedBox(
+              height: getHeight(context) * 0.15,
+              child: Image.asset('assets/bina.png')),
         ),
         body: GetBuilder(
             init: controller,
@@ -172,7 +173,8 @@ class _StoryState extends State<Story> {
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(24, 20, 24, 0),
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                24, 20, 24, 0),
                             child: Text(
                               widget.post.title,
                               overflow: TextOverflow.ellipsis,
@@ -189,13 +191,16 @@ class _StoryState extends State<Story> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsetsDirectional.fromSTEB(24, 4, 24, 0),
+                            padding: const EdgeInsetsDirectional.fromSTEB(
+                                24, 4, 24, 0),
                             child: Row(
                               mainAxisSize: MainAxisSize.max,
                               children: [
                                 Expanded(
                                   child: Padding(
-                                    padding: const EdgeInsetsDirectional.fromSTEB(0, 0, 0, 24),
+                                    padding:
+                                        const EdgeInsetsDirectional.fromSTEB(
+                                            0, 0, 0, 24),
                                     child: Text(
                                       widget.post.description,
                                       style: const TextStyle(
@@ -212,20 +217,37 @@ class _StoryState extends State<Story> {
                             ),
                           ),
                           const Divider(),
-                          media.isEmpty ? Container() : MediaLister(type: FileType.image, urls: widget.post.media ?? []),
-                          videos.isEmpty ? Container() : MediaLister(type: FileType.video, urls: widget.post.videos ?? []),
-                          attachments.isEmpty ? Container() : MediaLister(type: FileType.attachment, urls: widget.post.attachments ?? []),
+                          media.isEmpty
+                              ? Container()
+                              : MediaLister(
+                                  type: FileType.image,
+                                  urls: widget.post.media ?? []),
+                          videos.isEmpty
+                              ? Container()
+                              : MediaLister(
+                                  type: FileType.video,
+                                  urls: widget.post.videos ?? []),
+                          attachments.isEmpty
+                              ? Container()
+                              : MediaLister(
+                                  type: FileType.attachment,
+                                  urls: widget.post.attachments ?? []),
                           const SizedBox(
                             height: 20,
                           ),
-                          listOfDetails(widget.post.address, Icons.location_pin, _launchMapURL),
+                          listOfDetails(widget.post.address, Icons.location_pin,
+                              _launchMapURL),
                           listOfDetails(widget.post.name, Icons.person, null),
-                          listOfDetails(widget.post.phone, Icons.phone, _launchPhoneURL),
-                          listOfDetails(widget.post.email, Icons.mail, _launchMailURL),
+                          listOfDetails(
+                              widget.post.phone, Icons.phone, _launchPhoneURL),
+                          listOfDetails(
+                              widget.post.email, Icons.mail, _launchMailURL),
                           const Divider(),
                           Padding(
                             padding: const EdgeInsets.all(8),
-                            child: widget.post.canRate ? const Text("Please rate below") : const Text("Thanks for your rating"),
+                            child: widget.post.canRate
+                                ? const Text("Please rate below")
+                                : const Text("Thanks for your rating"),
                           ),
                           RatingBar.builder(
                             // ignoreGestures: !widget.post.canRate,
@@ -245,7 +267,10 @@ class _StoryState extends State<Story> {
                           ),
                           ElevatedButton(
                               onPressed: () {
-                                showFutureDialog(context: context, future: widget.post.ratePost(controller.myRating.toInt()));
+                                showFutureDialog(
+                                    context: context,
+                                    future: widget.post
+                                        .ratePost(controller.myRating.toInt()));
                               },
                               child: const Text("Submit Rating")),
                           SizedBox(
@@ -264,7 +289,8 @@ class _StoryState extends State<Story> {
 }
 
 class MediaLister extends StatelessWidget {
-  const MediaLister({Key? key, required this.type, required this.urls}) : super(key: key);
+  const MediaLister({Key? key, required this.type, required this.urls})
+      : super(key: key);
 
   final FileType type;
   final List<String> urls;
@@ -299,7 +325,9 @@ class MediaLister extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.start,
-            children: urls.isEmpty ? const [Text("No files found")] : urls.map((e) => getTile(e, context)).toList(),
+            children: urls.isEmpty
+                ? const [Text("No files found")]
+                : urls.map((e) => getTile(e, context)).toList(),
           ),
         ),
         const Divider(),
@@ -325,7 +353,23 @@ class MediaLister extends StatelessWidget {
         showDialog(
             context: context,
             builder: (context) {
-              return MultiplePhotoView(urls: urls, initalPage: index);
+              return Material(
+                child: Stack(children: [
+                  MultiplePhotoView(urls: urls, initalPage: index),
+                  Positioned(
+                    child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 32, horizontal: 16),
+                        child: IconButton(
+                          icon: const Icon(Icons.arrow_back),
+                          color: Colors.white,
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        )),
+                  )
+                ]),
+              );
             });
       },
       child: Padding(
@@ -367,7 +411,8 @@ class MediaLister extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
             color: Colors.grey,
-            image: DecorationImage(image: NetworkImage(url), fit: BoxFit.contain, scale: 0.5),
+            image: DecorationImage(
+                image: NetworkImage(url), fit: BoxFit.contain, scale: 0.5),
           ),
           child: Icon(
             Icons.play_arrow,
@@ -464,7 +509,8 @@ class _YouTubeState extends State<YouTube> {
 }
 
 class MultiplePhotoView extends StatefulWidget {
-  MultiplePhotoView({Key? key, required this.urls, this.initalPage}) : super(key: key);
+  MultiplePhotoView({Key? key, required this.urls, this.initalPage})
+      : super(key: key);
 
   final List<String> urls;
   final int? initalPage;
@@ -501,7 +547,9 @@ class _MultiplePhotoViewState extends State<MultiplePhotoView> {
           width: 20.0,
           height: 20.0,
           child: CircularProgressIndicator(
-            value: event == null ? 0 : event.cumulativeBytesLoaded / (event.expectedTotalBytes ?? 1),
+            value: event == null
+                ? 0
+                : event.cumulativeBytesLoaded / (event.expectedTotalBytes ?? 1),
           ),
         ),
       ),
