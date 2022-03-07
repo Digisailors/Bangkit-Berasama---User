@@ -60,22 +60,20 @@ class _StoryState extends State<Story> {
         showDialog(
             context: context,
             builder: (context) {
-              return Material(
-                child: Stack(children: [
-                  PhotoView(imageProvider: NetworkImage(url)),
-                  Positioned(
-                    child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
-                        child: IconButton(
-                          icon: const Icon(Icons.arrow_back),
-                          color: Colors.white,
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        )),
-                  ),
-                ]),
-              );
+              return Stack(children: [
+                PhotoView(imageProvider: NetworkImage(url)),
+                Positioned(
+                  child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
+                      child: IconButton(
+                        icon: const Icon(Icons.arrow_back),
+                        color: Colors.white,
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      )),
+                ),
+              ]);
             });
       },
       child: Padding(
@@ -338,7 +336,22 @@ class MediaLister extends StatelessWidget {
         showDialog(
             context: context,
             builder: (context) {
-              return MultiplePhotoView(urls: urls, initalPage: index);
+              return Material(
+                child: Stack(children: [
+                  MultiplePhotoView(urls: urls, initalPage: index),
+                  Positioned(
+                    child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 16),
+                        child: IconButton(
+                          icon: const Icon(Icons.arrow_back),
+                          color: Colors.white,
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        )),
+                  ),
+                ]),
+              );
             });
       },
       child: Padding(
@@ -497,8 +510,7 @@ class _MultiplePhotoViewState extends State<MultiplePhotoView> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: PhotoViewGallery.builder(
+    return PhotoViewGallery.builder(
       scrollPhysics: const BouncingScrollPhysics(),
       builder: (BuildContext context, int index) {
         return PhotoViewGalleryPageOptions(
@@ -523,7 +535,7 @@ class _MultiplePhotoViewState extends State<MultiplePhotoView> {
       onPageChanged: (page) {
         // pageController.jumpToPage(page);
       },
-    ));
+    );
   }
 }
 
