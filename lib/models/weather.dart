@@ -270,18 +270,19 @@ class RainWarning {
 
   static Future<List<RainWarning>> getWarning() async {
     var date = DateTime.now().toString().substring(0, 10);
-    var url = "https://api.met.gov.my/v2.1/data?datasetid=WARNING&datacategoryid=THUNDERSTORM&start_date=2022-01-23&end_date=2022-01-23";
+    var url = "https://api.met.gov.my/v2.1/data?datasetid=WARNING&datacategoryid=THUNDERSTORM&start_date=$date&end_date=$date";
     var uri = Uri.parse(
       url,
     );
     var response = await http.get(uri, headers: {"Authorization": "METToken 2504cdcf7cd349d47e1c8d67daf08938b9fcaec2"});
     List<dynamic> body = jsonDecode(response.body)["results"];
+    print(body);
     return body.map((e) => RainWarning.fromJson(e)).toList();
   }
 
   static Future<List<RainWarning>> getRainWarning() async {
     var date = DateTime.now().toString().substring(0, 10);
-    var url = "https://api.met.gov.my/v2.1/data?datasetid=WARNING&datacategoryid=RAIN&start_date=2022-01-23&end_date=2022-01-23";
+    var url = "https://api.met.gov.my/v2.1/data?datasetid=WARNING&datacategoryid=RAIN&start_date=$date&end_date=$date";
     var uri = Uri.parse(
       url,
     );
