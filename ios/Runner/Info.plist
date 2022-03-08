@@ -24,11 +24,11 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>This app requires this permission to upload supporting documents if the user wants to become a volunteer</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>The app has a feature where it displays local whether data, so that the app needs the location data</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>This app requires this permission to upload supporting documents if the user wants to become a volunteer</string>
-	<key>NSCameraUsageDescription</key>
 	<string>This app requires this permission to upload supporting documents if the user wants to become a volunteer</string>
 	<key>UIBackgroundModes</key>
 	<array>
