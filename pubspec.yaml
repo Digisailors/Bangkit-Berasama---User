@@ -61,6 +61,7 @@ dependencies:
   flutter_rx_stream_builder: ^2.0.1
   showcaseview: ^1.1.4
   url_launcher_ios: ^6.0.15
+  flutter_local_notifications: ^9.4.0
   
 
 

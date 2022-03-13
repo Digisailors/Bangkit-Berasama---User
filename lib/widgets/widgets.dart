@@ -385,21 +385,24 @@ showFutureDialog({required BuildContext context, required Future<dynamic> future
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.active || snapshot.connectionState == ConnectionState.done) {
                 var response = snapshot.data as Response;
-                return AlertDialog(
-                  title: Text(response.code),
-                  content: Text(response.message),
-                  actions: [
-                    ElevatedButton(
-                        onPressed: response.code == "Error"
-                            ? () {
-                                Navigator.of(context).pop();
-                              }
-                            : callback ??
-                                () {
+                return Dialog(
+                  backgroundColor: Color(0xffC9EFF2),
+                  child: Column(
+                    children: [
+                      Text(response.code),
+                      Text(response.message),
+                      ElevatedButton(
+                          onPressed: response.code == "Error"
+                              ? () {
                                   Navigator.of(context).pop();
-                                },
-                        child: const Text("Okay"))
-                  ],
+                                }
+                              : callback ??
+                                  () {
+                                    Navigator.of(context).pop();
+                                  },
+                          child: const Text("Okay"))
+                    ],
+                  ),
                 );
               }
               return const Center(

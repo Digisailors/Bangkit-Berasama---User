@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:bangkit/constants/controller_constants.dart';
 import 'package:bangkit/controllers/location_controller.dart';
 import 'package:bangkit/models/service_category.dart';
@@ -20,7 +22,20 @@ import 'controllers/getxcontrollers.dart';
 import 'controllers/page_controller.dart';
 import 'firebase_options.dart';
 import 'routers/home_route.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'services/location.dart';
+
+AndroidNotificationChannel channel = AndroidNotificationChannel(
+    'high_importance_channel', // id
+    'High Importance Notifications', // title
+    description: 'This channel is used for important notifications.', // description
+    importance: Importance.max,
+    playSound: true,
+    sound: const RawResourceAndroidNotificationSound('notification'),
+    vibrationPattern: Int64List.fromList([0, 500, 1000, 1500]));
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+const initializationSettings = InitializationSettings(android: AndroidInitializationSettings('@mipmap/ic_launcher'));
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,6 +55,8 @@ Future<void> main() async {
 
   serviceListController.service = await NgoService.getServices();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  FirebaseMessaging.instance.subscribeToTopic('posts');
+  FirebaseMessaging.instance.subscribeToTopic('Posts');
   await markerController.loadIcons();
   LocationService.loadPosistion().then((value) {
     // print("Location Initialized");
