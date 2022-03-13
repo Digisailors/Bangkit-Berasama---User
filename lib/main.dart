@@ -56,7 +56,6 @@ Future<void> main() async {
   serviceListController.service = await NgoService.getServices();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   FirebaseMessaging.instance.subscribeToTopic('posts');
-  FirebaseMessaging.instance.subscribeToTopic('Posts');
   await markerController.loadIcons();
   LocationService.loadPosistion().then((value) {
     // print("Location Initialized");
