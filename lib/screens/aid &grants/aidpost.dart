@@ -127,7 +127,7 @@ class _PostTileState extends State<PostTile> {
                             );
                           }),
                     ),
-                    Image.network(widget.post.media![0]),
+                    (widget.post.media ?? []).isEmpty ? Container() : Image.network(widget.post.media![0]),
                     Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Text(

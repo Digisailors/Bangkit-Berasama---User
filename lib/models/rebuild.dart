@@ -105,7 +105,7 @@ class Rebuild {
   }
 
   update() {
-    return rebuilds.doc(id.toString()).update(toJson()).then((value) => print("sucess"));
+    return rebuilds.doc(id.toString()).update(toJson()).then((value) => print("Success"));
   }
 
   delete() {

@@ -117,7 +117,7 @@ class Ngo {
   }
 
   update() {
-    return ngos.doc(id.toString()).update(toJson()).then((value) => print("sucess"));
+    return ngos.doc(id.toString()).update(toJson()).then((value) => print("Success"));
   }
 
   delete() {

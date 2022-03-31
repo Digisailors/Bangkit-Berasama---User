@@ -210,9 +210,9 @@ class ProfileCard extends StatelessWidget {
     await launch("https://www.google.com/maps/search/${profile.primaryAddress.fullAddress}");
   }
 
-  void _launchSecondaryAdress() async {
-    await launch("https://www.google.com/maps/search/${profile.secondaryAddress.fullAddress}");
-  }
+  // void _launchSecondaryAdress() async {
+  //   await launch("https://www.google.com/maps/search/${profile.secondaryAddress.fullAddress}");
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -232,14 +232,14 @@ class ProfileCard extends StatelessWidget {
             subtitle: Text(profile.primaryAddress.state + ", " + profile.primaryAddress.pincode),
             onTap: _launchPrimaryAdress,
           ),
-          ListTile(
-            // tileColor: Color(0x9885E9FF),
-            minVerticalPadding: 0,
-            leading: const Icon(FontAwesomeIcons.addressBook, color: Colors.red),
-            title: Text(profile.secondaryAddress.line1 + (profile.secondaryAddress.line2.isEmpty ? '' : ', ') + profile.secondaryAddress.line2),
-            subtitle: Text(profile.secondaryAddress.state + ", " + profile.secondaryAddress.pincode),
-            onTap: _launchSecondaryAdress,
-          ),
+          // ListTile(
+          //   // tileColor: Color(0x9885E9FF),
+          //   minVerticalPadding: 0,
+          //   leading: const Icon(FontAwesomeIcons.addressBook, color: Colors.red),
+          //   // title: Text(profile.secondaryAddress.line1 + (profile.secondaryAddress.line2.isEmpty ? '' : ', ') + profile.secondaryAddress.line2),
+          //   // subtitle: Text(profile.secondaryAddress.state + ", " + profile.secondaryAddress.pincode),
+          //   onTap: _launchSecondaryAdress,
+          // ),
           Table(
             children: [
               TableRow(

@@ -6,7 +6,6 @@ import 'package:bangkit/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:get/get_utils/src/extensions/string_extensions.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({Key? key}) : super(key: key);
@@ -26,26 +25,27 @@ class _ProfileViewState extends State<ProfileView> {
       icnumberController.text = profileController.profile!.icNumber;
       emailController.text = profileController.profile!.email;
       primaryAdressController = profileController.profile!.primaryAddress.controller;
-      secondaryAdressController = profileController.profile!.secondaryAddress.controller;
+
       _primaryState = profileController.profile!.primaryAddress.state;
-      _secondaryState = profileController.profile!.secondaryAddress.state;
+      // _secondaryState = profileController.profile!.secondaryAddress.state;
+      // secondaryAdressController = profileController.profile!.secondaryAddress.controller;
       setPrimaryPostalCodes();
-      setSecondaryPostalCodes();
+      // setSecondaryPostalCodes();
       _primaryPostcode = profileController.profile!.primaryAddress.pincode;
-      _secondaryPostcode = profileController.profile!.secondaryAddress.pincode;
+      // _secondaryPostcode = profileController.profile!.secondaryAddress.pincode;
       _primaryRoofColor = profileController.profile!.primaryAddress.roofColor;
-      _secondaryRoofColor = profileController.profile!.secondaryAddress.roofColor;
+      // _secondaryRoofColor = profileController.profile!.secondaryAddress.roofColor;
       _primaryDoorColor = profileController.profile!.primaryAddress.doorColor;
-      _secondaryDoorColor = profileController.profile!.secondaryAddress.doorColor;
+      // _secondaryDoorColor = profileController.profile!.secondaryAddress.doorColor;
     } else {
       _primaryState = states.first;
-      _secondaryState = states.first;
+      // _secondaryState = states.first;
       setPrimaryPostalCodes();
-      setSecondaryPostalCodes();
+      // setSecondaryPostalCodes();
       _primaryRoofColor = colors.first;
-      _secondaryRoofColor = colors.first;
+      // _secondaryRoofColor = colors.first;
       _primaryDoorColor = colors.first;
-      _secondaryDoorColor = colors.first;
+      // _secondaryDoorColor = colors.first;
     }
   }
 
@@ -148,7 +148,7 @@ class _ProfileViewState extends State<ProfileView> {
                       secondaryPhone: secondaryphoneController.text,
                       email: emailController.text,
                       primaryAddress: primaryAddress,
-                      secondaryAddress: secondaryAddress,
+                      // secondaryAddress: secondaryAddress,
                       icNumber: icnumberController.text,
                       isVolunteer: profileController.profile!.isVolunteer,
                       isApproved: profileController.profile!.isApproved,
